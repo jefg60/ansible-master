@@ -1,0 +1,71 @@
+#ansible-master role
+---
+become: yes
+tasks:
+- name: install packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+  - openssh-server
+  - git
+  - ansible
+  - python-dns
+  - python-txwinrm
+  - ansible-lint
+  - python-apt
+  - python-pip
+
+- name: install python pip packages
+  pip:
+    name: "{{ item }}"
+  with_items:
+    - pywinrm
+    - dnspython
+
+- name: ansible user
+  user:
+    name: ansible
+    append: yes
+    state: present
+    generate_ssh_key: yes
+    groups: sudo
+    ssh_key_bits: 2048
+    ssh_key_comment: "ansible orchestration user"
+    ssh_key_passphrase: "{{ master_ansible_user_ssh_phrase }}"
+    update_password: always
+  register: master_ansible_user
+
+- debug:
+    var: "master_ansible_user.ssh_public_key"
+    verbosity: 1
+
+- name: register pubkey for ansible orchestration
+  set_fact:
+    orchestrationkey: "{{ master_ansible_user.ssh_public_key }}"
+
+- name: create git user
+  user:
+    name: git
+    shell: /usr/bin/git-shell
+    home: /home/git
+
+- name: deploy key to git user
+  authorized_key:
+    user: git
+    state: present
+    key: "https://github.com/{{ github_username }}.keys"
+
+- name: create git repo
+  command: git init --bare /home/git/configmanagement.git
+  args:
+    creates: /home/git/configmanagement.git/HEAD
+  become_user: git
+
+- name: create roles dir
+  file:
+    name: /etc/ansible/roles
+    owner: ansible
+    state: directory
+    mode: 0755
