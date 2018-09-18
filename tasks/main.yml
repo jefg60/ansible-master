@@ -47,10 +47,15 @@ tasks:
     repo: "{{ git_homedir }}/{{ git_repo_name }}.git"
     dest: "{{ git_repo_target }}"
 
-- name: post-update git hook which pulls from run dir after each push
-  copy:
+- name: deploy post-update-hooks script
+  template:
+    src: "post-update-hooks.j2"
+    dest: "{{ git_homedir }}/{{ git_repo_name }}.post-update-hooks.sh"
+
+- name: post-update git hook config
+  template:
+    src: "post-update.j2"
     dest: "{{ git_homedir }}/{{ git_repo_name }}.git/hooks/post-update"
-    content: "cd {{ git_repo_target }} ; git pull"
 
 - name: create roles dir
   file:
