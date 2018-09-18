@@ -42,6 +42,16 @@ tasks:
     creates: "{{ git_homedir }}/{{ git_repo_name }}.git/HEAD"
   become_user: git
 
+- name: clone git repo to run dir
+  git:
+    repo: "{{ git_homedir }}/{{ git_repo_name }}.git"
+    dest: "{{ git_repo_target }}"
+
+- name: post-update git hook which pulls from run dir after each push
+  copy:
+    dest: "{{ git_homedir }}/{{ git_repo_name }}.git/hooks/post-update"
+    content: "cd {{ git_repo_target }} ; git pull"
+
 - name: create roles dir
   file:
     name: /etc/ansible/roles

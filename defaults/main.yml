@@ -4,3 +4,4 @@ git_username: git
 git_homedir: /srv/git
 git_repo_name: configmanagement
 
+git_repo_target: /srv/configmanagement
