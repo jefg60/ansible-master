@@ -1,3 +1,4 @@
 #!/bin/bash
-cd {{ git_repo_target }}
+cd {{ git_repo_target }} || exit
+unset GIT_DIR
 git pull
