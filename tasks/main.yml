@@ -1,7 +1,4 @@
-#ansible-master role
 ---
-become: yes
-tasks:
 - name: install packages
   apt:
     name: "{{ item }}"
