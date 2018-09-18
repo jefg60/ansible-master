@@ -1,2 +1,6 @@
 ---
 # defaults file for ansible-master
+git_username: git
+git_homedir: /srv/git
+git_repo_name: configmanagement
+

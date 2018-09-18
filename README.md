@@ -27,10 +27,12 @@ Role Variables
 
 You must set your github username, for fetching your ssh public key. The variable is called github_username.
 
-To set an ssh key passphrase for the ansible master server (recommended), set master_ansible_user_ssh_phrase.
+defaults:
 
-To change the name of the git repo - which defaults to "configmanagement" update the variable (yet to be created)
-
+github_username: null
+git_username: git
+git_homedir: /srv/git
+git_repo_name: configmanagement
 
 Dependencies
 ------------
@@ -43,7 +45,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: ansible-master
       roles:
-         - { role: jefg60.ansible-master, github_username: jefg60 , master_ansible_user_ssh_phrase: "Correct, Horse Battery Staple" }
+         - { role: jefg60.ansible-master, github_username: jefg60 }
 
 License
 -------
@@ -53,3 +55,4 @@ GPLv3
 Author Information
 ------------------
 
+Jeff Hibberd
