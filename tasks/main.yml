@@ -31,7 +31,7 @@
   file:
     path: "{{ git_homedir }}/git-shell-commands"
     state: directory
-    owner: "{{ git_uername }}"
+    owner: "{{ git_username }}"
     group: git
     mode: 0700
 
@@ -39,7 +39,7 @@
   copy:
     src: "no-interactive-login"
     dest: "{{ git_homedir }}/git-shell-commands/no-interactive-login"
-    owner: "{{ git_uername }}"
+    owner: "{{ git_username }}"
     group: git
     mode: 0700
 
