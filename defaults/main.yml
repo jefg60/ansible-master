@@ -5,4 +5,4 @@ git_homedir: /srv/git
 git_repo_name: configmanagement
 
 git_repo_target: "/srv/{{ git_repo_name }}"
-git_branch: "{{ master }}"
+git_branch: "master"
