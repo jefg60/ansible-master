@@ -27,6 +27,22 @@
     shell: /usr/bin/git-shell
     home: "{{ git_homedir }}"
 
+- name: create git-shell-commands
+  file:
+    path: "{{ git_homedir }}/git-shell-commands"
+    state: directory
+    owner: "{{ git_uername }}"
+    group: git
+    mode: 0700
+
+- name: create git-shell no-interactive-login
+  copy:
+    src: "no-interactive-login"
+    dest: "{{ git_homedir }}/git-shell-commands/no-interactive-login"
+    owner: "{{ git_uername }}"
+    group: git
+    mode: 0700
+
 - name: deploy key to git user
   authorized_key:
     user: "{{ git_username }}"
