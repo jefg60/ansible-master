@@ -21,6 +21,14 @@
     - pywinrm
     - dnspython
 
+- name: create /var/log/ansible
+  file:
+    path: /var/log/ansible
+    state: directory
+    owner: "{{ git_username }}"
+    group: git
+    mode: 0755
+
 - name: create git user
   user:
     name: "{{ git_username }}"
