@@ -1,4 +1,6 @@
 #!/bin/bash
 cd {{ git_repo_target }} || exit
 unset GIT_DIR
-git pull
+git fetch
+git merge origin/{{ git_branch }}
+git checkout {{ git_branch }}
