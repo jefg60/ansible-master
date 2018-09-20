@@ -108,3 +108,24 @@
     owner: root
     state: directory
     mode: 0755
+
+- name: ansible user
+  user:
+    name: ansible
+    append: yes
+    state: present
+    generate_ssh_key: yes
+    groups: sudo
+    ssh_key_bits: 2048
+    ssh_key_comment: "ansible orchestration user"
+    ssh_key_passphrase: "{{ master_ansible_user_ssh_phrase }}"
+    update_password: always
+  register: master_ansible_user
+
+- debug:
+    var: "master_ansible_user.ssh_public_key"
+    verbosity: 1
+
+- name: register pubkey for ansible orchestration
+  set_fact:
+    orchestrationkey: "{{ master_ansible_user.ssh_public_key }}"
