@@ -7,20 +7,17 @@ In my workflow I use one of these per environment (dev/prod/staging etc) with a 
 
 The end result should be that when you push changes to a branch of your configmanagement git repo, they are synced to the run directory on this master ready to be deployed by whatever means you deem appropriate.
 
-If desired, a push to the repo can also trigger a playbook run, which is useful in test environments, for example. To do this, edit templates/post-update.j2 to make the git hook do whatever you like after it has caused changes to propagate to the run dir.
+If desired, a push to the repo can also trigger a playbook run, which is useful in test environments, for example. To do this, edit the var git_ansible_hook to make the git hook do whatever you like after it has caused changes to propagate to the run dir. by default it just echoes that it does nothing. Remember that this git hook runs as the limited git user which has the git-shell!
 
 This enables all ansible playbooks to be run from a centrally controlled server whenever changes are pushed to the relevant branch.
 
 This prevents any issues with people running ansible from different hosts, or using different ansible vesions. It also creates a possibility to cron ansible playbook runs.
 
-TODO: make rundeck to create a simplified user interface for deployment.
-TODO: make some kind of testing framework on the ansible-master.
-
 Requirements
 ------------
 
 Ubuntu server 18.04 (LTS) running on the master node.
-Of course, you need a working ansible control machine (eg your own) and required ssh keys on the master server so that you can do the initial setup.
+Of course, you need a working ansible control machine (eg your own) and required ssh keys + sudo on the master server so that you can do the initial setup.
 
 Role Variables
 --------------
