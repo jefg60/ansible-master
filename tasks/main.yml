@@ -66,9 +66,9 @@
     key: "https://github.com/{{ github_username }}.keys"
 
 - name: create git repo
-  command: "git init --bare {{ git_homedir }}/{{ git_repo_name }}.git"
+  command: "git init {{ git_homedir }}/{{ git_repo_name }}"
   args:
-    creates: "{{ git_homedir }}/{{ git_repo_name }}.git/HEAD"
+    creates: "{{ git_homedir }}/{{ git_repo_name }}/.git/HEAD"
   become: yes
   become_user: "{{ git_username }}"
 
