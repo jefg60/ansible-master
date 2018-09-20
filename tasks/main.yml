@@ -13,7 +13,7 @@
     state: directory
     owner: "{{ git_username }}"
     group: git
-    mode: 0756
+    mode: 0755
 
 - name: create roles dir
   file:
