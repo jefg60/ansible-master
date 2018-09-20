@@ -42,3 +42,11 @@
 - name: register pubkey for ansible orchestration
   set_fact:
     orchestrationkey: "{{ master_ansible_user.ssh_public_key }}"
+
+- name: create sudoers file for ansible user
+  template:
+    src: ansible.sudoers
+    dest: "/etc/sudoers.d/{{ ansible_orchestration_user }}"
+    owner: root
+    group: root
+    mode: 0600
