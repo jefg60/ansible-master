@@ -7,3 +7,5 @@ git_repo_name: configmanagement
 git_repo_target: "/srv/{{ git_repo_name }}"
 git_branch: "master"
 git_ansible_hook: "echo This command does nothing by default"
+
+master_ansible_user_ssh_phrase: ""
