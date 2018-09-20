@@ -1,7 +1,11 @@
 ---
-- include:
-  - packages.yaml
-  - git.yaml
+- name: install packages, set up git
+  include: "{{ include_item }}"
+  with_items:
+    - packages.yaml
+    - git.yaml
+  loop_control:
+    loop_var: include_item
 
 - name: create /var/log/ansible
   file:
