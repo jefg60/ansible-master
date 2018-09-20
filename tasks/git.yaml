@@ -1,0 +1,56 @@
+---
+
+- name: create git user
+  user:
+    name: "{{ git_username }}"
+    shell: /usr/bin/git-shell
+    home: "{{ git_homedir }}"
+
+- name: create git-shell-commands
+  file:
+    path: "{{ git_homedir }}/git-shell-commands"
+    state: directory
+    owner: "{{ git_username }}"
+    group: git
+    mode: 0701
+
+- name: create git-shell no-interactive-login
+  copy:
+    src: "no-interactive-login"
+    dest: "{{ git_homedir }}/git-shell-commands/no-interactive-login"
+    owner: "{{ git_username }}"
+    group: git
+    mode: 0701
+
+- name: create git-shell ansible-hook
+  template:
+    src: ansible-hook.j3
+    dest: "{{ git_homedir }}/git-shell-commands/ansible-hook"
+    owner: "{{ git_username }}"
+    group: git
+    mode: 0701
+
+- name: deploy key to git user
+  authorized_key:
+    user: "{{ git_username }}"
+    state: present
+    key: "https://github.com/{{ github_username }}.keys"
+
+- name: create git repo
+  command: "git init {{ git_homedir }}/{{ git_repo_name }}"
+  args:
+    creates: "{{ git_homedir }}/{{ git_repo_name }}/.git/HEAD"
+  become: yes
+  become_user: "{{ git_username }}"
+
+- name: deploy post-update-hooks script
+  template:
+    src: "post-update-hooks.j3"
+    dest: "{{ git_homedir }}/{{ git_repo_name }}.post-update-hooks.sh"
+    mode: 0756
+
+- name: post-update git hook config
+  template:
+    src: "post-update.j3"
+    dest: "{{ git_homedir }}/{{ git_repo_name }}.git/hooks/post-update"
+    mode: 0756

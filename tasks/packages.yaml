@@ -1,0 +1,23 @@
+---
+- name: install packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+  - openssh-server
+  - git
+  - ansible
+  - python-dns
+  - python-txwinrm
+  - ansible-lint
+  - python-apt
+  - python-pip
+
+- name: install python pip packages
+  pip:
+    name: "{{ item }}"
+  with_items:
+    - pywinrm
+    - dnspython
+

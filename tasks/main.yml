@@ -1,25 +1,7 @@
 ---
-- name: install packages
-  apt:
-    name: "{{ item }}"
-    state: present
-    update_cache: yes
-  with_items:
-  - openssh-server
-  - git
-  - ansible
-  - python-dns
-  - python-txwinrm
-  - ansible-lint
-  - python-apt
-  - python-pip
-
-- name: install python pip packages
-  pip:
-    name: "{{ item }}"
-  with_items:
-    - pywinrm
-    - dnspython
+- include:
+  - packages.yaml
+  - git.yaml
 
 - name: create /var/log/ansible
   file:
@@ -27,80 +9,7 @@
     state: directory
     owner: "{{ git_username }}"
     group: git
-    mode: 0755
-
-- name: create git user
-  user:
-    name: "{{ git_username }}"
-    shell: /usr/bin/git-shell
-    home: "{{ git_homedir }}"
-
-- name: create git-shell-commands
-  file:
-    path: "{{ git_homedir }}/git-shell-commands"
-    state: directory
-    owner: "{{ git_username }}"
-    group: git
-    mode: 0700
-
-- name: create git-shell no-interactive-login
-  copy:
-    src: "no-interactive-login"
-    dest: "{{ git_homedir }}/git-shell-commands/no-interactive-login"
-    owner: "{{ git_username }}"
-    group: git
-    mode: 0700
-
-- name: create git-shell ansible-hook
-  template:
-    src: ansible-hook.j2
-    dest: "{{ git_homedir }}/git-shell-commands/ansible-hook"
-    owner: "{{ git_username }}"
-    group: git
-    mode: 0700
-
-- name: deploy key to git user
-  authorized_key:
-    user: "{{ git_username }}"
-    state: present
-    key: "https://github.com/{{ github_username }}.keys"
-
-- name: create git repo
-  command: "git init {{ git_homedir }}/{{ git_repo_name }}"
-  args:
-    creates: "{{ git_homedir }}/{{ git_repo_name }}/.git/HEAD"
-  become: yes
-  become_user: "{{ git_username }}"
-
-- name: create run dir
-  file:
-    path: "{{ git_repo_target }}"
-    state: directory
-    owner: "{{ git_username }}"
-    group: "{{ git_username }}"
-    mode: 0755
-
-# ignore_errors required because git errors when repo is empty
-- name: clone git repo to run dir
-  git:
-    repo: "{{ git_homedir }}/{{ git_repo_name }}.git"
-    dest: "{{ git_repo_target }}"
-    update: no
-  ignore_errors: true
-  become: yes
-  become_user: "{{ git_username }}"
-
-- name: deploy post-update-hooks script
-  template:
-    src: "post-update-hooks.j2"
-    dest: "{{ git_homedir }}/{{ git_repo_name }}.post-update-hooks.sh"
-    mode: 0755
-
-- name: post-update git hook config
-  template:
-    src: "post-update.j2"
-    dest: "{{ git_homedir }}/{{ git_repo_name }}.git/hooks/post-update"
-    mode: 0755
+    mode: 0756
 
 - name: create roles dir
   file:
