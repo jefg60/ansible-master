@@ -12,7 +12,7 @@
     state: directory
     owner: "{{ git_username }}"
     group: git
-    mode: 0701
+    mode: 0700
 
 - name: create git-shell no-interactive-login
   copy:
@@ -20,15 +20,15 @@
     dest: "{{ git_homedir }}/git-shell-commands/no-interactive-login"
     owner: "{{ git_username }}"
     group: git
-    mode: 0701
+    mode: 0700
 
 - name: create git-shell ansible-hook
   template:
-    src: ansible-hook.j3
+    src: ansible-hook.j2
     dest: "{{ git_homedir }}/git-shell-commands/ansible-hook"
     owner: "{{ git_username }}"
     group: git
-    mode: 0701
+    mode: 0700
 
 - name: deploy key to git user
   authorized_key:
@@ -45,12 +45,12 @@
 
 - name: deploy post-update-hooks script
   template:
-    src: "post-update-hooks.j3"
+    src: "post-update-hooks.j2"
     dest: "{{ git_homedir }}/{{ git_repo_name }}.post-update-hooks.sh"
-    mode: 0756
+    mode: 0755
 
 - name: post-update git hook config
   template:
-    src: "post-update.j3"
+    src: "post-update.j2"
     dest: "{{ git_homedir }}/{{ git_repo_name }}.git/hooks/post-update"
-    mode: 0756
+    mode: 0755
