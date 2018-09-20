@@ -11,7 +11,7 @@
   file:
     path: /var/log/ansible
     state: directory
-    owner: "{{ git_username }}"
+    owner: "{{ ansible_orchestration_user }}"
     group: git
     mode: 0755
 
