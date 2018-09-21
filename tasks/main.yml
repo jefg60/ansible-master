@@ -3,6 +3,7 @@
   include: "{{ include_item }}"
   with_items:
     - packages.yaml
+    - ansible-user.yaml
     - git.yaml
   loop_control:
     loop_var: include_item
@@ -22,31 +23,3 @@
     state: directory
     mode: 0755
 
-- name: ansible user
-  user:
-    name: ansible
-    append: yes
-    state: present
-    generate_ssh_key: yes
-    groups: sudo
-    ssh_key_bits: 2048
-    ssh_key_comment: "ansible orchestration user"
-    ssh_key_passphrase: "{{ master_ansible_user_ssh_phrase }}"
-    update_password: always
-  register: master_ansible_user
-
-- debug:
-    var: "master_ansible_user.ssh_public_key"
-    verbosity: 1
-
-- name: register pubkey for ansible orchestration
-  set_fact:
-    orchestrationkey: "{{ master_ansible_user.ssh_public_key }}"
-
-- name: create sudoers file for ansible user
-  template:
-    src: ansible.sudoers
-    dest: "/etc/sudoers.d/{{ ansible_orchestration_user }}"
-    owner: root
-    group: root
-    mode: 0600
