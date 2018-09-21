@@ -50,6 +50,7 @@
     owner: "{{ git_username }}"
     group: "{{ ansible_orchestration_user }}"
     mode: 0775
+    recurse: yes
 
 # ignore_errors required because git errors when repo is empty
 - name: clone git repo to run dir
