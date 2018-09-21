@@ -18,7 +18,7 @@
 - name: create roles dir
   file:
     name: /etc/ansible/roles
-    owner: root
+    owner: "{{ ansible_orchestration_user }}"
     state: directory
     mode: 0755
 
