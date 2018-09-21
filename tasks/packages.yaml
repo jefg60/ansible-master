@@ -13,6 +13,7 @@
   - ansible-lint
   - python-apt
   - python-pip
+  - python3-pip
 
 - name: install python pip packages
   pip:
@@ -21,3 +22,9 @@
     - pywinrm
     - dnspython
 
+- name: install pip3 packages
+  pip:
+    name: "{{ item }}"
+    executable: pip3
+  with_items:
+    - ssh-agent-setup
