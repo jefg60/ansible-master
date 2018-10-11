@@ -1,4 +1,4 @@
-Role Name
+Ansible Master
 =========
 
 Sets up an ansible master server (should be the only server in a group called ansible-master), creates a git repo for your code on it. Adds git post-update hooks so that this repo is checked out in a "run directory" for running ansible playbooks from.
