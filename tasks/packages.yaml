@@ -24,6 +24,7 @@
   - ansible-lint
   - python-apt
   - python-pip
+  - python-watchdog
   - python3-pip
   - vagrant
 
