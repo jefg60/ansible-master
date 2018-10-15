@@ -22,6 +22,7 @@
     - pywinrm
     - dnspython
 
+# may or may not be required, depends if my ansible-runner.py is used
 - name: install pip3 packages
   pip:
     name: "{{ item }}"
