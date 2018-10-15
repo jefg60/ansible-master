@@ -1,4 +1,15 @@
 ---
+- name: add vagrant repo
+  apt_repository:
+    repo: deb https://vagrant-deb.linestarve.com/ any main
+    state: present
+
+- name: add vagrant repo key
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: AD319E0F7CFFA38B4D9F6E55CE3F3DE92099F7A4
+    state: present
+
 - name: install packages
   apt:
     name: "{{ item }}"
@@ -14,6 +25,7 @@
   - python-apt
   - python-pip
   - python3-pip
+  - vagrant
 
 - name: install python pip packages
   pip:
