@@ -9,6 +9,7 @@
   apt_repository:
     repo: deb https://vagrant-deb.linestarve.com/ any main
     state: present
+    update_cache: no
 
 - name: install packages
   apt:
