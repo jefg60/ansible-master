@@ -3,7 +3,8 @@
 - name: create git user
   user:
     name: "{{ git_username }}"
-    shell: /usr/bin/git-shell
+    #shell: /usr/bin/git-shell
+    shell: /bin/bash
     home: "{{ git_homedir }}"
 
 - name: create git-shell-commands
