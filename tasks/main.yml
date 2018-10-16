@@ -23,3 +23,10 @@
     state: directory
     mode: 0755
 
+- name: deploy ansible-runner.py
+  copy:
+    src: ansible-runner.py
+    dest: /usr/local/bin/
+    mode: 0755
+    owner: root
+    group: root
