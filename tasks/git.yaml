@@ -73,3 +73,11 @@
     src: "post-update.j2"
     dest: "{{ git_homedir }}/{{ git_repo_name }}.git/hooks/post-update"
     mode: 0755
+
+- name: git_log_dir creation
+  file:
+    path: "{{ git_log_dir }}"
+    state: directory
+    owner: "{{ git_username }}"
+    mode: 0775
+    recurse: yes
