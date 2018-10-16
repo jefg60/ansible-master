@@ -5,4 +5,4 @@ git fetch
 git merge origin/{{ git_branch }}
 git checkout {{ git_branch }}
 cd {{ git_repo_status_dir }} || exit
-touch .git_repo_updated
+touch {{ git_repo_name }}_updated
