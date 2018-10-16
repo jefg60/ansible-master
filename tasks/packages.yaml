@@ -25,7 +25,6 @@
   - ansible-lint
   - python-apt
   - python-pip
-  - python-watchdog
   - python3-pip
   - vagrant
 
@@ -43,3 +42,4 @@
     executable: pip3
   with_items:
     - ssh-agent-setup
+    - watchdog3
