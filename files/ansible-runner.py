@@ -93,7 +93,7 @@ class Handler(FileSystemEventHandler):
             logger.debug ("playbook: %s" % args.playbook)
             logger.debug ("interval: %s"  %  str(args.interval))
             logger.debug ("Attempting to run ansible-playbook -i %s %s", args.inventory, args.playbook)
-            ret = subprocess.call(['ansible-playbook', '-i', args.inventory, args.playbook])
+            ret = subprocess.call(['ansible-playbook', '-i', args.inventory, '--vault-password-file', '~/.vaultpw', args.playbook])
             if ret == 0:
                 logger.info ("ansible-playbook return code: %s", ret)
             else:
