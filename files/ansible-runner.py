@@ -16,6 +16,7 @@ parser.add_argument("--interval", help="interval in seconds at which to check fo
 parser.add_argument("--ssh_id", help="ssh id file to use", default=".ssh/id_rsa")
 parser.add_argument("--logdir", help="log dir to watch", default="/srv/git/log")
 parser.add_argument("--debug", help="print debugging info to logs")
+parser.add_argument("--vault_password_file", help="vault password file", default="~/.vaultpw")
 args = parser.parse_args()
 
 logger = logging.getLogger('ansible_runner')
@@ -93,7 +94,7 @@ class Handler(FileSystemEventHandler):
             logger.debug ("playbook: %s" % args.playbook)
             logger.debug ("interval: %s"  %  str(args.interval))
             logger.debug ("Attempting to run ansible-playbook -i %s %s", args.inventory, args.playbook)
-            ret = subprocess.call(['ansible-playbook', '-i', args.inventory, '--vault-password-file', '~/.vaultpw', args.playbook])
+            ret = subprocess.call(['ansible-playbook', '-i', args.inventory, '--vault-password-file', args.vault_password_file, args.playbook])
             if ret == 0:
                 logger.info ("ansible-playbook return code: %s", ret)
             else:
