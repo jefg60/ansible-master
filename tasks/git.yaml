@@ -22,14 +22,6 @@
     group: git
     mode: 0700
 
-- name: create git-shell ansible-hook
-  template:
-    src: ansible-hook.j2
-    dest: "{{ git_homedir }}/git-shell-commands/ansible-hook"
-    owner: "{{ git_username }}"
-    group: git
-    mode: 0700
-
 - name: deploy key to git user
   authorized_key:
     user: "{{ git_username }}"
