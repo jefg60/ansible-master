@@ -42,7 +42,7 @@
     owner: "{{ git_username }}"
     group: "{{ ansible_orchestration_user }}"
     mode: u=rwX,g=rwX,o=rX
-    recurse: yes
+    recurse: no
 
 # ignore_errors required because git errors when repo is empty
 - name: clone git repo to run dir
