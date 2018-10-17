@@ -49,10 +49,7 @@
     state: directory
     owner: "{{ git_username }}"
     group: "{{ ansible_orchestration_user }}"
-    mode:
-      u: rwX
-      g: rwX
-      o: rX
+    mode: u=rwX,g=rwX,o=rX
     recurse: yes
 
 # ignore_errors required because git errors when repo is empty
@@ -82,8 +79,5 @@
     path: "{{ git_log_dir }}"
     state: directory
     owner: "{{ git_username }}"
-    mode:
-      u: rwX
-      g: rwX
-      o: rX
+    mode: u=rwX,g=rwX,o=rX
     recurse: yes
