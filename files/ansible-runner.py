@@ -54,7 +54,7 @@ except Exception:
 
 logger.info ("SSH key loaded")
 
-# class to watch /srv/git/ for changes and run ansible playbook when changes occur
+# class to watch args.logdir for changes and run ansible playbook when changes occur
 class Watcher:
     DIRECTORY_TO_WATCH = args.logdir
 
