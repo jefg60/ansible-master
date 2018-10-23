@@ -10,8 +10,8 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--inventory", help="ansible inventory to use", required=True)
-parser.add_argument("--playbook", help="ansible playbook to run", required=True)
+parser.add_argument("-i","--inventory", help="ansible inventory to use", required=True)
+parser.add_argument("-p","--playbook", help="ansible playbook to run", required=True)
 parser.add_argument("--interval", help="interval in seconds at which to check for new code", default=15)
 parser.add_argument("--ssh_id", help="ssh id file to use", default=".ssh/id_rsa")
 parser.add_argument("--logdir", help="log dir to watch", default="/srv/git/log")
