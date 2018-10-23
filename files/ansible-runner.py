@@ -51,8 +51,8 @@ try:
 except Exception:
     logger.exception("Exception adding ssh key, shutting down")
     exit()
-
-logger.info ("SSH key loaded")
+else:
+    logger.info ("SSH key loaded")
 
 # class to watch args.logdir for changes and run ansible playbook when changes occur
 class Watcher:
