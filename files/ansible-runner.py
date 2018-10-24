@@ -41,7 +41,7 @@ logger.info ("Starting...")
 logger.info ("ssh id: " + args.ssh_id)
 logger.info ("logdir: " + args.logdir)
 logger.info ("inventory: " + args.inventory)
-logger.info ("playbooks: " + args.playbook)
+logger.info ("playbooks: " + " ".join(args.playbook))
 logger.info ("interval: "  +  str(args.interval))
 
 logger.info ("Loading ssh key...")
