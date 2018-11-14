@@ -36,7 +36,7 @@
       - python-pip
       - python3-pip
       - vagrant
-    state: latest
+    state: present
     update_cache: yes
 
 - name: install python pip packages
