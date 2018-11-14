@@ -19,7 +19,7 @@
 
 - name: add ansible repo
   apt_repository:
-    repo: http://ppa.launchpad.net/ansible/ansible/ubuntu bionic man
+    repo: deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic man
     state: present
     update_cache: no
 
