@@ -11,6 +11,18 @@
     state: present
     update_cache: no
 
+- name: add ansible repo key
+  apt-key:
+    keyserver: keyserver.ubuntu.com
+    id: 93C4A3FD7BB9C367
+    state: present
+
+- name: add ansible repo
+  apt_repository:
+    repo: http://ppa.launchpad.net/ansible/ansible/ubuntu bionic man
+    state: present
+    update_cache: no
+
 - name: install packages
   apt:
     name: "{{ item }}"
