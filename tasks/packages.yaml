@@ -25,33 +25,30 @@
 
 - name: install packages
   apt:
-    name: "{{ item }}"
+    name:
+      - openssh-server
+      - git
+      - 'ansible={{ ansible_install_version }}'
+      - python-dns
+      - python-txwinrm
+      - ansible-lint
+      - python-apt
+      - python-pip
+      - python3-pip
+      - vagrant
     state: latest
     update_cache: yes
-  with_items:
-  - openssh-server
-  - git
-  - ansible
-  - python-dns
-  - python-txwinrm
-  - ansible-lint
-  - python-apt
-  - python-pip
-  - python3-pip
-  - vagrant
 
 - name: install python pip packages
   pip:
-    name: "{{ item }}"
-  with_items:
-    - pywinrm
-    - dnspython
+    name:
+      - pywinrm
+      - dnspython
 
 # required for ansible-runner.py
 - name: install pip3 packages
   pip:
-    name: "{{ item }}"
+    name:
+      - ssh-agent-setup
+      - watchdog3
     executable: pip3
-  with_items:
-    - ssh-agent-setup
-    - watchdog3
