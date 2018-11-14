@@ -12,7 +12,7 @@
     update_cache: no
 
 - name: add ansible repo key
-  apt-key:
+  apt_key:
     keyserver: keyserver.ubuntu.com
     id: 93C4A3FD7BB9C367
     state: present
