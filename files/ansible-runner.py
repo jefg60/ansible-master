@@ -100,6 +100,7 @@ class Handler(FileSystemEventHandler):
                     logger.info ("ansible-playbook return code: %s", ret)
                 else:
                     logger.error ("ansible-playbook return code: %s", ret)
+                    break
 
 
 if __name__ == '__main__':
