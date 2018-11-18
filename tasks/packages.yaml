@@ -28,7 +28,6 @@
     name:
       - openssh-server
       - git
-      - 'ansible={{ ansible_install_version }}'
       - python-dns
       - python-txwinrm
       - ansible-lint
@@ -38,6 +37,11 @@
       - vagrant
     state: present
     update_cache: yes
+
+- name: install ansible
+  apt:
+    name: 'ansible={{ ansible_install_version }}'
+    state: latest
 
 - name: install python pip packages
   pip:
