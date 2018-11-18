@@ -43,7 +43,7 @@
   apt:
     name: ansible
     state: latest
-  when: upgrade_ansible
+  when: upgrade_ansible is defined and upgrade_ansible
 
 - name: install python pip packages
   pip:
