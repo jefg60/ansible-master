@@ -26,6 +26,7 @@
 - name: install packages
   apt:
     name:
+      - ansible
       - openssh-server
       - git
       - python-dns
@@ -38,10 +39,11 @@
     state: present
     update_cache: yes
 
-- name: install ansible
+- name: install LATEST ansible
   apt:
-    name: 'ansible={{ ansible_install_version }}'
+    name: ansible
     state: latest
+  when: upgrade_ansible
 
 - name: install python pip packages
   pip:
