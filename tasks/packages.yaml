@@ -26,7 +26,7 @@
 - name: install packages
   apt:
     name:
-      - "ansible={{ ansible_version }}"
+      - "ansible={{ ansible_install_version }}"
       - openssh-server
       - git
       - python-dns
