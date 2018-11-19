@@ -11,4 +11,4 @@ git_ansible_hook: "echo This command does nothing by default"
 
 master_ansible_user_ssh_phrase: ""
 ansible_orchestration_user: "ansible"
-
+ansible_version: "2.5.1+dfsg-1"
