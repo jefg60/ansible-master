@@ -1,2 +1,2 @@
 #!/bin/bash
-screen -S ansible-runner -d -m /usr/local/bin/ansible-runner.py --vault_password_file={{ ansible_runner_vaultpw_file }}  --inventory {{ git_repo_target }}/{{ ansible_runner_inventory }}  --playbooks {{ ansible_runner_playbooks }}
+screen -S ansible-runner -d -m /usr/local/bin/ansible-runner.py --inventory {{ git_repo_target }}/{{ ansible_runner_inventory }}  --playbooks {{ ansible_runner_playbooks }}
