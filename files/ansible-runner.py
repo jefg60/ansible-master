@@ -17,7 +17,7 @@ parser.add_argument("--interval", help="interval in seconds at which to check fo
 parser.add_argument("--ssh_id", help="ssh id file to use", default=home + "/.ssh/id_rsa")
 parser.add_argument("--logdir", help="log dir to watch", default="/srv/git/log")
 parser.add_argument("--debug", help="print debugging info to logs")
-parser.add_argument("--vault_password_file", help="vault password file", default="~/.vaultpw")
+parser.add_argument("--vault_password_file", help="vault password file", default=home + "/.vaultpw")
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument("-p","--playbook", action='append', help="ansible playbook to run, repeat for multiple plays")
 group.add_argument("--playbooks", nargs='*', help="space separated list of ansible playbooks to run. Overrides --playbook")
