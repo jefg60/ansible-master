@@ -48,6 +48,7 @@
   become: true
   become_user: "{{ ansible_orchestration_user }}"
   ignore_errors: yes
+  changed_when: false
 
 - name: start a new ansible-runner screen
   command: /usr/local/bin/ansible-runner-screen.sh
