@@ -31,3 +31,26 @@
     owner: root
     group: root
   tags: runner
+
+- name: deploy ansible-runner-screen.sh
+  template:
+    src: ansible-runner-screen.sh.j2
+    dest: /usr/local/bin/
+    mode: 0755
+    owner: root
+    group: root
+  tags: runner
+
+- name: check for existing screens
+  command: screen -ls ansible-runner
+  register: runningscreens
+  tags: runner
+  become: true
+  become_user: "{{ ansible_orchestration_user }}"
+  ignore_errors: yes
+
+- name: start a new ansible-runner screen
+  command: /usr/local/bin/ansible-runner-screen.sh
+  when: runningscreens.failed
+  become: true
+  become_user: "{{ ansible_orchestration_user }}"
