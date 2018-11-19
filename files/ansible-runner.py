@@ -100,24 +100,19 @@ class Handler(FileSystemEventHandler):
             logger.debug ("inventory: %s" % args.inventory)
             logger.debug ("playbook: %s" % args.playbook)
             logger.debug ("interval: %s"  %  str(args.interval))
+            def runplaybooks(listofplaybooks):
+                for p in listofplaybooks:
+                    logger.debug ("Attempting to run ansible-playbook -i %s %s", args.inventory, p)
+                    ret = subprocess.call(['ansible-playbook', '-i', args.inventory, '--vault-password-file', args.vault_password_file, p])
+                    if ret == 0:
+                        logger.info ("ansible-playbook return code: %s", ret)
+                    else:
+                        logger.error ("ansible-playbook return code: %s", ret)
+                        break
             if args.playbook is not None:
-                for p in args.playbook:
-                    logger.debug ("Attempting to run ansible-playbook -i %s %s", args.inventory, p)
-                    ret = subprocess.call(['ansible-playbook', '-i', args.inventory, '--vault-password-file', args.vault_password_file, p])
-                    if ret == 0:
-                        logger.info ("ansible-playbook return code: %s", ret)
-                    else:
-                        logger.error ("ansible-playbook return code: %s", ret)
-                        break
+                runplaybooks(args.playbook)
             if args.playbooks is not None:
-                for p in args.playbooks:
-                    logger.debug ("Attempting to run ansible-playbook -i %s %s", args.inventory, p)
-                    ret = subprocess.call(['ansible-playbook', '-i', args.inventory, '--vault-password-file', args.vault_password_file, p])
-                    if ret == 0:
-                        logger.info ("ansible-playbook return code: %s", ret)
-                    else:
-                        logger.error ("ansible-playbook return code: %s", ret)
-                        break
+                runplaybooks(args.playbooks)
 
 
 if __name__ == '__main__':
