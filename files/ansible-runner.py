@@ -8,15 +8,19 @@ import time
 import datetime
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from os.path import expanduser
+home = expanduser("~")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-i","--inventory", help="ansible inventory to use", required=True)
-parser.add_argument("-p","--playbook", action='append', help="ansible playbook to run, repeat for multiple plays", required=True)
 parser.add_argument("--interval", help="interval in seconds at which to check for new code", default=15)
-parser.add_argument("--ssh_id", help="ssh id file to use", default=".ssh/id_rsa")
+parser.add_argument("--ssh_id", help="ssh id file to use", default=home + "/.ssh/id_rsa")
 parser.add_argument("--logdir", help="log dir to watch", default="/srv/git/log")
 parser.add_argument("--debug", help="print debugging info to logs")
 parser.add_argument("--vault_password_file", help="vault password file", default="~/.vaultpw")
+group = parser.add_mutually_exclusive_group(required=True)
+group.add_argument("-p","--playbook", action='append', help="ansible playbook to run, repeat for multiple plays")
+group.add_argument("--playbooks", nargs='*', help="space separated list of ansible playbooks to run. Overrides --playbook")
 args = parser.parse_args()
 
 logger = logging.getLogger('ansible_runner')
@@ -41,7 +45,10 @@ logger.info ("Starting...")
 logger.info ("ssh id: " + args.ssh_id)
 logger.info ("logdir: " + args.logdir)
 logger.info ("inventory: " + args.inventory)
-logger.info ("playbooks: " + " ".join(args.playbook))
+if args.playbook is not None:
+    logger.info ("playbooks: " + " ".join(args.playbook))
+if args.playbooks is not None:
+    logger.info ("playbooks: " + " ".join(args.playbooks))
 logger.info ("interval: "  +  str(args.interval))
 
 logger.info ("Loading ssh key...")
@@ -93,14 +100,24 @@ class Handler(FileSystemEventHandler):
             logger.debug ("inventory: %s" % args.inventory)
             logger.debug ("playbook: %s" % args.playbook)
             logger.debug ("interval: %s"  %  str(args.interval))
-            for p in args.playbook:
-                logger.debug ("Attempting to run ansible-playbook -i %s %s", args.inventory, p)
-                ret = subprocess.call(['ansible-playbook', '-i', args.inventory, '--vault-password-file', args.vault_password_file, p])
-                if ret == 0:
-                    logger.info ("ansible-playbook return code: %s", ret)
-                else:
-                    logger.error ("ansible-playbook return code: %s", ret)
-                    break
+            if args.playbook is not None:
+                for p in args.playbook:
+                    logger.debug ("Attempting to run ansible-playbook -i %s %s", args.inventory, p)
+                    ret = subprocess.call(['ansible-playbook', '-i', args.inventory, '--vault-password-file', args.vault_password_file, p])
+                    if ret == 0:
+                        logger.info ("ansible-playbook return code: %s", ret)
+                    else:
+                        logger.error ("ansible-playbook return code: %s", ret)
+                        break
+            if args.playbooks is not None:
+                for p in args.playbooks:
+                    logger.debug ("Attempting to run ansible-playbook -i %s %s", args.inventory, p)
+                    ret = subprocess.call(['ansible-playbook', '-i', args.inventory, '--vault-password-file', args.vault_password_file, p])
+                    if ret == 0:
+                        logger.info ("ansible-playbook return code: %s", ret)
+                    else:
+                        logger.error ("ansible-playbook return code: %s", ret)
+                        break
 
 
 if __name__ == '__main__':
