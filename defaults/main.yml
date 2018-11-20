@@ -15,3 +15,4 @@ ansible_install_version: "2.5.1+dfsg-1"
 
 ansible_runner_inventory: "{{git_branch}}-inventory"
 ansible_runner_vaultpw_file: "~/.vaultpw"
+start_ansible_runner_in_screen: false

@@ -55,3 +55,4 @@
   when: runningscreens.failed
   become: true
   become_user: "{{ ansible_orchestration_user }}"
+  when: start_ansible_runner_in_screen
