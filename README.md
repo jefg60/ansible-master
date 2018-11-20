@@ -7,9 +7,20 @@ In my workflow I use one of these per environment (dev/prod/staging etc) with a 
 
 The end result should be that when you push changes to a branch of your configmanagement git repo, they are synced to the run directory on this master ready to be deployed by whatever means you deem appropriate.
 
-If desired, a push to the repo can also trigger a playbook run, which is useful in test environments, for example. To do this, edit the var git_ansible_hook to make the git hook do whatever you like after it has caused changes to propagate to the run dir. by default it just echoes that it does nothing. Remember that this git hook runs as the limited git user which has the git-shell!
+A python daemon is included that runs in a screen session polling the git log directory for any changes. When the git repo is updated, a line will be added to the log, and the ansible-runner.py daemon will detect this and trigger an ansible run. Screen is used because ansible-runner.py will prompt for a passphrase if you've set one on the ssh key, so screen is the current workaround to enable you to attach and type this. Note that if a screen called ansible-runner already exists, no new screen sessions are started. This is to prevent ansible killing itself. This screen daemon situation and the self updating aspect are still a work in progress, obviously!
 
-This enables all ansible playbooks to be run from a centrally controlled server whenever changes are pushed to the relevant branch.
+The daemon accepts a list of playbooks to run in order and will stop processing if one fails.
+
+Example vars for this:
+
+```
+start_ansible_runner_in_screen: true
+ansible_runner_playbooks: "ansible/ansible-galaxy.yaml ansible/ansible-master.yaml ansible/deploy.yaml"
+```
+
+Using the above configuration, an ansible-galaxy.yaml play is run to fetch roles from ansible-galaxy as defined in a requirements file, then this role is (re)deployed, and if those two both succeed, a playbook called deploy.yaml runs (in my case, deploy.yaml is a list of import_playbook statements that deploys my entire environment).
+
+The end result is that all ansible playbooks are run from a centrally controlled server whenever changes are pushed to the relevant branch.
 
 This prevents any issues with people running ansible from different hosts, or using different ansible vesions. It also creates a possibility to cron ansible playbook runs.
 
@@ -24,15 +35,22 @@ Role Variables
 
 You must set your github username, for fetching your ssh public key. The variable is called github_username.
 
-git_repo_target is the directory where the git repo will be automatically checked out to for ansible to run from
+git_repo_target is the directory where the git repo will be automatically checked out to for ansible to run from.
 
 defaults:
 
+```yaml
 github_username: null
 git_username: git
 git_homedir: /srv/git
 git_repo_name: configmanagement
 git_repo_target: "/srv/{{ git_repo_name }}"
+git_branch: "master"
+
+ansible_runner_inventory: "{{git_branch}}-inventory"
+ansible_runner_vaultpw_file: "~/.vaultpw"
+start_ansible_runner_in_screen: false
+```
 
 Dependencies
 ------------
