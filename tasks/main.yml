@@ -52,7 +52,6 @@
 
 - name: start a new ansible-runner screen
   command: /usr/local/bin/ansible-runner-screen.sh
-  when: runningscreens.failed
+  when: runningscreens.failed and start_ansible_runner_in_screen
   become: true
   become_user: "{{ ansible_orchestration_user }}"
-  when: start_ansible_runner_in_screen
