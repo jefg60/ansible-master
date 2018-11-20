@@ -1,0 +1,44 @@
+---
+# First, basic stuff so that we fetch the required roles, including ansible-master role,
+# before trying to run any roles.
+- hosts: ansible-master
+  tasks:
+
+  - name: create ansible user
+    user:
+      name: ansible
+    become: true
+
+  - name: create roles dir
+    file:
+      name: /etc/ansible/roles
+      owner: ansible
+      state: directory
+      mode: 0755
+    become: true
+
+  - name: deploy requirements.yaml
+    copy:
+      src: requirements.yaml
+      dest: /srv/ansible/
+      mode: 0444
+      owner: ansible
+      group: ansible
+    become: true
+
+  - name: install ansible
+    apt:
+      name: ansible
+      update_cache: yes
+    become: true
+
+  - name: fetch galaxy roles
+    command: ansible-galaxy install -r /srv/ansible/requirements.yaml -p /etc/ansible/roles --force
+    become: true
+    become_user: ansible
+    run_once: true
+    changed_when: false
+
+  - name: print message
+    debug:
+      msg: "END OF ansible-galaxy.yaml file"

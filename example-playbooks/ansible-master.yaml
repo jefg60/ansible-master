@@ -1,0 +1,16 @@
+---
+- hosts: ansible-master
+  roles:
+    - ansible-master
+  become: yes
+  tags: ansible-master
+
+- hosts: linux
+  roles:
+    - ansible-orchestration-linux
+  become: yes
+  tasks:
+    - name: print message
+      debug:
+        msg: "END OF ansible-master.yaml"
+      run_once: true
