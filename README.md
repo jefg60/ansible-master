@@ -22,7 +22,7 @@ Using the above configuration, an ansible-galaxy.yaml play is run to fetch roles
 
 The end result is that all ansible playbooks are run from a centrally controlled server whenever changes are pushed to the relevant branch.
 
-This prevents any issues with people running ansible from different hosts, or using different ansible vesions. It also creates a possibility to cron ansible playbook runs.
+This prevents any issues with people running ansible from different hosts, or using different ansible vesions. It also creates a possibility to cron ansible playbook runs. If you make it run all of your playbooks with each push, then it also prevents configuration drift. I recommend including a playbook that runs tests against your environment, if you do this.
 
 Requirements
 ------------
