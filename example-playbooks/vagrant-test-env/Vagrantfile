@@ -62,7 +62,7 @@ Vagrant.configure(2) do |config|
 	# ansible playbook run ansible-master.yaml (inside vm)
         machine.vm.provision "ansible_local" do |ansible|
 	  ansible.limit = "all"
-	  ansible.playbook = "/etc/ansible/roles/example-playbooks/ansible-master.yaml"
+	  ansible.playbook = "/etc/ansible/roles/ansible-master/example-playbooks/ansible-master.yaml"
 	  ansible.raw_arguments = ['-v']
 	  ansible.inventory_path = "/vagrant/inventory-internal"
           # change ansible.tags for faster testing

@@ -1,7 +1,7 @@
 ---
 
 - src: "https://github.com/jefg60/ansible-master"
-  version: master
+  version: staging
 
 - src: "https://github.com/jefg60/ansible-orchestration-linux"
   version: master
