@@ -1,0 +1,6 @@
+---
+- hosts: ansible-master
+  roles:
+    - ansible-master
+  become: yes
+  tags: ansible-master
