@@ -20,7 +20,7 @@
   - name: deploy requirements.yaml
     copy:
       src: requirements.yaml
-      dest: /srv/ansible/
+      dest: /home/ansible/
       mode: 0444
       owner: ansible
       group: ansible
@@ -33,7 +33,7 @@
     become: true
 
   - name: fetch galaxy roles
-    command: ansible-galaxy install -r /srv/ansible/requirements.yaml -p /etc/ansible/roles --force
+    command: ansible-galaxy install -r /home/ansible/requirements.yaml -p /etc/ansible/roles --force
     become: true
     become_user: ansible
     run_once: true
