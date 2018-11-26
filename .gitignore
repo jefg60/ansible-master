@@ -2,3 +2,4 @@
 *.log
 *.retry
 vagrant-test-env/tests/results/TAP
+vagrant-test-env/roles/ansible-orchestration-linux
