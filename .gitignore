@@ -1,3 +1,4 @@
 .vagrant
 *.log
 *.retry
+vagrant-test-env/results
