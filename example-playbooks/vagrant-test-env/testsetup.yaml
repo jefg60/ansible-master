@@ -1,0 +1,86 @@
+---
+- hosts: ansible-master
+  tasks:
+    - name: clone bats from github
+      git:
+        repo: https://github.com/sstephenson/bats.git
+        dest: /home/vagrant/bats
+
+    - name: install bats
+      shell: "./install.sh /usr/local"
+      args:
+        chdir: /home/vagrant/bats
+        creates: /usr/local/bin/bats
+      become: yes
+
+    - name: create testdata dir and results dir
+      file:
+        path: "{{ item }}"
+        state: directory
+      become: no
+      with_items:
+        - /home/vagrant/testdata
+        - /vagrant/tests/results
+
+    - name: create testdata file
+      copy:
+        content: "git test success"
+        dest: /home/vagrant/testdata/testfile
+      become: no
+
+    - name: copy deploy*.yaml to testdata dir
+      copy:
+        src: "{{ item }}"
+        dest: /home/vagrant/testdata/ansible/
+        mode: 0664
+      with_fileglob:
+        - deploy*.yaml
+
+    - name: generate a private key for vagrant user
+      user:
+        name: vagrant
+        generate_ssh_key: yes
+        append: yes
+      register: vagrant_user
+
+    - name: deploy vagrant user's public key to git user
+      authorized_key:
+        user: git
+        state: present
+        key: "{{ vagrant_user.ssh_public_key }}"
+      become: yes
+
+    - name: start ansible-runner in screen
+      shell: screen -S ansible-runner -d -m /usr/local/bin/ansible-runner.py -i /vagrant/inventory-internal -p /srv/configmanagement/ansible/deploy.yaml -p /srv/configmanagement/ansible/deploy2.yaml --vault_password_file /vagrant/.vaultpw
+      args:
+        chdir: /home/ansible/
+        creates: /run/screen/S-ansible/*.ansible-runner
+      become: yes
+      become_user: ansible
+      tags: runner
+      register: ansiblescreen
+
+    - name: wait 10 secs for ansible-runner to start up
+      pause:
+        seconds: 10
+      when: ansiblescreen is changed
+      tags: runner
+
+    - name: git test commands
+      shell: "git init &&
+              git config user.email 'vagrant@example.com' &&
+              git config user.name 'Vagrant User' &&
+              git add . &&
+              git commit -m 'test commit' &&
+              git remote add origin ssh://git@localhost:/srv/git/configmanagement &&
+              echo StrictHostKeyChecking no >>~/.ssh/config &&
+              git fetch &&
+              git push --set-upstream origin master"
+      args:
+        chdir: /home/vagrant/testdata
+        creates: /home/vagrant/testdata/.git
+      become: no
+
+    - name: wait 20 secs for git to push and ansible to be run
+      pause:
+        seconds: 20

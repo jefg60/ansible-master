@@ -1,0 +1,12 @@
+---
+- hosts: ansible-master
+  roles:
+    - ansible-master
+  become: yes
+
+- hosts: linux
+  roles:
+    - ansible-orchestration-linux
+  become: yes
+
+- import_playbook: testsetup.yaml

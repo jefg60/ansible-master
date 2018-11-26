@@ -1,0 +1,12 @@
+---
+- hosts: linux
+  tasks:
+    - name: simple debug message
+      debug:
+        msg: "deploy.yaml was called sucessfully"
+
+    - name: update /srv/success.txt
+      copy:
+        dest: /srv/success.txt
+        content: "{{ ansible_date_time.iso8601 }} deploy.yaml has been run sucessfully!"
+      become: yes

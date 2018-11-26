@@ -1,0 +1,101 @@
+# -*- mode: ruby -*-
+# vim: ft=ruby
+
+# ---- Configuration variables ----
+
+# Network configuration
+NETWORK ||= "192.168.51."
+NETMASK ||= "255.255.255.0"
+
+RAM ||= 512   # Default memory size in MB
+
+HOST12 ||= 'vagrant0'
+HOST13 ||= 'ansible-master-vagrant'
+
+# Default Virtualbox .box
+BOX ||= "ubuntu/bionic64"
+
+HOSTS ||= {
+   "#{HOST12}" => [RAM, BOX, 12 ],
+   "#{HOST13}" => [RAM, BOX, 13 ]
+}
+
+# ---- Vagrant configuration ----
+
+Vagrant.configure(2) do |config|
+  HOSTS.each do | (name, cfg) |
+    ram, box, number, ipaddr = cfg
+
+    config.vm.define name do |machine|
+      machine.vm.box = box
+      machine.vm.provider "virtualbox" do |vbox|
+        vbox.memory = ram
+      end #config.vm.define
+
+      machine.vm.hostname = name 
+      machine.vm.network "forwarded_port", guest: 22, host: "222#{number}", id: "ssh"
+      machine.vm.network "private_network", ip: NETWORK+"#{number}"
+      machine.ssh.port = "222#{number}"
+      machine.ssh.insert_key = false
+      # we need python before the vagrant can respond to ansible
+      machine.vm.provision "shell" do |s|
+	s.inline = "apt-get -y install python"
+      end
+      # generate hosts file
+      machine.vm.provision :shell, :path => "hostsfile.sh", :args => NETWORK
+
+      if number == 13 # only run the ansible play one time
+	
+	# ansible playbook run ansible-galaxy.yaml (outside vm)
+        machine.vm.provision "ansible" do |ansible|
+	  ansible.limit = "all"
+	  ansible.playbook = "../ansible-galaxy.yaml"
+	  ansible.raw_arguments = ['-v']
+	  ansible.inventory_path = "./inventory"
+          # change ansible.tags for faster testing
+          ansible.tags = 'all'
+          ansible.extra_vars = {
+            ansible_ssh_user: 'vagrant',
+          }
+        end # machine.vm.provision ansible run
+
+	# ansible playbook run ansible-master.yaml (inside vm)
+        machine.vm.provision "ansible_local" do |ansible|
+	  ansible.limit = "all"
+	  ansible.playbook = "/etc/ansible/roles/example-playbooks/ansible-master.yaml"
+	  ansible.raw_arguments = ['-v']
+	  ansible.inventory_path = "/vagrant/inventory-internal"
+          # change ansible.tags for faster testing
+          ansible.tags = 'all'
+          ansible.extra_vars = {
+            ansible_ssh_user: 'vagrant',
+          }
+        end # machine.vm.provision ansible run
+
+	# ansible playbook run testsetup.yaml (outside vm)
+        machine.vm.provision "ansible" do |ansible|
+	  ansible.playbook = "testsetup.yaml"
+	  ansible.raw_arguments = ['-v']
+	  ansible.inventory_path = "./inventory"
+          # change ansible.tags for faster testing
+          ansible.tags = 'all'
+          ansible.extra_vars = {
+            ansible_ssh_user: 'vagrant',
+          }
+	end # machine.vm.provision ansible testsetup.yaml
+
+	# smoke tests start here
+	machine.vm.provision "shell" do |s|
+	  s.inline = "/vagrant/run_all_tests.sh"
+	  # don't color output green because its confusing when its a fail
+	  s.keep_color = true
+	  s.privileged = false
+	end
+        
+      end # if number
+
+    end # config.vm.define
+
+  end # HOSTS-each
+
+end # Vagrant.configure
