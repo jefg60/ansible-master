@@ -50,10 +50,10 @@ Vagrant.configure(2) do |config|
 	galaxy_cmd = "ansible-galaxy install -p ./roles/ git+https://github.com/jefg60/ansible-orchestration-linux.git"
 	system( galaxy_cmd )
 
-	# run the example ansible-master play
+	# run the ansible-master playbook
         machine.vm.provision "ansible" do |ansible|
 	  ansible.limit = "all"
-	  ansible.playbook = "ansible-master.yaml"
+	  ansible.playbook = "ansible-master-test.yaml"
 	  ansible.raw_arguments = ['-v']
 	  ansible.inventory_path = "./inventory"
           # change ansible.tags for faster testing
@@ -62,18 +62,6 @@ Vagrant.configure(2) do |config|
             ansible_ssh_user: 'vagrant',
           }
         end # machine.vm.provision ansible run
-
-	# playbook to prepare for tests
-        machine.vm.provision "ansible" do |ansible|
-	  ansible.playbook = "testsetup.yaml"
-	  ansible.raw_arguments = ['-v']
-	  ansible.inventory_path = "./inventory"
-          # change ansible.tags for faster testing
-          ansible.tags = 'all'
-          ansible.extra_vars = {
-            ansible_ssh_user: 'vagrant',
-          }
-	end # machine.vm.provision ansible testsetup.yaml
 
 	# tests start here
 	machine.vm.provision "shell" do |s|
