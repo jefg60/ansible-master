@@ -1,0 +1,25 @@
+1..16
+ok 1 Check that 1 equals 1
+not ok 2 ansible ping
+# (in test file /vagrant/tests/ansible-orchestration.bats, line 5)
+#   `[[ "$status" -eq 0 ]]' failed
+ok 3 Test that we CANNOT ssh as ansible without the key
+ok 4 Ansible user can sudo with no password on master
+not ok 5 Ansible user can sudo with no password on clients
+# (in test file /vagrant/tests/ansible-orchestration.bats, line 20)
+#   `[[ "$status" -eq 0 ]]' failed
+ok 6 a logfile is created in /srv/git/log/ when a push happens
+not ok 7 first ansible-playbook runs when git repo is pushed
+# (in test file /vagrant/tests/ansible-orchestration.bats, line 28)
+#   `[[ -s /srv/success.txt ]]' failed
+not ok 8 second ansible-playbook runs when git repo is pushed
+# (in test file /vagrant/tests/ansible-orchestration.bats, line 32)
+#   `[[ -s /srv/success2.txt ]]' failed
+ok 9 deploy.yaml gets pushed correctly to /srv/configmanagement
+ok 10 ansible user is running a screen
+ok 11 ansible roles folder has been populated
+ok 12 The testfile has been pulled to the /srv/configmanagement dir
+ok 13 The testfile contains the success string
+ok 14 noninteractive shell message
+ok 15 try to run ansible as git and check it fails
+ok 16 vagrant version
