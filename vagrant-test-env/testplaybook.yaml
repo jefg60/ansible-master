@@ -1,11 +1,4 @@
 ---
-# Get orchestration role into vagrant roles dir
-- hosts: localhost
-  tasks:
-    - name: fetch galaxy role
-      command: "ansible-galaxy install -p ./roles/ --force https://github.com/jefg60/ansible-orchestration-linux"
-      changed_when: false
-
 - hosts: ansible-master
   roles:
     - ansible-master

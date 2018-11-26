@@ -42,6 +42,3 @@
     [[ "$status" -eq 0 ]]
 }
 
-@test "ansible roles folder has been populated" {
-    [[ -s /etc/ansible/roles/ansible-master/tasks/main.yml ]]
-}
