@@ -22,11 +22,12 @@
     group: git
     mode: 0700
 
-- name: deploy key to git user
+- name: deploy github key to git user if github_username is defined
   authorized_key:
     user: "{{ git_username }}"
     state: present
     key: "https://github.com/{{ github_username }}.keys"
+  when: github_username is defined
 
 - name: create git repo
   command: "git init --bare {{ git_homedir }}/{{ git_repo_name }}.git"
