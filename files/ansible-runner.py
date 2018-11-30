@@ -20,6 +20,7 @@ parser.add_argument("--ssh_id", help="ssh id file to use", default=home + "/.ssh
 parser.add_argument("--logdir", help="log dir to watch", default="/srv/git/log")
 parser.add_argument("--debug", help="print debugging info to logs")
 parser.add_argument("--vault_password_file", help="vault password file", default=home + "/.vaultpw")
+parser.add_argument("--syntax_check_dir", help="Optional directory to search for *.yml and *.yaml files to syntax check when changes are detected")
 
 playbookgroup = parser.add_mutually_exclusive_group(required=True)
 playbookgroup.add_argument("-p","--playbook", action='append', help="a single ansible playbook to run")
@@ -102,12 +103,6 @@ class Handler(FileSystemEventHandler):
 
         elif event.event_type == 'modified':
             # actions when a file is modified.
-            logger.info ("Received modified event - %s." % event.src_path)
-            logger.debug ("ssh id: %s" % args.ssh_id)
-            logger.debug ("logdir: %s" % args.logdir)
-            logger.debug ("inventory: %s" % args.inventory)
-            logger.debug ("playbook: %s" % args.playbook)
-            logger.debug ("interval: %s"  %  str(args.interval))
             def checkplaybooks(listofplaybooks,listofinventories):
                 badSyntaxPlaybooks = []
                 badSyntaxInventories = []
@@ -133,31 +128,43 @@ class Handler(FileSystemEventHandler):
                         logger.error ("ansible-playbook return code: %s", ret)
                         break
 
+            logger.info ("Received modified event - %s." % event.src_path)
+            logger.debug ("ssh id: %s" % args.ssh_id)
+            logger.debug ("logdir: %s" % args.logdir)
+            logger.debug ("interval: %s"  %  str(args.interval))
             # single playbook
             if args.playbook is not None:
+                logger.debug ("playbook: %s" % args.playbook)
                 # single inventory
                 if args.inventory is not None:
+                    logger.debug ("inventory: %s" % args.inventory)
                     checklist = checkplaybooks(args.playbook,args.inventory)
                     if not checklist:
                         runplaybooks(args.playbook,args.inventory)
                 # multi inventory single playbook
                 if args.inventories is not None:
+                    logger.debug ("inventories: %s" % args.inventories)
                     checklist = checkplaybooks(args.playbook,args.inventories)
                     if not checklist:
+                        logger.debug ("inventory: %s" % args.inventories[0])
                         # run with single playbook, first inventory
                         runplaybooks(args.playbook,args.inventories[0])
 
             # multiple playbooks
             if args.playbooks is not None:
+                logger.debug ("playbooks: %s" % args.playbooks)
                 # single inventory
                 if args.inventory is not None:
+                    logger.debug ("inventory: %s" % args.inventory)
                     checklist = checkplaybooks(args.playbooks,args.inventory)
                     if not checklist:
                         runplaybooks(args.playbooks,args.inventory)
                 # multi inventory multi playbook
                 if args.inventories is not None:
+                    logger.debug ("inventories: %s" % args.inventories)
                     checklist = checkplaybooks(args.playbooks,args.inventories)
                     if not checklist:
+                        logger.debug ("inventory: %s" % args.inventories[0])
                         # run with multi playbook, first inventory
                         runplaybooks(args.playbooks,args.inventories[0])
 
