@@ -92,11 +92,11 @@ class Handler(FileSystemEventHandler):
             return None
 
         elif event.event_type == 'created':
-            # Take any action here when a file is first created.
+            # actions when a file is first created.
             logger.info ("Received created event - %s." % event.src_path)
 
         elif event.event_type == 'modified':
-            # Taken any action here when a file is modified.
+            # actions when a file is modified.
             logger.info ("Received modified event - %s." % event.src_path)
             logger.debug ("ssh id: %s" % args.ssh_id)
             logger.debug ("logdir: %s" % args.logdir)
