@@ -11,7 +11,7 @@ from watchdog.events import FileSystemEventHandler
 from os.path import expanduser
 
 home = expanduser("~")
-__version__ = "0.1"
+__version__ = "0.2"
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-v", "-V", "--version", action="version", version=__version__)
@@ -103,6 +103,16 @@ class Handler(FileSystemEventHandler):
             logger.debug ("inventory: %s" % args.inventory)
             logger.debug ("playbook: %s" % args.playbook)
             logger.debug ("interval: %s"  %  str(args.interval))
+            def checkplaybooks(listofplaybooks):
+                for p in listofplaybooks:
+                    logger.debug ("Syntax Checking ansible playbook %s against inventory %s", p, args.inventory)
+                    ret = subprocess.call(['ansible-playbook', '-i', args.inventory, '--vault-password-file', args.vault_password_file, p, '--syntax-check'])
+                    if ret == 0:
+                        logger.info ("ansible-playbook syntax check return code: %s", ret)
+                    else:
+                        logger.error ("ansible-playbook syntax check return code: %s", ret)
+                        break
+
             def runplaybooks(listofplaybooks):
                 for p in listofplaybooks:
                     logger.debug ("Attempting to run ansible-playbook -i %s %s", args.inventory, p)
@@ -112,6 +122,7 @@ class Handler(FileSystemEventHandler):
                     else:
                         logger.error ("ansible-playbook return code: %s", ret)
                         break
+
             if args.playbook is not None:
                 runplaybooks(args.playbook)
             if args.playbooks is not None:
