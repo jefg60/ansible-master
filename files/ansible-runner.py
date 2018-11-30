@@ -34,8 +34,8 @@ inventorygroup.add_argument("--inventories", help="space separated list of ansib
 args = parser.parse_args()
 
 if args.syntax_check_dir is not None:
-    yamlfiles = glob.glob(syntax_check_dir + '/*.yaml')
-    ymlfiles = glob.glob(syntax_check_dir + '/*.yml')
+    yamlfiles = glob.glob(args.syntax_check_dir + '/*.yaml')
+    ymlfiles = glob.glob(args.syntax_check_dir + '/*.yml')
     yamlfiles = yamlfiles + ymlfiles
 
 if args.playbook is not None:
@@ -185,11 +185,15 @@ class Handler(FileSystemEventHandler):
             logger.debug ("ssh id: %s" % args.ssh_id)
             logger.debug ("logdir: %s" % args.logdir)
             logger.debug ("interval: %s"  %  str(args.interval))
+            logger.debug ("maininventory: $s" % maininventory)
+            logger.debug ("workinginventorylist: %s" % workinginventorylist)
 
             # Additional syntax check of everything if requested
-            if syntax_check_dir is not None:
+            if args.syntax_check_dir is not None:
                 problemlistoutput = checkeverything()
                 logger.info ("Playbooks that failed syntax check: " + " ".join(problemlistoutput))
+            else:
+                problemlistoutput = []
 
             # single playbook
             if args.playbook is not None and problemlistoutput is None:
