@@ -102,7 +102,6 @@ class Handler(FileSystemEventHandler):
             logger.info ("Received created event - %s." % event.src_path)
 
         elif event.event_type == 'modified':
-            # actions when a file is modified.
             def checkplaybooks(listofplaybooks,listofinventories):
                 badSyntaxPlaybooks = []
                 badSyntaxInventories = []
@@ -128,6 +127,7 @@ class Handler(FileSystemEventHandler):
                         logger.error ("ansible-playbook return code: %s", ret)
                         break
 
+            # actions when a file is modified.
             logger.info ("Received modified event - %s." % event.src_path)
             logger.debug ("ssh id: %s" % args.ssh_id)
             logger.debug ("logdir: %s" % args.logdir)
