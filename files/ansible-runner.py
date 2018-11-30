@@ -103,15 +103,20 @@ class Handler(FileSystemEventHandler):
             logger.debug ("inventory: %s" % args.inventory)
             logger.debug ("playbook: %s" % args.playbook)
             logger.debug ("interval: %s"  %  str(args.interval))
-            def checkplaybooks(listofplaybooks):
+            def checkplaybooks(listofplaybooks,listofinventories):
+                badSyntaxPlaybooks = []
+                badSyntaxInventories = []
                 for p in listofplaybooks:
-                    logger.debug ("Syntax Checking ansible playbook %s against inventory %s", p, args.inventory)
-                    ret = subprocess.call(['ansible-playbook', '-i', args.inventory, '--vault-password-file', args.vault_password_file, p, '--syntax-check'])
-                    if ret == 0:
-                        logger.info ("ansible-playbook syntax check return code: %s", ret)
-                    else:
-                        logger.error ("ansible-playbook syntax check return code: %s", ret)
-                        break
+                    for i in listofinventories:
+                        logger.debug ("Syntax Checking ansible playbook %s against inventory %s", p, i)
+                        ret = subprocess.call(['ansible-playbook', '-i', i, '--vault-password-file', args.vault_password_file, p, '--syntax-check'])
+                        if ret == 0:
+                            logger.info ("ansible-playbook syntax check return code: %s", ret)
+                        else:
+                            logger.error ("ansible-playbook syntax check return code: %s", ret)
+                            badSyntaxPlaybooks.append(p)
+                            badSyntaxInventories.append(i)
+                return badSyntaxPlaybooks + badSyntaxInventories
 
             def runplaybooks(listofplaybooks):
                 for p in listofplaybooks:
@@ -123,10 +128,31 @@ class Handler(FileSystemEventHandler):
                         logger.error ("ansible-playbook return code: %s", ret)
                         break
 
+            # single playbook
             if args.playbook is not None:
-                runplaybooks(args.playbook)
+                # single inventory
+                if args.inventory is not None:
+                    checklist = checkplaybooks(args.playbook,args.inventory)
+                    if not checklist:
+                        runplaybooks(args.playbook)
+                # multi inventory single playbook
+                if args.inventories is not None:
+                    checklist = checkplaybooks(args.playbook,args.inventories)
+                    if not checklist:
+                        runplaybooks(args.playbook)
+
+            # multiple playbooks
             if args.playbooks is not None:
-                runplaybooks(args.playbooks)
+                # single inventory
+                if args.inventory is not None:
+                    checklist = checkplaybooks(args.playbooks,args.inventory)
+                    if not checklist:
+                        runplaybooks(args.playbooks)
+                # multi inventory multi playbook
+                if args.inventories is not None:
+                    checklist = checkplaybooks(args.playbooks,args.inventories)
+                    if not checklist:
+                        runplaybooks(args.playbooks)
 
 
 if __name__ == '__main__':
