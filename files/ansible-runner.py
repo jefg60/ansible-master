@@ -70,6 +70,34 @@ except Exception:
 else:
     logger.info ("SSH key loaded")
 
+def checkplaybooks(listofplaybooks,listofinventories):
+    badSyntaxPlaybooks = []
+    badSyntaxInventories = []
+    for p in listofplaybooks:
+        for i in listofinventories:
+            logger.debug ("Syntax Checking ansible playbook %s against inventory %s", p, i)
+            ret = subprocess.call(['ansible-playbook', '-i', i, '--vault-password-file', args.vault_password_file, p, '--syntax-check'])
+            if ret == 0:
+                logger.info ("ansible-playbook syntax check return code: %s", ret)
+            else:
+                logger.error ("ansible-playbook syntax check return code: %s", ret)
+                badSyntaxPlaybooks.append(p)
+                badSyntaxInventories.append(i)
+    return badSyntaxPlaybooks + badSyntaxInventories
+
+def runplaybooks(listofplaybooks,inventory):
+    for p in listofplaybooks:
+        logger.debug ("Attempting to run ansible-playbook -i %s %s", inventory, p)
+        ret = subprocess.call(['ansible-playbook', '-i', inventory, '--vault-password-file', args.vault_password_file, p])
+        if ret == 0:
+            logger.info ("ansible-playbook return code: %s", ret)
+        else:
+            logger.error ("ansible-playbook return code: %s", ret)
+            break
+
+def checkeverything(inventory)
+    checkplaybooks("*.yaml *.yml",inventory)
+
 # class to watch args.logdir for changes and run ansible playbook when changes occur
 class Watcher:
     DIRECTORY_TO_WATCH = args.logdir
@@ -102,36 +130,12 @@ class Handler(FileSystemEventHandler):
             logger.info ("Received created event - %s." % event.src_path)
 
         elif event.event_type == 'modified':
-            def checkplaybooks(listofplaybooks,listofinventories):
-                badSyntaxPlaybooks = []
-                badSyntaxInventories = []
-                for p in listofplaybooks:
-                    for i in listofinventories:
-                        logger.debug ("Syntax Checking ansible playbook %s against inventory %s", p, i)
-                        ret = subprocess.call(['ansible-playbook', '-i', i, '--vault-password-file', args.vault_password_file, p, '--syntax-check'])
-                        if ret == 0:
-                            logger.info ("ansible-playbook syntax check return code: %s", ret)
-                        else:
-                            logger.error ("ansible-playbook syntax check return code: %s", ret)
-                            badSyntaxPlaybooks.append(p)
-                            badSyntaxInventories.append(i)
-                return badSyntaxPlaybooks + badSyntaxInventories
-
-            def runplaybooks(listofplaybooks,inventory):
-                for p in listofplaybooks:
-                    logger.debug ("Attempting to run ansible-playbook -i %s %s", inventory, p)
-                    ret = subprocess.call(['ansible-playbook', '-i', inventory, '--vault-password-file', args.vault_password_file, p])
-                    if ret == 0:
-                        logger.info ("ansible-playbook return code: %s", ret)
-                    else:
-                        logger.error ("ansible-playbook return code: %s", ret)
-                        break
-
             # actions when a file is modified.
             logger.info ("Received modified event - %s." % event.src_path)
             logger.debug ("ssh id: %s" % args.ssh_id)
             logger.debug ("logdir: %s" % args.logdir)
             logger.debug ("interval: %s"  %  str(args.interval))
+
             # single playbook
             if args.playbook is not None:
                 logger.debug ("playbook: %s" % args.playbook)
