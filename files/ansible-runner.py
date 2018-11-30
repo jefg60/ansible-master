@@ -70,6 +70,9 @@ except Exception:
 else:
     logger.info ("SSH key loaded")
 
+def checkeverything(inventory)
+    checkplaybooks("*.yaml *.yml",inventory)
+
 def checkplaybooks(listofplaybooks,listofinventories):
     badSyntaxPlaybooks = []
     badSyntaxInventories = []
@@ -94,9 +97,6 @@ def runplaybooks(listofplaybooks,inventory):
         else:
             logger.error ("ansible-playbook return code: %s", ret)
             break
-
-def checkeverything(inventory)
-    checkplaybooks("*.yaml *.yml",inventory)
 
 def singleplaybook()
     logger.debug ("playbook: %s" % args.playbook)
