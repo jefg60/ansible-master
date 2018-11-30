@@ -15,15 +15,20 @@ __version__ = "0.2"
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-v", "-V", "--version", action="version", version=__version__)
-parser.add_argument("-i","--inventory", help="ansible inventory to use", required=True)
 parser.add_argument("--interval", help="interval in seconds at which to check for new code", default=15)
 parser.add_argument("--ssh_id", help="ssh id file to use", default=home + "/.ssh/id_rsa")
 parser.add_argument("--logdir", help="log dir to watch", default="/srv/git/log")
 parser.add_argument("--debug", help="print debugging info to logs")
 parser.add_argument("--vault_password_file", help="vault password file", default=home + "/.vaultpw")
-group = parser.add_mutually_exclusive_group(required=True)
-group.add_argument("-p","--playbook", action='append', help="ansible playbook to run, repeat for multiple plays")
-group.add_argument("--playbooks", nargs='*', help="space separated list of ansible playbooks to run. Overrides --playbook")
+
+playbookgroup = parser.add_mutually_exclusive_group(required=True)
+playbookgroup.add_argument("-p","--playbook", action='append', help="a single ansible playbook to run")
+playbookgroup.add_argument("--playbooks", nargs='*', help="space separated list of ansible playbooks to run. Overrides --playbook")
+
+inventorygroup = parser.add_mutually_exclusive_group(required=True)
+inventorygroup.add_argument("-i","--inventory", help="a single ansible inventory to use")
+inventorygroup.add_argument("--inventories", help="space separated list of ansible inventories to syntax check against. Overrides --inventory. The first inventory file will be the one that playbooks are run against if syntax checks pass")
+
 args = parser.parse_args()
 
 logger = logging.getLogger('ansible_runner')
@@ -118,10 +123,10 @@ class Handler(FileSystemEventHandler):
                             badSyntaxInventories.append(i)
                 return badSyntaxPlaybooks + badSyntaxInventories
 
-            def runplaybooks(listofplaybooks):
+            def runplaybooks(listofplaybooks,inventory):
                 for p in listofplaybooks:
-                    logger.debug ("Attempting to run ansible-playbook -i %s %s", args.inventory, p)
-                    ret = subprocess.call(['ansible-playbook', '-i', args.inventory, '--vault-password-file', args.vault_password_file, p])
+                    logger.debug ("Attempting to run ansible-playbook -i %s %s", inventory, p)
+                    ret = subprocess.call(['ansible-playbook', '-i', inventory, '--vault-password-file', args.vault_password_file, p])
                     if ret == 0:
                         logger.info ("ansible-playbook return code: %s", ret)
                     else:
@@ -134,12 +139,13 @@ class Handler(FileSystemEventHandler):
                 if args.inventory is not None:
                     checklist = checkplaybooks(args.playbook,args.inventory)
                     if not checklist:
-                        runplaybooks(args.playbook)
+                        runplaybooks(args.playbook,args.inventory)
                 # multi inventory single playbook
                 if args.inventories is not None:
                     checklist = checkplaybooks(args.playbook,args.inventories)
                     if not checklist:
-                        runplaybooks(args.playbook)
+                        # run with single playbook, first inventory
+                        runplaybooks(args.playbook,args.inventories[0])
 
             # multiple playbooks
             if args.playbooks is not None:
@@ -147,12 +153,13 @@ class Handler(FileSystemEventHandler):
                 if args.inventory is not None:
                     checklist = checkplaybooks(args.playbooks,args.inventory)
                     if not checklist:
-                        runplaybooks(args.playbooks)
+                        runplaybooks(args.playbooks,args.inventory)
                 # multi inventory multi playbook
                 if args.inventories is not None:
                     checklist = checkplaybooks(args.playbooks,args.inventories)
                     if not checklist:
-                        runplaybooks(args.playbooks)
+                        # run with multi playbook, first inventory
+                        runplaybooks(args.playbooks,args.inventories[0])
 
 
 if __name__ == '__main__':
