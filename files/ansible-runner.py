@@ -9,6 +9,7 @@ import datetime
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from os.path import expanduser
+import glob
 
 home = expanduser("~")
 __version__ = "0.2"
@@ -32,6 +33,23 @@ inventorygroup.add_argument("--inventories", help="space separated list of ansib
 
 args = parser.parse_args()
 
+if args.syntax_check_dir is not None:
+    yamlfiles = glob.glob(syntax_check_dir + '/*.yaml')
+    ymlfiles = glob.glob(syntax_check_dir + '/*.yml')
+    yamlfiles = yamlfiles + ymlfiles
+
+if args.playbook is not None:
+    playstorun = args.playbook
+if args.playbooks is not None:
+    playstorun = args.playbooks
+
+if args.inventory is not None:
+    workinginventorylist = [ args.inventory ]
+    maininventory = args.inventory
+if args.inventories is not None:
+    workinginventorylist = args.inventories
+    maininventory = args.inventories[0]
+
 logger = logging.getLogger('ansible_runner')
 if args.debug:
     logger.setLevel(logging.DEBUG)
@@ -53,11 +71,8 @@ logger.addHandler(sysloghandler)
 logger.info ("Starting...")
 logger.info ("ssh id: " + args.ssh_id)
 logger.info ("logdir: " + args.logdir)
-logger.info ("inventory: " + args.inventory)
-if args.playbook is not None:
-    logger.info ("playbooks: " + " ".join(args.playbook))
-if args.playbooks is not None:
-    logger.info ("playbooks: " + " ".join(args.playbooks))
+logger.info ("inventorylist: " + " ".join(workinginventorylist))
+logger.info ("playbooks: " + " ".join(playstorun))
 logger.info ("interval: "  +  str(args.interval))
 
 logger.info ("Loading ssh key...")
@@ -69,9 +84,6 @@ except Exception:
     exit()
 else:
     logger.info ("SSH key loaded")
-
-def checkeverything(inventory)
-    checkplaybooks("*.yaml *.yml",inventory)
 
 def checkplaybooks(listofplaybooks,listofinventories):
     badSyntaxPlaybooks = []
@@ -88,17 +100,21 @@ def checkplaybooks(listofplaybooks,listofinventories):
                 badSyntaxInventories.append(i)
     return badSyntaxPlaybooks + badSyntaxInventories
 
-def runplaybooks(listofplaybooks,inventory):
+def checkeverything():
+    problemlist = checkplaybooks(yamlfiles,workinginventorylist)
+    return problemlist
+
+def runplaybooks(listofplaybooks):
     for p in listofplaybooks:
         logger.debug ("Attempting to run ansible-playbook -i %s %s", inventory, p)
-        ret = subprocess.call(['ansible-playbook', '-i', inventory, '--vault-password-file', args.vault_password_file, p])
+        ret = subprocess.call(['ansible-playbook', '-i', maininventory, '--vault-password-file', args.vault_password_file, p])
         if ret == 0:
             logger.info ("ansible-playbook return code: %s", ret)
         else:
             logger.error ("ansible-playbook return code: %s", ret)
             break
 
-def singleplaybook()
+def singleplaybook():
     logger.debug ("playbook: %s" % args.playbook)
     # single inventory
     if args.inventory is not None:
@@ -115,7 +131,7 @@ def singleplaybook()
             # run with single playbook, first inventory
             runplaybooks(args.playbook,args.inventories[0])
 
-def multiplaybook()
+def multiplaybook():
     logger.debug ("playbooks: %s" % args.playbooks)
     # single inventory
     if args.inventory is not None:
@@ -170,13 +186,19 @@ class Handler(FileSystemEventHandler):
             logger.debug ("logdir: %s" % args.logdir)
             logger.debug ("interval: %s"  %  str(args.interval))
 
+            # Additional syntax check of everything if requested
+            if syntax_check_dir is not None:
+                problemlistoutput = checkeverything()
+                logger.info ("Playbooks that failed syntax check: " + " ".join(problemlistoutput))
+
             # single playbook
-            if args.playbook is not None:
+            if args.playbook is not None and problemlistoutput is None:
                 singleplaybook()
 
             # multiple playbooks
-            if args.playbooks is not None:
+            if args.playbooks is not None and problemlistoutput is None:
                 multiplaybook()
+
 
 if __name__ == '__main__':
     w = Watcher()
