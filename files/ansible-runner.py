@@ -185,7 +185,7 @@ class Handler(FileSystemEventHandler):
             logger.debug ("ssh id: %s" % args.ssh_id)
             logger.debug ("logdir: %s" % args.logdir)
             logger.debug ("interval: %s"  %  str(args.interval))
-            logger.debug ("maininventory: $s" % maininventory)
+            logger.debug ("maininventory: %s" % maininventory)
             logger.debug ("workinginventorylist: %s" % workinginventorylist)
 
             # Additional syntax check of everything if requested
@@ -193,15 +193,10 @@ class Handler(FileSystemEventHandler):
                 problemlistoutput = checkeverything()
                 logger.info ("Playbooks that failed syntax check: " + " ".join(problemlistoutput))
             else:
-                problemlistoutput = []
+                problemlistoutput = None
 
-            # single playbook
-            if args.playbook is not None and problemlistoutput is None:
-                singleplaybook()
-
-            # multiple playbooks
-            if args.playbooks is not None and problemlistoutput is None:
-                multiplaybook()
+            if playstorun is not None and problemlistoutput is None:
+                logger.info ("Running playbooks %s" % playstorun)
 
 
 if __name__ == '__main__':
