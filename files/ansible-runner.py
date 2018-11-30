@@ -98,6 +98,40 @@ def runplaybooks(listofplaybooks,inventory):
 def checkeverything(inventory)
     checkplaybooks("*.yaml *.yml",inventory)
 
+def singleplaybook()
+    logger.debug ("playbook: %s" % args.playbook)
+    # single inventory
+    if args.inventory is not None:
+        logger.debug ("inventory: %s" % args.inventory)
+        checklist = checkplaybooks(args.playbook,args.inventory)
+        if not checklist:
+            runplaybooks(args.playbook,args.inventory)
+    # multi inventory single playbook
+    if args.inventories is not None:
+        logger.debug ("inventories: %s" % args.inventories)
+        checklist = checkplaybooks(args.playbook,args.inventories)
+        if not checklist:
+            logger.debug ("inventory: %s" % args.inventories[0])
+            # run with single playbook, first inventory
+            runplaybooks(args.playbook,args.inventories[0])
+
+def multiplaybook()
+    logger.debug ("playbooks: %s" % args.playbooks)
+    # single inventory
+    if args.inventory is not None:
+        logger.debug ("inventory: %s" % args.inventory)
+        checklist = checkplaybooks(args.playbooks,args.inventory)
+        if not checklist:
+            runplaybooks(args.playbooks,args.inventory)
+    # multi inventory multi playbook
+    if args.inventories is not None:
+        logger.debug ("inventories: %s" % args.inventories)
+        checklist = checkplaybooks(args.playbooks,args.inventories)
+        if not checklist:
+            logger.debug ("inventory: %s" % args.inventories[0])
+            # run with multi playbook, first inventory
+            runplaybooks(args.playbooks,args.inventories[0])
+
 # class to watch args.logdir for changes
 class Watcher:
     DIRECTORY_TO_WATCH = args.logdir
@@ -138,40 +172,11 @@ class Handler(FileSystemEventHandler):
 
             # single playbook
             if args.playbook is not None:
-                logger.debug ("playbook: %s" % args.playbook)
-                # single inventory
-                if args.inventory is not None:
-                    logger.debug ("inventory: %s" % args.inventory)
-                    checklist = checkplaybooks(args.playbook,args.inventory)
-                    if not checklist:
-                        runplaybooks(args.playbook,args.inventory)
-                # multi inventory single playbook
-                if args.inventories is not None:
-                    logger.debug ("inventories: %s" % args.inventories)
-                    checklist = checkplaybooks(args.playbook,args.inventories)
-                    if not checklist:
-                        logger.debug ("inventory: %s" % args.inventories[0])
-                        # run with single playbook, first inventory
-                        runplaybooks(args.playbook,args.inventories[0])
+                singleplaybook()
 
             # multiple playbooks
             if args.playbooks is not None:
-                logger.debug ("playbooks: %s" % args.playbooks)
-                # single inventory
-                if args.inventory is not None:
-                    logger.debug ("inventory: %s" % args.inventory)
-                    checklist = checkplaybooks(args.playbooks,args.inventory)
-                    if not checklist:
-                        runplaybooks(args.playbooks,args.inventory)
-                # multi inventory multi playbook
-                if args.inventories is not None:
-                    logger.debug ("inventories: %s" % args.inventories)
-                    checklist = checkplaybooks(args.playbooks,args.inventories)
-                    if not checklist:
-                        logger.debug ("inventory: %s" % args.inventories[0])
-                        # run with multi playbook, first inventory
-                        runplaybooks(args.playbooks,args.inventories[0])
-
+                multiplaybook()
 
 if __name__ == '__main__':
     w = Watcher()
