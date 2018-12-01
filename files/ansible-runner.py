@@ -158,6 +158,8 @@ class Handler(FileSystemEventHandler):
             # Additional syntax check of everything if requested
             if args.syntax_check_dir is not None:
                 problemlisteverything = checkeverything()
+            else:
+                problemlisteverything = []
 
             # Now do the syntax check of the playbooks we're about to run.
             problemlist = checkplaybooks(playstorun,workinginventorylist)
