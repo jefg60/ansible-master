@@ -33,6 +33,10 @@ inventorygroup.add_argument("--inventories", help="space separated list of ansib
 
 args = parser.parse_args()
 
+logger = logging.getLogger('ansible_runner')
+if args.debug:
+    logger.setLevel(logging.DEBUG)
+
 if args.syntax_check_dir is not None:
     yamlfiles = glob.glob(args.syntax_check_dir + '/*.yaml')
     ymlfiles = glob.glob(args.syntax_check_dir + '/*.yml')
@@ -49,10 +53,6 @@ if args.inventory is not None:
 if args.inventories is not None:
     workinginventorylist = args.inventories
     maininventory = args.inventories[0]
-
-logger = logging.getLogger('ansible_runner')
-if args.debug:
-    logger.setLevel(logging.DEBUG)
 
 # create sysloghandler
 sysloghandler = logging.handlers.SysLogHandler(address = '/dev/log')
@@ -72,6 +72,7 @@ logger.info ("Starting...")
 logger.info ("ssh id: " + args.ssh_id)
 logger.info ("logdir: " + args.logdir)
 logger.info ("inventorylist: " + " ".join(workinginventorylist))
+logger.info ("maininventory: " + maininventory)
 logger.info ("playbooks: " + " ".join(playstorun))
 logger.info ("interval: "  +  str(args.interval))
 
@@ -106,47 +107,13 @@ def checkeverything():
 
 def runplaybooks(listofplaybooks):
     for p in listofplaybooks:
-        logger.debug ("Attempting to run ansible-playbook -i %s %s", inventory, p)
+        logger.debug ("Attempting to run ansible-playbook -i %s %s", maininventory, p)
         ret = subprocess.call(['ansible-playbook', '-i', maininventory, '--vault-password-file', args.vault_password_file, p])
         if ret == 0:
             logger.info ("ansible-playbook return code: %s", ret)
         else:
             logger.error ("ansible-playbook return code: %s", ret)
             break
-
-def singleplaybook():
-    logger.debug ("playbook: %s" % args.playbook)
-    # single inventory
-    if args.inventory is not None:
-        logger.debug ("inventory: %s" % args.inventory)
-        checklist = checkplaybooks(args.playbook,args.inventory)
-        if not checklist:
-            runplaybooks(args.playbook,args.inventory)
-    # multi inventory single playbook
-    if args.inventories is not None:
-        logger.debug ("inventories: %s" % args.inventories)
-        checklist = checkplaybooks(args.playbook,args.inventories)
-        if not checklist:
-            logger.debug ("inventory: %s" % args.inventories[0])
-            # run with single playbook, first inventory
-            runplaybooks(args.playbook,args.inventories[0])
-
-def multiplaybook():
-    logger.debug ("playbooks: %s" % args.playbooks)
-    # single inventory
-    if args.inventory is not None:
-        logger.debug ("inventory: %s" % args.inventory)
-        checklist = checkplaybooks(args.playbooks,args.inventory)
-        if not checklist:
-            runplaybooks(args.playbooks,args.inventory)
-    # multi inventory multi playbook
-    if args.inventories is not None:
-        logger.debug ("inventories: %s" % args.inventories)
-        checklist = checkplaybooks(args.playbooks,args.inventories)
-        if not checklist:
-            logger.debug ("inventory: %s" % args.inventories[0])
-            # run with multi playbook, first inventory
-            runplaybooks(args.playbooks,args.inventories[0])
 
 # class to watch args.logdir for changes
 class Watcher:
@@ -190,13 +157,20 @@ class Handler(FileSystemEventHandler):
 
             # Additional syntax check of everything if requested
             if args.syntax_check_dir is not None:
-                problemlistoutput = checkeverything()
-                logger.info ("Playbooks that failed syntax check: " + " ".join(problemlistoutput))
-            else:
-                problemlistoutput = None
+                problemlisteverything = checkeverything()
 
-            if playstorun is not None and problemlistoutput is None:
+            # Now do the syntax check of the playbooks we're about to run.
+            problemlist = checkplaybooks(playstorun,workinginventorylist)
+
+            if not problemlist and not problemlisteverything:
                 logger.info ("Running playbooks %s" % playstorun)
+                runplaybooks(playstorun)
+            elif args.syntax_check_dir is not None:
+                logger.info ("Playbooks/inventories that failed in syntax_check_dir: " + " ".join(problemlisteverything))
+                logger.info ("Playbooks/inventories that failed syntax check: " + " ".join(problemlist))
+                logger.info ("Refusing to run requested playbooks until syntax checks pass")
+            else:
+                logger.info ("Playbooks/inventories that failed syntax check: " + " ".join(problemlist))
 
 
 if __name__ == '__main__':
