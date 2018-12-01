@@ -96,6 +96,8 @@ def checkplaybooks(listofplaybooks,listofinventories):
             if ret == 0:
                 logger.info ("ansible-playbook syntax check return code: %s", ret)
             else:
+                print ("ansible-playbook %s failed syntax check!!!", p)
+                logger.error ("Playbook %s failed syntax check!!!", p)
                 logger.error ("ansible-playbook syntax check return code: %s", ret)
                 badSyntaxPlaybooks.append(p)
                 badSyntaxInventories.append(i)
@@ -168,10 +170,13 @@ class Handler(FileSystemEventHandler):
                 logger.info ("Running playbooks %s" % playstorun)
                 runplaybooks(playstorun)
             elif args.syntax_check_dir is not None:
+                print ("Playbooks/inventories that failed in syntax_check_dir: " + " ".join(problemlisteverything))
                 logger.info ("Playbooks/inventories that failed in syntax_check_dir: " + " ".join(problemlisteverything))
                 logger.info ("Playbooks/inventories that failed syntax check: " + " ".join(problemlist))
+                print ("Refusing to run requested playbooks until syntax checks pass")
                 logger.info ("Refusing to run requested playbooks until syntax checks pass")
             else:
+                print ("Playbooks/inventories that failed syntax check: " + " ".join(problemlist))
                 logger.info ("Playbooks/inventories that failed syntax check: " + " ".join(problemlist))
 
 
