@@ -33,6 +33,11 @@ inventorygroup.add_argument("-i","--inventory", help="a single ansible inventory
 inventorygroup.add_argument("--inventories", nargs='*', help="space separated list of ansible inventories to syntax check against. Overrides --inventory. The first inventory file will be the one that playbooks are run against if syntax checks pass")
 
 args = parser.parse_args()
+try:
+    if len(args.playbook) > 1:
+        parser.error("--playbook or -p should only be specified once. to run multiple playbooks use --playbooks instead.")
+except:
+    pass
 
 logger = logging.getLogger('ansible_runner')
 if args.debug:
@@ -60,14 +65,19 @@ if args.inventories is not None:
     maininventory = args.inventories[0]
 
 # Check that files exist before continuing
-fileargs = workinginventorylist
-if yamlfiles is not None:
-    fileargs.extend( yamlfiles )
-fileargs.extend( playstorun )
+try:
+    fileargs = workinginventorylist + playstorun + yamlfiles
+except NameError:
+    fileargs = workinginventorylist + playstorun
+
 fileargs.append( args.ssh_id )
 fileargs.append( args.logdir )
-fileargs.append( args.vault_password_file )
-
+try:
+    fileargs.append( args.vault_password_file )
+except:
+    pass
+print(fileargs)
+exit
 for filename in fileargs:
     filenamepath = Path( filename )
     if not filenamepath.exists():
