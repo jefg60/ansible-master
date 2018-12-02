@@ -109,6 +109,7 @@ def checkplaybooks(listofplaybooks,listofinventories):
     for p in listofplaybooks:
         for i in listofinventories:
             logger.debug ("Syntax Checking ansible playbook %s against inventory %s", p, i)
+            print ("Syntax Checking ansible playbook %s against inventory %s" % (p, i))
             ret = subprocess.call(['ansible-playbook', '-i', i, '--vault-password-file', args.vault_password_file, p, '--syntax-check'])
             if ret == 0:
                 logger.info ("ansible-playbook syntax check return code: %s", ret)
