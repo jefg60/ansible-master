@@ -51,7 +51,7 @@
       become: yes
 
     - name: start ansible-runner in screen
-      shell: screen -S ansible-runner -d -m /usr/local/bin/ansible-runner.py --inventories /vagrant/inventory-internal --playbooks /srv/configmanagement/ansible/deploy.yaml /srv/configmanagement/ansible/deploy2.yaml --vault_password_file /vagrant/.vaultpw
+      shell: screen -S ansible-runner -d -m /usr/local/bin/ansible-runner.py --inventories /vagrant/inventory-internal --playbooks /srv/configmanagement/ansible/deploy.yaml /srv/configmanagement/ansible/deploy2.yaml --vault_password_file /vagrant/.vaultpw --syntax_check_dir /srv/configmanagement/ansible
       args:
         chdir: /home/ansible/
         creates: /run/screen/S-ansible/*.ansible-runner
@@ -75,7 +75,10 @@
               git remote add origin ssh://git@localhost:/srv/git/configmanagement &&
               echo StrictHostKeyChecking no >>~/.ssh/config &&
               git fetch &&
-              git push --set-upstream origin master"
+              git push --set-upstream origin master &&
+              git rm deploy3.yaml &&
+              git commit -m 'removed failing playbook deploy3.yaml' &&
+              git push"
       args:
         chdir: /home/vagrant/testdata
         creates: /home/vagrant/testdata/.git

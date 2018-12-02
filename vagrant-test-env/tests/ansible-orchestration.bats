@@ -24,6 +24,12 @@
     [[ -e /srv/git/log/configmanagement.log ]]
 }
 
+# deploy3.yaml breaks things on purpose before it is removed
+@test "deploy3.yaml causes a failure" {
+    run sudo grep "deploy3.yaml failed syntax check" /var/log/syslog.1
+    [[ "$status" -eq 0 ]]
+}
+
 @test "first ansible-playbook runs when git repo is pushed" {
     [[ -s /srv/success.txt ]]
 }
