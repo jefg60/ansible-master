@@ -60,9 +60,9 @@
       tags: runner
       register: ansiblescreen
 
-    - name: wait 10 secs for ansible-runner to start up
+    - name: wait 20 secs for ansible-runner to start up
       pause:
-        seconds: 10
+        seconds: 20
       when: ansiblescreen is changed
       tags: runner
 
@@ -81,6 +81,6 @@
         creates: /home/vagrant/testdata/.git
       become: no
 
-    - name: wait 20 secs for git to push and ansible to be run
+    - name: wait 30 secs for git to push and ansible to be run
       pause:
-        seconds: 20
+        seconds: 30
