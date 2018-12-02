@@ -64,26 +64,6 @@ if args.inventories is not None:
     workinginventorylist = args.inventories
     maininventory = args.inventories[0]
 
-# Check that files exist before continuing
-try:
-    fileargs = workinginventorylist + playstorun + yamlfiles
-except NameError:
-    fileargs = workinginventorylist + playstorun
-
-fileargs.append( args.ssh_id )
-fileargs.append( args.logdir )
-try:
-    fileargs.append( args.vault_password_file )
-except:
-    pass
-print(fileargs)
-exit
-for filename in fileargs:
-    filenamepath = Path( filename )
-    if not filenamepath.exists():
-        logger.info ("Unable to find path %s , aborting", filename)
-        exit(1)
-
 # create sysloghandler
 sysloghandler = logging.handlers.SysLogHandler(address = '/dev/log')
 sysloghandler.setLevel(logging.DEBUG)
@@ -117,6 +97,24 @@ else:
     logger.info ("SSH key loaded")
 
 def checkplaybooks(listofplaybooks,listofinventories):
+    # Check that files exist before continuing
+    try:
+        fileargs = workinginventorylist + playstorun + yamlfiles
+    except NameError:
+        fileargs = workinginventorylist + playstorun
+
+    fileargs.append( args.ssh_id )
+    fileargs.append( args.logdir )
+    try:
+        fileargs.append( args.vault_password_file )
+    except NameError:
+        pass
+    for filename in fileargs:
+        filenamepath = Path( filename )
+        if not filenamepath.exists():
+            logger.info ("Unable to find path %s , aborting", filename)
+            exit(1)
+
     badSyntaxPlaybooks = []
     badSyntaxInventories = []
     for p in listofplaybooks:
