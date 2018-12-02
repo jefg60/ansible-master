@@ -90,10 +90,7 @@ else:
 def checkplaybooks(listofplaybooks,listofinventories):
 
     # Check that files exist before continuing
-    try:
-        fileargs = workinginventorylist + playstorun + yamlfiles
-    except NameError:
-        fileargs = workinginventorylist + playstorun
+    fileargs = workinginventorylist + playstorun
 
     fileargs.append( args.ssh_id )
     fileargs.append( args.logdir )
@@ -105,7 +102,7 @@ def checkplaybooks(listofplaybooks,listofinventories):
         filenamepath = Path( filename )
         if not filenamepath.exists():
             logger.info ("Unable to find path %s , aborting", filename)
-            return filename
+            return [filename]
 
     badSyntaxPlaybooks = []
     badSyntaxInventories = []
@@ -197,9 +194,8 @@ class Handler(FileSystemEventHandler):
                 logger.info ("Running playbooks %s" % playstorun)
                 runplaybooks(playstorun)
             elif args.syntax_check_dir is not None:
-                print ("Playbooks/inventories that failed in syntax_check_dir: " + " ".join(problemlisteverything))
-                logger.info ("Playbooks/inventories that failed in syntax_check_dir: " + " ".join(problemlisteverything))
-                logger.info ("Playbooks/inventories that failed syntax check: " + " ".join(problemlist))
+                print ("Playbooks/inventories that had failures: " + " ".join(problemlisteverything))
+                logger.info ("Playbooks/inventories that had failures: " + " ".join(problemlisteverything))
                 print ("Refusing to run requested playbooks until syntax checks pass")
                 logger.info ("Refusing to run requested playbooks until syntax checks pass")
             else:
