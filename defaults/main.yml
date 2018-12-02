@@ -13,7 +13,7 @@ master_ansible_user_ssh_phrase: ""
 ansible_orchestration_user: "ansible"
 ansible_install_version: "2.5.1+dfsg-1"
 
-ansible_runner_inventory: "{{git_branch}}-inventory"
+ansible_runner_inventories: "{{ git_repo_target }}/{{git_branch}}-inventory"
 ansible_runner_root: "{{ git_repo_target }}/ansible"
 ansible_runner_playbooks: "{{ ansible_runner_root }}/ansible-galaxy.yaml {{ ansible_runner_root }}/ansible-master.yaml {{ ansible_runner_root }}/deploy.yaml"
 ansible_runner_vaultpw_file: "~/.vaultpw"
