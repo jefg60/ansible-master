@@ -51,7 +51,7 @@
       become: yes
 
     - name: start ansible-runner in screen
-      shell: screen -S ansible-runner -d -m /usr/local/bin/ansible-runner.py -i /vagrant/inventory-internal -p /srv/configmanagement/ansible/deploy.yaml -p /srv/configmanagement/ansible/deploy2.yaml --vault_password_file /vagrant/.vaultpw
+      shell: screen -S ansible-runner -d -m /usr/local/bin/ansible-runner.py --inventories /vagrant/inventory-internal -p /srv/configmanagement/ansible/deploy.yaml -p /srv/configmanagement/ansible/deploy2.yaml --vault_password_file /vagrant/.vaultpw
       args:
         chdir: /home/ansible/
         creates: /run/screen/S-ansible/*.ansible-runner
