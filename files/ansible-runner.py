@@ -43,15 +43,6 @@ logger = logging.getLogger('ansible_runner')
 if args.debug:
     logger.setLevel(logging.DEBUG)
 
-if args.syntax_check_dir is not None:
-    syntax_check_dir_path = Path( args.syntax_check_dir )
-    if not syntax_check_dir_path.exists():
-        logger.info("--syntax_check_dir option passed but %s cannot be found", args.syntax_check_dir)
-        exit(1)
-    yamlfiles = glob.glob(args.syntax_check_dir + '/*.yaml')
-    ymlfiles = glob.glob(args.syntax_check_dir + '/*.yml')
-    yamlfiles = yamlfiles + ymlfiles
-
 if args.playbook is not None:
     playstorun = [ args.playbook ]
 if args.playbooks is not None:
@@ -97,6 +88,7 @@ else:
     logger.info ("SSH key loaded")
 
 def checkplaybooks(listofplaybooks,listofinventories):
+
     # Check that files exist before continuing
     try:
         fileargs = workinginventorylist + playstorun + yamlfiles
@@ -113,7 +105,7 @@ def checkplaybooks(listofplaybooks,listofinventories):
         filenamepath = Path( filename )
         if not filenamepath.exists():
             logger.info ("Unable to find path %s , aborting", filename)
-            exit(1)
+            return filename
 
     badSyntaxPlaybooks = []
     badSyntaxInventories = []
@@ -132,6 +124,13 @@ def checkplaybooks(listofplaybooks,listofinventories):
     return badSyntaxPlaybooks + badSyntaxInventories
 
 def checkeverything():
+    syntax_check_dir_path = Path( args.syntax_check_dir )
+    if not syntax_check_dir_path.exists():
+        logger.info("--syntax_check_dir option passed but %s cannot be found", args.syntax_check_dir)
+        return args.syntax_check_dir
+    yamlfiles = glob.glob(args.syntax_check_dir + '/*.yaml')
+    ymlfiles = glob.glob(args.syntax_check_dir + '/*.yml')
+    yamlfiles = yamlfiles + ymlfiles
     problemlist = checkplaybooks(yamlfiles,workinginventorylist)
     return problemlist
 
