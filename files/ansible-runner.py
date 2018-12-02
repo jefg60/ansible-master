@@ -29,7 +29,7 @@ playbookgroup.add_argument("--playbooks", nargs='*', help="space separated list 
 
 inventorygroup = parser.add_mutually_exclusive_group(required=True)
 inventorygroup.add_argument("-i","--inventory", help="a single ansible inventory to use")
-inventorygroup.add_argument("--inventories", help="space separated list of ansible inventories to syntax check against. Overrides --inventory. The first inventory file will be the one that playbooks are run against if syntax checks pass")
+inventorygroup.add_argument("--inventories", nargs='*', help="space separated list of ansible inventories to syntax check against. Overrides --inventory. The first inventory file will be the one that playbooks are run against if syntax checks pass")
 
 args = parser.parse_args()
 
