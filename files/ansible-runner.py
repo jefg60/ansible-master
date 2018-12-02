@@ -41,7 +41,7 @@ if args.debug:
 if args.syntax_check_dir is not None:
     syntax_check_dir_path = Path( args.syntax_check_dir )
     if not syntax_check_dir_path.exists():
-        logger.info("--syntax_check_dir option passed but %s cannot be read", args.syntax_check_dir)
+        logger.info("--syntax_check_dir option passed but %s cannot be found", args.syntax_check_dir)
         exit(1)
     yamlfiles = glob.glob(args.syntax_check_dir + '/*.yaml')
     ymlfiles = glob.glob(args.syntax_check_dir + '/*.yml')
