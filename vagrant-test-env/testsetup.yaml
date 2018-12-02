@@ -78,6 +78,7 @@
               git push --set-upstream origin master &&
               git rm ansible/deploy3.yaml &&
               git commit -m 'removed failing playbook deploy3.yaml' &&
+              sleep 10 &&
               git push"
       args:
         chdir: /home/vagrant/testdata
