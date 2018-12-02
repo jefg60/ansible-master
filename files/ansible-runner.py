@@ -9,6 +9,7 @@ import datetime
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from os.path import expanduser
+from pathlib import Path
 import glob
 
 home = expanduser("~")
@@ -38,12 +39,16 @@ if args.debug:
     logger.setLevel(logging.DEBUG)
 
 if args.syntax_check_dir is not None:
+    syntax_check_dir_path = Path( args.syntax_check_dir )
+    if not syntax_check_dir_path.exists():
+        logger.info("--syntax_check_dir option passed but %s cannot be read", args.syntax_check_dir)
+        exit(1)
     yamlfiles = glob.glob(args.syntax_check_dir + '/*.yaml')
     ymlfiles = glob.glob(args.syntax_check_dir + '/*.yml')
     yamlfiles = yamlfiles + ymlfiles
 
 if args.playbook is not None:
-    playstorun = args.playbook
+    playstorun = [ args.playbook ]
 if args.playbooks is not None:
     playstorun = args.playbooks
 
@@ -53,6 +58,21 @@ if args.inventory is not None:
 if args.inventories is not None:
     workinginventorylist = args.inventories
     maininventory = args.inventories[0]
+
+# Check that files exist before continuing
+fileargs = workinginventorylist
+if yamlfiles is not None:
+    fileargs.extend( yamlfiles )
+fileargs.extend( playstorun )
+fileargs.append( args.ssh_id )
+fileargs.append( args.logdir )
+fileargs.append( args.vault_password_file )
+
+for filename in fileargs:
+    filenamepath = Path( filename )
+    if not filenamepath.exists():
+        logger.info ("Unable to find path %s , aborting", filename)
+        exit(1)
 
 # create sysloghandler
 sysloghandler = logging.handlers.SysLogHandler(address = '/dev/log')
