@@ -60,7 +60,7 @@ sysloghandler = logging.handlers.SysLogHandler(address = '/dev/log')
 sysloghandler.setLevel(logging.DEBUG)
 # create console handler with a higher log level
 consolehandler = logging.StreamHandler()
-consolehandler.setLevel(logging.ERROR)
+consolehandler.setLevel(logging.INFO)
 # create formatter and add it to the handlers
 formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
 sysloghandler.setFormatter(formatter)
