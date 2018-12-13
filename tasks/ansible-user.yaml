@@ -2,7 +2,7 @@
 
 - name: ansible user
   user:
-    name: ansible
+    name: "{{ ansible_orchestration_user }}"
     append: yes
     state: present
     generate_ssh_key: yes
