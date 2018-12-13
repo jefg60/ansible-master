@@ -36,6 +36,7 @@
       - python-pip
       - python3-pip
       - vagrant
+      - sqlite3
     state: present
     update_cache: yes
 
