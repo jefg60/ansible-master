@@ -1,5 +1,9 @@
 ---
 
+- name: ansible group
+  group:
+    name: "{{ ansible_orchestration_group }}"
+
 - name: ansible user
   user:
     name: "{{ ansible_orchestration_user }}"

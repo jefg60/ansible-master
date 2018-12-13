@@ -47,7 +47,9 @@ Vagrant.configure(2) do |config|
 
       if number == 13 # only run the following against one vm
 	# ensure that ./roles/ansible-orchestration-linux is there
-	galaxy_cmd = "ansible-galaxy install -p ./roles/ git+https://github.com/jefg60/ansible-orchestration-linux.git"
+	galaxy_cmd = "ansible-galaxy install -p ./roles/ git+https://github.com/jefg60/ansible-orchestration-linux.git \
+	git+https://github.com/jefg60/ansible-role-ara.git,staging \
+	geerlingguy.mysql"
 	system( galaxy_cmd )
 
 	# run the ansible-master playbook
