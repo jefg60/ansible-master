@@ -17,7 +17,7 @@ BOX ||= "ubuntu/bionic64"
 
 HOSTS ||= {
    "#{HOST12}" => [RAM, BOX, 12 ],
-   "#{HOST13}" => [RAM, BOX, 13 ]
+   "#{HOST13}" => [768, BOX, 13 ]
 }
 
 
