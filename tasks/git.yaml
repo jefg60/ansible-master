@@ -41,7 +41,7 @@
     path: "{{ git_repo_target }}"
     state: directory
     owner: "{{ git_username }}"
-    group: "{{ ansible_orchestration_user }}"
+    group: "{{ ansible_orchestration_group }}"
     mode: u=rwX,g=rwX,o=rX
     recurse: no
 
