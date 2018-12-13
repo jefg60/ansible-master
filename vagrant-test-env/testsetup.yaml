@@ -53,7 +53,7 @@
     - name: start ansible-runner in screen
       shell: screen -S ansible-runner -d -m /usr/local/bin/ansible-runner.py --inventories /vagrant/inventory-internal --playbooks /srv/configmanagement/ansible/deploy.yaml /srv/configmanagement/ansible/deploy2.yaml --vault_password_file /vagrant/.vaultpw --syntax_check_dir /srv/configmanagement/ansible
       args:
-        chdir: /home/ansible/
+        chdir: /var/lib/ara
         creates: /run/screen/S-ansible/*.ansible-runner
       become: yes
       become_user: ansible
