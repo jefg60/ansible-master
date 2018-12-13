@@ -10,6 +10,7 @@
     append: yes
     state: present
     generate_ssh_key: yes
+    home: "{{ ara.config.dir }}"
     group: "{{ ansible_orchestration_group }}"
     groups: sudo
     ssh_key_bits: 2048
