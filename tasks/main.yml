@@ -41,6 +41,14 @@
     group: root
   tags: runner
 
+- name: symlink /etc/ara/ara.cfg as /etc/ansible/ansible.cfg
+  file:
+    src: /etc/ara/ara.cfg
+    dest: /etc/ansible/ansible.cfg
+    state: link
+    force: true
+  when: link_ansible_cfg
+
 - name: check for existing screens
   command: screen -ls ansible-runner
   register: runningscreens
