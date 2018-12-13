@@ -63,3 +63,26 @@
   when: runningscreens.failed and start_ansible_runner_in_screen
   become: true
   become_user: "{{ ansible_orchestration_user }}"
+
+- name: TEST ara homepage is up - external http server
+  uri:
+    url: "http://{{ ara.config.host }}/about/"
+    return_content: yes
+  register: ara_aboutpage
+  when: ara.deployment.server != 'embedded'
+
+- name: TEST ara homepage is up - embdedded server
+  uri:
+    url: "http://{{ ara.config.host }}:{{ ara.config.port }}/about/"
+    return_content: yes
+  register: ara_aboutpage
+  when: ara.deployment.server == 'embedded'
+
+- name: debug ara_aboutpage
+  debug:
+    var: ara_aboutpage
+    verbosity: 1
+
+- name: Fail if 'ARA Records Ansible' not in ara about page
+  fail:
+  when: "'ARA Records Ansible' not in ara_aboutpage.content"
