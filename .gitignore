@@ -3,3 +3,4 @@
 *.retry
 vagrant-test-env/tests/results/TAP
 vagrant-test-env/roles/ansible-orchestration-linux
+vagrant-test-env/roles/ansible-role-ara
