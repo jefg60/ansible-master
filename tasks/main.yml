@@ -65,7 +65,11 @@
   become_user: "{{ ansible_orchestration_user }}"
 
 - name: flush handlers before doing tests
-  meta: flush handlers
+  meta: flush_handlers
+
+- name: wait for ara service port
+  wait_for:
+    port: "{{ ara.config.port }}"
 
 - name: TEST ara homepage is up - external http server
   uri:
