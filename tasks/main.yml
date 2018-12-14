@@ -76,6 +76,7 @@
     return_content: yes
   register: ara_aboutpage
   when: ara.deployment.server != 'embedded'
+  failed_when: "'ARA Records Ansible' not in ara_aboutpage.content"
 
 - name: TEST ara homepage is up - embdedded server
   uri:
@@ -83,12 +84,9 @@
     return_content: yes
   register: ara_aboutpage
   when: ara.deployment.server == 'embedded'
+  failed_when: "'ARA Records Ansible' not in ara_aboutpage.content"
 
-- name: debug ara_aboutpage
+- name: debug ara_aboutpage var
   debug:
     var: ara_aboutpage
     verbosity: 1
-
-- name: Fail if 'ARA Records Ansible' not in ara about page
-  fail:
-  when: "'ARA Records Ansible' not in ara_aboutpage.content"
