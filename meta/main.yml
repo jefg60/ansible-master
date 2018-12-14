@@ -15,5 +15,6 @@ galaxy_info:
   galaxy_tags: []
 
 dependencies:
-  - role: ansible-role-ara
-    src: https://github.com/jefg60/ansible-role-ara.git
+  - src: git+https://github.com/jefg60/ansible-role-ara
+    version: master
+    name: ansible-role-ara
