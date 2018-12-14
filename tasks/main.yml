@@ -64,6 +64,12 @@
   become: true
   become_user: "{{ ansible_orchestration_user }}"
 
+- name: restart apache
+  service:
+    name: apache2
+    state: reloaded
+  when: ara.deployment.server == 'apache'
+
 - name: TEST ara homepage is up - external http server
   uri:
     url: "http://{{ ara.config.host }}/about/"
