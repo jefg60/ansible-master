@@ -27,3 +27,5 @@ ara_override:
   install:
     pip:
       virtualenv: false
+
+link_ansible_cfg: false
