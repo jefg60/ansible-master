@@ -75,6 +75,11 @@
   when: ara.deployment.server != 'embedded'
   failed_when: "'ARA Records Ansible' not in ara_aboutpage.content"
 
+- name: debug ara_aboutpage var
+  debug:
+    var: ara_aboutpage
+    verbosity: 1
+
 - name: TEST ara homepage is up - embdedded server
   uri:
     url: "http://{{ ara.config.host }}:{{ ara.config.port }}/about/"
