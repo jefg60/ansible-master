@@ -70,6 +70,7 @@
 - name: wait for ara service port
   wait_for:
     port: "{{ ara.config.port }}"
+    host: "{{ ara.config.host }}"
   when: ara.deployment.server == 'embedded'
 
 - name: TEST ara homepage is up - external http server

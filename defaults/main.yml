@@ -24,6 +24,7 @@ ara_override:
   config:
     user: "{{ ansible_orchestration_user }}"
     group: "{{ ansible_orchestration_group }}"
+    host: "{{ ansible_default_ipv4.address }}"
   install:
     pip:
       virtualenv: false
