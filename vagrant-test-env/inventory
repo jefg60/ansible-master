@@ -1,5 +1,5 @@
 [ansible-master]
-ansible-master-vagrant ansible_ssh_host=127.0.0.1 ansible_ssh_port=22213 ansible_ssh_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/insecure_private_key' ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+ansible-master-vagrant ansible_ssh_host=127.0.0.1 ansible_ssh_port=22313 ansible_ssh_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/insecure_private_key' ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
 [linux]
-ansible-master-vagrant ansible_ssh_host=127.0.0.1 ansible_ssh_port=22213 ansible_ssh_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/insecure_private_key' ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
-vagrant0 ansible_ssh_host=127.0.0.1 ansible_ssh_port=22212 ansible_ssh_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/insecure_private_key' ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+ansible-master-vagrant ansible_ssh_host=127.0.0.1 ansible_ssh_port=22313 ansible_ssh_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/insecure_private_key' ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+vagrant0 ansible_ssh_host=127.0.0.1 ansible_ssh_port=22312 ansible_ssh_user='vagrant' ansible_ssh_private_key_file='~/.vagrant.d/insecure_private_key' ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
