@@ -4,7 +4,7 @@
 # ---- Configuration variables ----
 
 # Network configuration
-NETWORK ||= "192.168.51."
+NETWORK ||= "192.168.52."
 NETMASK ||= "255.255.255.0"
 
 RAM ||= 512   # Default memory size in MB
