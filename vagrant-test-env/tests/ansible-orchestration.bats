@@ -16,7 +16,7 @@
 }
 
 @test "Ansible user can sudo with no password on clients" {
-    run sudo su -c /vagrant/ansible-sudo-test.sh ansible
+    run sudo su -c /vagrant/tests/ansible-sudo-test.sh ansible
     [[ "$status" -eq 0 ]]
 }
 
