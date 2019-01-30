@@ -23,23 +23,23 @@
     state: directory
     mode: 0755
 
-- name: deploy ansible-runner.py
+- name: deploy ansible-logpoll.py
   copy:
-    src: ansible-runner.py
+    src: ansible-logpoll.py
     dest: /usr/local/bin/
     mode: 0755
     owner: root
     group: root
-  tags: runner
+  tags: logpoll
 
-- name: deploy ansible-runner-screen.sh
+- name: deploy ansible-logpoll-screen.sh
   template:
-    src: ansible-runner-screen.sh.j2
-    dest: /usr/local/bin/ansible-runner-screen.sh
+    src: ansible-logpoll-screen.sh.j2
+    dest: /usr/local/bin/ansible-logpoll-screen.sh
     mode: 0755
     owner: root
     group: root
-  tags: runner
+  tags: logpoll
 
 - name: symlink /etc/ara/ara.cfg as /etc/ansible/ansible.cfg
   file:
@@ -50,17 +50,17 @@
   when: link_ansible_cfg
 
 - name: check for existing screens
-  command: screen -ls ansible-runner
+  command: screen -ls ansible-logpoll
   register: runningscreens
-  tags: runner
+  tags: logpoll
   become: true
   become_user: "{{ ansible_orchestration_user }}"
   ignore_errors: yes
   changed_when: false
 
-- name: start a new ansible-runner screen
-  command: /usr/local/bin/ansible-runner-screen.sh
-  when: runningscreens.failed and start_ansible_runner_in_screen
+- name: start a new ansible-logpoll screen
+  command: /usr/local/bin/ansible-logpoll-screen.sh
+  when: runningscreens.failed and start_ansible_logpoll_in_screen
   become: true
   become_user: "{{ ansible_orchestration_user }}"
 

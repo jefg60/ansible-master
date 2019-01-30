@@ -1,0 +1,6 @@
+#!/bin/bash
+{% if syntax_check_dir is defined %}
+screen -S ansible-logpoll -d -m /usr/local/bin/ansible-logpoll.py --inventories {{ ansible_logpoll_inventories }}  --playbooks {{ ansible_logpoll_playbooks }} --syntax_check_dir {{ syntax_check_dir }}
+{% else %}
+screen -S ansible-logpoll -d -m /usr/local/bin/ansible-logpoll.py --inventories {{ ansible_logpoll_inventories }}  --playbooks {{ ansible_logpoll_playbooks }}
+{% endif %}

@@ -50,21 +50,21 @@
         key: "{{ vagrant_user.ssh_public_key }}"
       become: yes
 
-    - name: start ansible-runner in screen
-      shell: screen -S ansible-runner -d -m /usr/local/bin/ansible-runner.py --inventories /vagrant/inventory-internal --playbooks /srv/configmanagement/ansible/deploy.yaml /srv/configmanagement/ansible/deploy2.yaml --vault_password_file /vagrant/.vaultpw --syntax_check_dir /srv/configmanagement/ansible
+    - name: start ansible-logpoll in screen
+      shell: screen -S ansible-logpoll -d -m /usr/local/bin/ansible-logpoll.py --inventories /vagrant/inventory-internal --playbooks /srv/configmanagement/ansible/deploy.yaml /srv/configmanagement/ansible/deploy2.yaml --vault_password_file /vagrant/.vaultpw --syntax_check_dir /srv/configmanagement/ansible
       args:
         chdir: /var/lib/ara
-        creates: /run/screen/S-ansible/*.ansible-runner
+        creates: /run/screen/S-ansible/*.ansible-logpoll
       become: yes
       become_user: ansible
-      tags: runner
+      tags: logpoll
       register: ansiblescreen
 
-    - name: wait 20 secs for ansible-runner to start up
+    - name: wait 20 secs for ansible-logpoll to start up
       pause:
         seconds: 20
       when: ansiblescreen is changed
-      tags: runner
+      tags: logpoll
 
     - name: git test commands
       shell: "git init &&

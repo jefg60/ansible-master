@@ -52,7 +52,7 @@
       - pywinrm
       - dnspython
 
-# required for ansible-runner.py
+# required for ansible-logpoll.py
 - name: install pip3 packages
   pip:
     name:

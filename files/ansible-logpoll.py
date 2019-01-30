@@ -39,7 +39,7 @@ try:
 except:
     pass
 
-logger = logging.getLogger('ansible_runner')
+logger = logging.getLogger('ansible_logpoll')
 if args.debug:
     logger.setLevel(logging.DEBUG)
 

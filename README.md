@@ -7,15 +7,15 @@ In my workflow I use one of these per environment (dev/prod/staging etc) with a 
 
 The end result should be that when you push changes to a branch of your configmanagement git repo, they are synced to the run directory on this master ready to be deployed by whatever means you deem appropriate.
 
-A python daemon is included that runs in a screen session polling the git log directory for any changes. When the git repo is updated, a line will be added to the log, and the ansible-runner.py daemon will detect this and trigger an ansible run. Screen is used because ansible-runner.py will prompt for a passphrase if you've set one on the ssh key, so screen is the current workaround to enable you to attach and type this. Note that if a screen called ansible-runner already exists, no new screen sessions are started. This is to prevent ansible killing itself. This screen daemon situation and the self updating aspect are still a work in progress, obviously!
+A python daemon is included that runs in a screen session polling the git log directory for any changes. When the git repo is updated, a line will be added to the log, and the ansible-logpoll.py daemon will detect this and trigger an ansible run. Screen is used because ansible-logpoll.py will prompt for a passphrase if you've set one on the ssh key, so screen is the current workaround to enable you to attach and type this. Note that if a screen called ansible-logpoll already exists, no new screen sessions are started. This is to prevent ansible killing itself. This screen daemon situation and the self updating aspect are still a work in progress, obviously!
 
 The daemon accepts a list of playbooks to run in order and will stop processing if one fails.
 
 Example vars for this:
 
 ```
-start_ansible_runner_in_screen: true
-ansible_runner_playbooks: "ansible/ansible-galaxy.yaml ansible/ansible-master.yaml ansible/deploy.yaml"
+start_ansible_logpoll_in_screen: true
+ansible_logpoll_playbooks: "ansible/ansible-galaxy.yaml ansible/ansible-master.yaml ansible/deploy.yaml"
 ```
 
 Using the above configuration, an ansible-galaxy.yaml play is run to fetch roles from ansible-galaxy as defined in a requirements file, then this role is (re)deployed, and if those two both succeed, a playbook called deploy.yaml runs (in my case, deploy.yaml is a list of import_playbook statements that deploys my entire environment).
@@ -47,9 +47,9 @@ git_repo_name: configmanagement
 git_repo_target: "/srv/{{ git_repo_name }}"
 git_branch: "master"
 
-ansible_runner_inventory: "{{git_branch}}-inventory"
-ansible_runner_vaultpw_file: "~/.vaultpw"
-start_ansible_runner_in_screen: false
+ansible_logpoll_inventory: "{{git_branch}}-inventory"
+ansible_logpoll_vaultpw_file: "~/.vaultpw"
+start_ansible_logpoll_in_screen: false
 ```
 
 Dependencies
