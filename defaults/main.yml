@@ -23,6 +23,7 @@ start_ansible_logpoll_in_screen: false
 ara_override:
   config:
     user: "{{ ansible_orchestration_user }}"
+    shell: /bin/bash
     group: "{{ ansible_orchestration_group }}"
     host: "0.0.0.0"
   install:
