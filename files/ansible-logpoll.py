@@ -179,22 +179,22 @@ def checkplaybooks(listofplaybooks, listofinventories):
             logger.info("Unable to find path %s , aborting", filename)
             return [filename]
 
-    badSyntaxPlaybooks = []
-    badSyntaxInventories = []
-    for p in listofplaybooks:
-        for i in listofinventories:
+    bad_syntax_playbooks = []
+    bad_syntax_inventories = []
+    for my_playbook in listofplaybooks:
+        for my_inventory in listofinventories:
             logger.debug("Syntax Checking ansible playbook %s against "
-                         "inventory %s", p, i)
+                         "inventory %s", my_playbook, my_inventory)
 
             print("Syntax Checking ansible playbook %s against inventory %s"
-                  % (p, i))
+                  % (my_playbook, my_inventory))
 
             ret = subprocess.call(
                 [
                     'ansible-playbook',
-                    '-i', i,
+                    '--inventory', my_inventory,
                     '--vault-password-file', args.vault_password_file,
-                    p,
+                    my_playbook,
                     '--syntax-check'
                 ]
             )
@@ -206,16 +206,16 @@ def checkplaybooks(listofplaybooks, listofinventories):
 
             else:
                 print(
-                    "ansible-playbook %s failed syntax check!!!", p)
+                    "ansible-playbook %s failed syntax check!!!", my_playbook)
                 logger.error(
-                    "Playbook %s failed syntax check!!!", p)
+                    "Playbook %s failed syntax check!!!", my_playbook)
                 logger.error(
                     "ansible-playbook syntax check return code: "
                     "%s", ret)
 
-                badSyntaxPlaybooks.append(p)
-                badSyntaxInventories.append(i)
-    return badSyntaxPlaybooks + badSyntaxInventories
+                bad_syntax_playbooks.append(my_playbook)
+                bad_syntax_inventories.append(my_inventory)
+    return bad_syntax_playbooks + bad_syntax_inventories
 
 
 def checkeverything():
@@ -234,15 +234,15 @@ def checkeverything():
 
 
 def runplaybooks(listofplaybooks):
-    for p in listofplaybooks:
-        logger.debug("Attempting to run ansible-playbook -i %s %s",
-                     args.maininventory, p)
+    for my_playbook in listofplaybooks:
+        logger.debug("Attempting to run ansible-playbook --inventory %s %s",
+                     args.maininventory, my_playbook)
         ret = subprocess.call(
             [
                 'ansible-playbook',
-                '-i', args.maininventory,
+                '--inventory', args.maininventory,
                 '--vault-password-file', args.vault_password_file,
-                p
+                my_playbook
             ]
         )
 
