@@ -11,137 +11,147 @@ from os.path import expanduser
 from pathlib import Path
 import glob
 
-HOME = expanduser("~")
-__version__ = "0.2"
+def parse_args():
+    home = expanduser("~")
+    __version__ = "0.2"
 
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "-v",
-    "-V",
-    "--version",
-    action="version",
-    version=__version__
-    )
-parser.add_argument(
-    "--interval",
-    help="interval in seconds at which to check for new code",
-    default=15
-    )
-parser.add_argument(
-    "--ssh_id",
-    help="ssh id file to use",
-    default=home + "/.ssh/id_rsa"
-    )
-parser.add_argument(
-    "--logdir",
-    help="log dir to watch",
-    default="/srv/git/log"
-    )
-parser.add_argument(
-    "--debug",
-    help="print debugging info to logs"
-    )
-parser.add_argument(
-    "--vault_password_file",
-    help="vault password file",
-    default=home + "/.vaultpw"
-    )
-parser.add_argument(
-    "--syntax_check_dir",
-    help="Optional directory to search for *.yml and *.yaml files to "
-         "syntax check when changes are detected"
-    )
-
-playbookgroup = parser.add_mutually_exclusive_group(required=True)
-playbookgroup.add_argument(
-    "-p",
-    "--playbook",
-    action='append',
-    help="a single ansible playbook to run"
-    )
-playbookgroup.add_argument(
-    "--playbooks",
-    nargs='*',
-    help="space separated list of ansible playbooks to run. "
-         "Overrides --playbook"
-    )
-
-inventorygroup = parser.add_mutually_exclusive_group(required=True)
-inventorygroup.add_argument(
-    "-i",
-    "--inventory",
-    help="a single ansible inventory to use"
-    )
-inventorygroup.add_argument(
-    "--inventories",
-    nargs='*',
-    help="space separated list of ansible inventories to syntax check "
-         "against. Overrides --inventory. The first inventory file "
-         "will be the one that playbooks are run against if syntax "
-         "checks pass"
-    )
-
-args = parser.parse_args()
-
-# check --playbook is only called once
-if len(args.playbook) > 1:
-    parser.error(
-        "--playbook or -p should only be specified once. to run "
-        "multiple playbooks use --playbooks instead."
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-v",
+        "-V",
+        "--version",
+        action="version",
+        version=__version__
+        )
+    parser.add_argument(
+        "--interval",
+        help="interval in seconds at which to check for new code",
+        default=15
+        )
+    parser.add_argument(
+        "--ssh_id",
+        help="ssh id file to use",
+        default=home + "/.ssh/id_rsa"
+        )
+    parser.add_argument(
+        "--logdir",
+        help="log dir to watch",
+        default="/srv/git/log"
+        )
+    parser.add_argument(
+        "--debug",
+        help="print debugging info to logs"
+        )
+    parser.add_argument(
+        "--vault_password_file",
+        help="vault password file",
+        default=home + "/.vaultpw"
+        )
+    parser.add_argument(
+        "--syntax_check_dir",
+        help="Optional directory to search for *.yml and *.yaml files to "
+             "syntax check when changes are detected"
         )
 
-logger = logging.getLogger('ansible_logpoll')
-if args.debug:
-    logger.setLevel(logging.DEBUG)
+    playbookgroup = parser.add_mutually_exclusive_group(required=True)
+    playbookgroup.add_argument(
+        "-p",
+        "--playbook",
+        action='append',
+        help="a single ansible playbook to run"
+        )
+    playbookgroup.add_argument(
+        "--playbooks",
+        nargs='*',
+        help="space separated list of ansible playbooks to run. "
+             "Overrides --playbook"
+        )
 
-if args.playbook is not None:
-    playstorun = [args.playbook]
+    inventorygroup = parser.add_mutually_exclusive_group(required=True)
+    inventorygroup.add_argument(
+        "-i",
+        "--inventory",
+        help="a single ansible inventory to use"
+        )
+    inventorygroup.add_argument(
+        "--inventories",
+        nargs='*',
+        help="space separated list of ansible inventories to syntax check "
+             "against. Overrides --inventory. The first inventory file "
+             "will be the one that playbooks are run against if syntax "
+             "checks pass"
+        )
 
-if args.playbooks is not None:
-    playstorun = args.playbooks
+    args = parser.parse_args()
 
-if args.inventory is not None:
-    workinginventorylist = [args.inventory]
-    maininventory = args.inventory
+    # check --playbook is only called once
+    if len(args.playbook) > 1:
+        parser.error(
+            "--playbook or -p should only be specified once. to run "
+            "multiple playbooks use --playbooks instead."
+            )
 
-if args.inventories is not None:
-    workinginventorylist = args.inventories
-    maininventory = args.inventories[0]
+    # log main arguments used
+    logger.info("ssh id: " + args.ssh_id)
+    logger.info("logdir: " + args.logdir)
+    logger.info("inventorylist: " + " ".join(workinginventorylist))
+    logger.info("maininventory: " + maininventory)
+    logger.info("playbooks: " + " ".join(playstorun))
+    logger.info("interval: "  +  str(args.interval))
 
-# create sysloghandler
-sysloghandler = logging.handlers.SysLogHandler(address='/dev/log')
-sysloghandler.setLevel(logging.DEBUG)
 
-# create console handler with a higher log level
-consolehandler = logging.StreamHandler()
-consolehandler.setLevel(logging.INFO)
+def setup_logger():
+    logger = logging.getLogger('ansible_logpoll')
+    if args.debug:
+        logger.setLevel(logging.DEBUG)
 
-# create formatter and add it to the handlers
-formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-sysloghandler.setFormatter(formatter)
-consolehandler.setFormatter(formatter)
+    if args.playbook is not None:
+        playstorun = [args.playbook]
 
-# add handlers to the logger
-logger.addHandler(consolehandler)
-logger.addHandler(sysloghandler)
+    if args.playbooks is not None:
+        playstorun = args.playbooks
 
-logger.info("Starting...")
-logger.info("ssh id: " + args.ssh_id)
-logger.info("logdir: " + args.logdir)
-logger.info("inventorylist: " + " ".join(workinginventorylist))
-logger.info("maininventory: " + maininventory)
-logger.info("playbooks: " + " ".join(playstorun))
-logger.info("interval: "  +  str(args.interval))
+    if args.inventory is not None:
+        workinginventorylist = [args.inventory]
+        maininventory = args.inventory
 
-logger.info("Loading ssh key...")
-try:
-    ssh_agent_setup.setup()
-    ssh_agent_setup.addKey(args.ssh_id)
-except Exception:
-    logger.exception("Exception adding ssh key, shutting down")
-    exit()
-else:
-    logger.info("SSH key loaded")
+    if args.inventories is not None:
+        workinginventorylist = args.inventories
+        maininventory = args.inventories[0]
+
+    # create sysloghandler
+    sysloghandler = logging.handlers.SysLogHandler(address='/dev/log')
+    sysloghandler.setLevel(logging.DEBUG)
+
+    # create console handler with a higher log level
+    consolehandler = logging.StreamHandler()
+    consolehandler.setLevel(logging.INFO)
+
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+    sysloghandler.setFormatter(formatter)
+    consolehandler.setFormatter(formatter)
+
+    # add handlers to the logger
+    logger.addHandler(consolehandler)
+    logger.addHandler(sysloghandler)
+
+def add_ssh_key_to_agent():
+    logger.info("Loading ssh key...")
+    try:
+        ssh_agent_setup.setup()
+        ssh_agent_setup.addKey(args.ssh_id)
+    except Exception:
+        logger.exception("Exception adding ssh key, shutting down")
+        exit()
+    else:
+        logger.info("SSH key loaded")
+
+def startup():
+    parse_args()
+    setup_logger()
+    logger.info("Starting...")
+    add_ssh_key_to_agent()
 
 def checkplaybooks(listofplaybooks, listofinventories):
 
@@ -301,7 +311,7 @@ class Handler(FileSystemEventHandler):
                 logger.info("Playbooks/inventories that failed syntax check: "
                             + " ".join(problemlist))
 
-
 if __name__ == '__main__':
+    startup()
     w = Watcher()
     w.run()
