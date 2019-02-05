@@ -139,7 +139,11 @@ def parse_args():
     logger.info("playbooks: " + " ".join(playstorun))
     logger.info("interval: "  +  str(myargs.interval))
 
-    return myargs, playstorun, workinginventorylist, maininventory
+    myargs.append(playstorun)
+    myargs.append(workinginventorylist)
+    myargs.append(maininventory)
+
+    return myargs
 
 
 def add_ssh_key_to_agent():
@@ -248,6 +252,7 @@ def runplaybooks(listofplaybooks):
 
 # class to watch args.logdir for changes
 class Watcher:
+    args = parse_args()
     DIRECTORY_TO_WATCH = args.logdir
 
     def __init__(self):
