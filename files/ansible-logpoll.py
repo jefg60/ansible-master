@@ -269,7 +269,7 @@ class Watcher:
         try:
             while True:
                 time.sleep(args.interval)
-        except:
+        except KeyboardInterrupt:
             self.observer.stop()
 
         self.observer.join()
