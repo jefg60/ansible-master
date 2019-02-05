@@ -15,25 +15,6 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import ssh_agent_setup
 
-# Setup Logging globally
-LOGGER = logging.getLogger('ansible_logpoll')
-# create sysloghandler
-SYSLOGHANDLER = logging.handlers.SysLogHandler(address='/dev/log')
-SYSLOGHANDLER.setLevel(logging.DEBUG)
-
-# create console handler with a higher log level
-CONSOLEHANDLER = logging.StreamHandler()
-CONSOLEHANDLER.setLevel(logging.INFO)
-
-# create formatter and add it to the handlers
-FORMATTER = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-SYSLOGHANDLER.setFormatter(FORMATTER)
-CONSOLEHANDLER.setFormatter(FORMATTER)
-
-# add handlers to the logger
-LOGGER.addHandler(CONSOLEHANDLER)
-LOGGER.addHandler(SYSLOGHANDLER)
-
 # Functions
 def parse_args():
     """Read arguments from command line."""
@@ -309,6 +290,25 @@ class Handler(FileSystemEventHandler):
 
 
 if __name__ == '__main__':
+    # Setup Logging globally
+    LOGGER = logging.getLogger('ansible_logpoll')
+    # create sysloghandler
+    SYSLOGHANDLER = logging.handlers.SysLogHandler(address='/dev/log')
+    SYSLOGHANDLER.setLevel(logging.DEBUG)
+
+    # create console handler with a higher log level
+    CONSOLEHANDLER = logging.StreamHandler()
+    CONSOLEHANDLER.setLevel(logging.INFO)
+
+    # create formatter and add it to the handlers
+    FORMATTER = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+    SYSLOGHANDLER.setFormatter(FORMATTER)
+    CONSOLEHANDLER.setFormatter(FORMATTER)
+
+    # add handlers to the logger
+    LOGGER.addHandler(CONSOLEHANDLER)
+    LOGGER.addHandler(SYSLOGHANDLER)
+
     ARGS = parse_args()
     # decide which args to use
     if ARGS.debug:
