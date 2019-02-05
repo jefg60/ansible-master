@@ -103,43 +103,42 @@ def parse_args():
              "checks pass"
         )
 
-    args = parser.parse_args()
+    myargs = parser.parse_args()
 
     # check --playbook is only called once
-    if len(args.playbook) > 1:
+    if len(myargs.playbook) > 1:
         parser.error(
             "--playbook or -p should only be specified once. to run "
             "multiple playbooks use --playbooks instead."
             )
 
-    # decide which args to use
-    if args.debug:
+    # decide which myargs to use
+    if myargs.debug:
         logger.setLevel(logging.DEBUG)
 
-    if args.playbook is not None:
-        playstorun = [args.playbook]
+    if myargs.playbook is not None:
+        playstorun = [myargs.playbook]
 
-    if args.playbooks is not None:
-        playstorun = args.playbooks
+    if myargs.playbooks is not None:
+        playstorun = myargs.playbooks
 
-    if args.inventory is not None:
-        workinginventorylist = [args.inventory]
-        maininventory = args.inventory
+    if myargs.inventory is not None:
+        workinginventorylist = [myargs.inventory]
+        maininventory = myargs.inventory
 
-    if args.inventories is not None:
-        workinginventorylist = args.inventories
-        maininventory = args.inventories[0]
+    if myargs.inventories is not None:
+        workinginventorylist = myargs.inventories
+        maininventory = myargs.inventories[0]
 
     # log main arguments used
-    setup_logger()
-    logger.info("ssh id: " + args.ssh_id)
-    logger.info("logdir: " + args.logdir)
+    logger.info("ssh id: " + myargs.ssh_id)
+    logger.info("logdir: " + myargs.logdir)
     logger.info("inventorylist: " + " ".join(workinginventorylist))
     logger.info("maininventory: " + maininventory)
     logger.info("playbooks: " + " ".join(playstorun))
-    logger.info("interval: "  +  str(args.interval))
+    logger.info("interval: "  +  str(myargs.interval))
 
-    return args
+    return myargs, playstorun, workinginventorylist, maininventory
 
 
 def add_ssh_key_to_agent():
@@ -157,7 +156,7 @@ def add_ssh_key_to_agent():
 def checkplaybooks(listofplaybooks, listofinventories):
 
     # Check that files exist before continuing
-    fileargs = workinginventorylist + playstorun
+    fileargs = args.workinginventorylist + args.playstorun
 
     fileargs.append(args.ssh_id)
     fileargs.append(args.logdir)
@@ -221,18 +220,18 @@ def checkeverything():
     yamlfiles = glob.glob(args.syntax_check_dir + '/*.yaml')
     ymlfiles = glob.glob(args.syntax_check_dir + '/*.yml')
     yamlfiles = yamlfiles + ymlfiles
-    problemlist = checkplaybooks(yamlfiles, workinginventorylist)
+    problemlist = checkplaybooks(yamlfiles, args.workinginventorylist)
     return problemlist
 
 
 def runplaybooks(listofplaybooks):
     for p in listofplaybooks:
         logger.debug("Attempting to run ansible-playbook -i %s %s",
-                     maininventory, p)
+                     args.maininventory, p)
         ret = subprocess.call(
             [
                 'ansible-playbook',
-                '-i', maininventory,
+                '-i', args.maininventory,
                 '--vault-password-file', args.vault_password_file,
                 p
             ]
@@ -283,8 +282,8 @@ class Handler(FileSystemEventHandler):
             logger.debug("ssh id: %s" % args.ssh_id)
             logger.debug("logdir: %s" % args.logdir)
             logger.debug("interval: %s"  %  str(args.interval))
-            logger.debug("maininventory: %s" % maininventory)
-            logger.debug("workinginventorylist: %s" % workinginventorylist)
+            logger.debug("maininventory: %s" % args.maininventory)
+            logger.debug("workinginventorylist: %s" % args.workinginventorylist)
 
             # Additional syntax check of everything if requested
             if args.syntax_check_dir is not None:
@@ -293,11 +292,11 @@ class Handler(FileSystemEventHandler):
                 problemlisteverything = []
 
             # Now do the syntax check of the playbooks we're about to run.
-            problemlist = checkplaybooks(playstorun, workinginventorylist)
+            problemlist = checkplaybooks(args.playstorun, args.workinginventorylist)
 
             if not problemlist and not problemlisteverything:
-                logger.info("Running playbooks %s" % playstorun)
-                runplaybooks(playstorun)
+                logger.info("Running playbooks %s" % args.playstorun)
+                runplaybooks(args.playstorun)
             elif args.syntax_check_dir is not None:
                 print("Playbooks/inventories that had failures: "
                       + " ".join(problemlisteverything))
