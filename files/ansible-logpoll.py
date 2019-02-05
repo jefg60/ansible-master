@@ -318,7 +318,7 @@ class Handler(FileSystemEventHandler):
 
 
 if __name__ == '__main__':
-    args=parse_args()
+    args = parse_args()
     add_ssh_key_to_agent()
     logger.info("Polling for updates...")
     w = Watcher()
