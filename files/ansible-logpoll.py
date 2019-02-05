@@ -329,12 +329,12 @@ if __name__ == '__main__':
         MAININVENTORY = ARGS.inventories[0]
 
     # log main arguments used
-    LOGGER.info("ssh id: %s", ARGS.ssh_id)
-    LOGGER.info("logdir: %s", ARGS.logdir)
-    LOGGER.info("inventorylist: %s", " ".join(WORKINGINVENTORYLIST))
-    LOGGER.info("maininventory: %s", MAININVENTORY)
-    LOGGER.info("playbooks: %s", " ".join(PLAYSTORUN))
-    LOGGER.info("interval: %s", str(ARGS.interval))
+    LOGGER.info("ssh id: ", ARGS.ssh_id)
+    LOGGER.info("logdir: ", ARGS.logdir)
+    LOGGER.info("inventorylist: ", " ".join(WORKINGINVENTORYLIST))
+    LOGGER.info("maininventory: ", MAININVENTORY)
+    LOGGER.info("playbooks: ", " ".join(PLAYSTORUN))
+    LOGGER.info("interval: ", str(ARGS.interval))
 
     add_ssh_key_to_agent()
     LOGGER.info("Polling for updates...")
