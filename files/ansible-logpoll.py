@@ -11,6 +11,27 @@ from os.path import expanduser
 from pathlib import Path
 import glob
 
+# Setup Logging globally
+
+logger = logging.getLogger('ansible_logpoll')
+# create sysloghandler
+sysloghandler = logging.handlers.SysLogHandler(address='/dev/log')
+sysloghandler.setLevel(logging.DEBUG)
+
+# create console handler with a higher log level
+consolehandler = logging.StreamHandler()
+consolehandler.setLevel(logging.INFO)
+
+# create formatter and add it to the handlers
+formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+sysloghandler.setFormatter(formatter)
+consolehandler.setFormatter(formatter)
+
+# add handlers to the logger
+logger.addHandler(consolehandler)
+logger.addHandler(sysloghandler)
+
+# Functions
 def parse_args():
     home = expanduser("~")
     __version__ = "0.2"
@@ -91,17 +112,7 @@ def parse_args():
             "multiple playbooks use --playbooks instead."
             )
 
-    # log main arguments used
-    logger.info("ssh id: " + args.ssh_id)
-    logger.info("logdir: " + args.logdir)
-    logger.info("inventorylist: " + " ".join(workinginventorylist))
-    logger.info("maininventory: " + maininventory)
-    logger.info("playbooks: " + " ".join(playstorun))
-    logger.info("interval: "  +  str(args.interval))
-
-
-def setup_logger():
-    logger = logging.getLogger('ansible_logpoll')
+    # decide which args to use
     if args.debug:
         logger.setLevel(logging.DEBUG)
 
@@ -119,22 +130,17 @@ def setup_logger():
         workinginventorylist = args.inventories
         maininventory = args.inventories[0]
 
-    # create sysloghandler
-    sysloghandler = logging.handlers.SysLogHandler(address='/dev/log')
-    sysloghandler.setLevel(logging.DEBUG)
+    # log main arguments used
+    setup_logger()
+    logger.info("ssh id: " + args.ssh_id)
+    logger.info("logdir: " + args.logdir)
+    logger.info("inventorylist: " + " ".join(workinginventorylist))
+    logger.info("maininventory: " + maininventory)
+    logger.info("playbooks: " + " ".join(playstorun))
+    logger.info("interval: "  +  str(args.interval))
 
-    # create console handler with a higher log level
-    consolehandler = logging.StreamHandler()
-    consolehandler.setLevel(logging.INFO)
+    return args
 
-    # create formatter and add it to the handlers
-    formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-    sysloghandler.setFormatter(formatter)
-    consolehandler.setFormatter(formatter)
-
-    # add handlers to the logger
-    logger.addHandler(consolehandler)
-    logger.addHandler(sysloghandler)
 
 def add_ssh_key_to_agent():
     logger.info("Loading ssh key...")
@@ -147,11 +153,6 @@ def add_ssh_key_to_agent():
     else:
         logger.info("SSH key loaded")
 
-def startup():
-    parse_args()
-    setup_logger()
-    logger.info("Starting...")
-    add_ssh_key_to_agent()
 
 def checkplaybooks(listofplaybooks, listofinventories):
 
@@ -208,6 +209,7 @@ def checkplaybooks(listofplaybooks, listofinventories):
                 badSyntaxInventories.append(i)
     return badSyntaxPlaybooks + badSyntaxInventories
 
+
 def checkeverything():
     syntax_check_dir_path = Path(args.syntax_check_dir)
     if not syntax_check_dir_path.exists():
@@ -221,6 +223,7 @@ def checkeverything():
     yamlfiles = yamlfiles + ymlfiles
     problemlist = checkplaybooks(yamlfiles, workinginventorylist)
     return problemlist
+
 
 def runplaybooks(listofplaybooks):
     for p in listofplaybooks:
@@ -241,6 +244,7 @@ def runplaybooks(listofplaybooks):
             logger.error("ansible-playbook return code: %s", ret)
             # Is this break a good idea or not? should it be a bool param?
             break
+
 
 # class to watch args.logdir for changes
 class Watcher:
@@ -311,7 +315,11 @@ class Handler(FileSystemEventHandler):
                 logger.info("Playbooks/inventories that failed syntax check: "
                             + " ".join(problemlist))
 
+
+
 if __name__ == '__main__':
-    startup()
+    args=parse_args()
+    add_ssh_key_to_agent()
+    logger.info("Polling for updates...")
     w = Watcher()
     w.run()
