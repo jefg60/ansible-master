@@ -63,6 +63,7 @@
   when: runningscreens.failed and start_ansible_logpoll_in_screen
   become: true
   become_user: "{{ ansible_orchestration_user }}"
+  tags: logpoll
 
 - name: flush handlers before doing tests
   meta: flush_handlers
