@@ -106,8 +106,13 @@ def parse_args():
 
     myargs = parser.parse_args()
 
-    # check --playbook is only called once
-    if len(myargs.playbook) > 1:
+    # check --playbook is only called once. if it doesnt exist, argparse
+    # handles things
+    try:
+        len(myargs.playbook) > 1:
+    except NameError:
+        pass
+    else:
         parser.error(
             "--playbook or -p should only be specified once. to run "
             "multiple playbooks use --playbooks instead."
