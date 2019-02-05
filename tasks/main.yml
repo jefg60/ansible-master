@@ -23,13 +23,21 @@
     state: directory
     mode: 0755
 
-- name: deploy ansible-logpoll.py
-  copy:
-    src: ansible-logpoll.py
+- name: git checkout ansible-logpoll
+  git:
+    repo: https://github.com/jefg60/ansible-logpoll.git
+    dest: /srv/ansible-logpoll
+    clone: yes
+    version: master
+  tags: logpoll
+
+- name: symlink ansible-logpoll.py
+  file:
+    src: /srv/ansible-logpoll/ansible-logpoll.py
     dest: /usr/local/bin/
-    mode: 0755
     owner: root
     group: root
+    state: link
   tags: logpoll
 
 - name: deploy ansible-logpoll-screen.sh
