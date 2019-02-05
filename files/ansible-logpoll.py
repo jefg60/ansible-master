@@ -3,13 +3,14 @@ import logging
 import logging.handlers
 import argparse
 import subprocess
-import ssh_agent_setup
 import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from os.path import expanduser
 from pathlib import Path
 import glob
+
+import ssh_agent_setup
 
 # Setup Logging globally
 
