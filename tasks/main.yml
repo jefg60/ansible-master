@@ -35,6 +35,7 @@
   file:
     src: /srv/ansible-logpoll/ansible_logpoll.py
     dest: /usr/local/bin/ansible-logpoll.py
+    force: yes
     owner: root
     group: root
     state: link
