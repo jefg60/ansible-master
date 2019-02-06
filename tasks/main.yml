@@ -31,10 +31,10 @@
     version: master
   tags: logpoll
 
-- name: symlink ansible-logpoll.py
+- name: symlink ansible_logpoll.py
   file:
-    src: /srv/ansible-logpoll/ansible-logpoll.py
-    dest: /usr/local/bin/
+    src: /srv/ansible-logpoll/ansible_logpoll.py
+    dest: /usr/local/bin/ansible-logpoll.py
     owner: root
     group: root
     state: link
