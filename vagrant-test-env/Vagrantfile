@@ -34,8 +34,10 @@ Vagrant.configure(2) do |config|
       end #config.vm.define
 
       machine.vm.hostname = name 
-      machine.vm.network "forwarded_port", guest: 22, host: "223#{number}", id: "ssh"
-      machine.vm.network "private_network", ip: NETWORK+"#{number}"
+      machine.vm.network "forwarded_port",
+        guest: 22, host: "223#{number}", id: "ssh"
+      machine.vm.network "private_network",
+        ip: NETWORK+"#{number}"
       machine.ssh.port = "223#{number}"
       machine.ssh.insert_key = false
       # we need python before the vagrant can respond to ansible
