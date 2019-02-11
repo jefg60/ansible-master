@@ -40,39 +40,40 @@ Vagrant.configure(2) do |config|
       machine.ssh.insert_key = false
       # we need python before the vagrant can respond to ansible
       machine.vm.provision "shell" do |s|
-	s.inline = "apt-get -y install python"
+        s.inline = "apt-get -y install python"
       end
       # generate hosts file
       machine.vm.provision :shell, :path => "hostsfile.sh", :args => NETWORK
 
       if number == 13 # only run the following against one vm
-	machine.vm.network "forwarded_port", guest: 9191, host: 9191, id: "ara"
-	# ensure that ./roles/ansible-orchestration-linux is there
-	galaxy_cmd = "ansible-galaxy install -p ./roles/ git+https://github.com/jefg60/ansible-orchestration-linux.git \
-	git+https://github.com/jefg60/ansible-role-ara.git"
-	system( galaxy_cmd )
+        machine.vm.network "forwarded_port", guest: 9191, host: 9191, id: "ara"
+        # ensure that ./roles/ansible-orchestration-linux is there
+        galaxy_cmd = "ansible-galaxy install -p ./roles/ \
+                      git+https://github.com/jefg60/ansible-orchestration-linux.git \
+                      git+https://github.com/jefg60/ansible-role-ara.git "
+        system( galaxy_cmd )
 
-	# run the ansible-master playbook
+        # run the ansible-master playbook
         machine.vm.provision "ansible" do |ansible|
-	  ansible.limit = "all"
-	  ansible.playbook = "ansible-master-test.yaml"
-	  ansible.raw_arguments = ['-v']
-	  ansible.inventory_path = "./inventory"
+          ansible.limit = "all"
+          ansible.playbook = "ansible-master-test.yaml"
+          ansible.raw_arguments = ['-v']
+          ansible.inventory_path = "./inventory"
           # change ansible.tags for faster testing
           ansible.tags = 'all'
           ansible.extra_vars = {
             ansible_ssh_user: 'vagrant',
-	    link_ansible_cfg: true
+            link_ansible_cfg: true,
           }
         end # machine.vm.provision ansible run
 
-	# tests start here
-	machine.vm.provision "shell" do |s|
-	  s.inline = "/vagrant/run_all_tests.sh"
-	  # don't color output green because its confusing when its a fail
-	  s.keep_color = true
-	  s.privileged = false
-	end
+        # tests start here
+        machine.vm.provision "shell" do |s|
+          s.inline = "/vagrant/run_all_tests.sh"
+          # don't color output green because its confusing when its a fail
+          s.keep_color = true
+          s.privileged = false
+        end
         
       end # if number
 

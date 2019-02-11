@@ -51,7 +51,7 @@
       become: yes
 
     - name: start ansible-logpoll in screen
-      shell: screen -S ansible-logpoll -d -m /usr/local/bin/ansible-logpoll.py --inventories /vagrant/inventory-internal --playbooks /srv/configmanagement/ansible/deploy.yaml /srv/configmanagement/ansible/deploy2.yaml --vault_password_file /vagrant/.vaultpw --syntax_check_dir /srv/configmanagement/ansible
+      shell: screen -S ansible-logpoll -d -m /usr/local/bin/ansible-logpoll.py --inventories /vagrant/inventory-internal --playbooks /srv/configmanagement/ansible/deploy.yaml /srv/configmanagement/ansible/deploy2.yaml --vault_password_file /vagrant/.vaultpw --syntax_check_dir /srv/configmanagement/ansible --pre_run_playbooks /srv/configmanagement/ansible/deploy.yaml
       args:
         chdir: /var/lib/ara
         creates: /run/screen/S-ansible/*.ansible-logpoll
