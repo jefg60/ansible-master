@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source /opt/ansible-master/bin/activate
+
 bats /vagrant/tests/ | tee /vagrant/tests/results/TAP
 
 #This causes us to exit with the exit code of the bats not the tee

@@ -40,10 +40,6 @@ Vagrant.configure(2) do |config|
         ip: NETWORK+"#{number}"
       machine.ssh.port = "223#{number}"
       machine.ssh.insert_key = false
-      # we need python before the vagrant can respond to ansible
-      machine.vm.provision "shell" do |s|
-        s.inline = "apt-get -y install python"
-      end
       # generate hosts file
       machine.vm.provision :shell, :path => "hostsfile.sh", :args => NETWORK
 
@@ -66,6 +62,7 @@ Vagrant.configure(2) do |config|
           ansible.extra_vars = {
             ansible_ssh_user: 'vagrant',
             link_ansible_cfg: true,
+            ansible_python_interpreter: '/usr/bin/python3'
           }
         end # machine.vm.provision ansible run
 

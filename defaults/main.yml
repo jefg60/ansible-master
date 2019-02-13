@@ -29,6 +29,6 @@ ara_override:
     host: "0.0.0.0"
   install:
     pip:
-      virtualenv: false
+      virtualenv_path: /opt/ansible-master
 
 link_ansible_cfg: false

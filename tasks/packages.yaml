@@ -23,39 +23,29 @@
     state: present
     update_cache: no
 
-- name: install packages
+- name: install OS packages
   apt:
     name:
-      - "ansible={{ ansible_install_version }}"
       - openssh-server
       - git
-      - python-dns
-      - python-txwinrm
-      - ansible-lint
-      - python-apt
-      - python-pip
       - python3-pip
       - vagrant
       - sqlite3
+      - python3-apt
     state: present
     update_cache: yes
 
-- name: install LATEST ansible
-  apt:
-    name: ansible
-    state: latest
-  when: upgrade_ansible is defined and upgrade_ansible
-
-- name: install python pip packages
+- name: install pip packages to virtualenv
   pip:
     name:
+      #- txwinrm
+      - ansible-lint
+      - ansible-vault
+      - ansible
       - pywinrm
       - dnspython
-
-# required for ansible-logpoll.py
-- name: install pip3 packages
-  pip:
-    name:
       - ssh-agent-setup
       - watchdog3
-    executable: pip3
+    virtualenv: /opt/ansible-master
+    virtualenv_python: python3
+    virtualenv_site_packages: true
