@@ -58,5 +58,4 @@
     name:
       - ssh-agent-setup
       - watchdog3
-      - ansible-vault
     executable: pip3
