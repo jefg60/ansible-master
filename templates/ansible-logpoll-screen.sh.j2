@@ -1,2 +1,8 @@
 #!/bin/bash
-screen -S ansible-logpoll -d -m {{ ara_override.install.pip.virtualenv_path }}/bin/python3 /usr/local/bin/ansible-logpoll.py --inventories {{ ansible_logpoll_inventories }} --playbooks {{ ansible_logpoll_playbooks }} {{ ('--syntax_check_dir ' + syntax_check_dir) if syntax_check_dir is defined else '' }} {{ ('--pre_run_playbooks ' + ansible_logpoll_prerun) if ansible_logpoll_prerun is defined else '' }} --venv {{ ara_override.install.pip.virtualenv_path }}
+screen -S ansible-logpoll -d -m {{ ara_override.install.pip.virtualenv_path }}/bin/python3 \
+  /usr/local/bin/ansible-logpoll.py \
+  --inventories {{ ansible_logpoll_inventories }} \
+  --playbooks {{ ansible_logpoll_playbooks }} \
+  {{ ('--syntax_check_dir ' + syntax_check_dir) if syntax_check_dir is defined else '' }} \
+  {{ ('--pre_run_playbooks ' + ansible_logpoll_prerun) if ansible_logpoll_prerun is defined else '' }} \
+  --venv {{ ara_override.install.pip.virtualenv_path }}
