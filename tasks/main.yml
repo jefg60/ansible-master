@@ -28,7 +28,7 @@
     repo: https://github.com/jefg60/ansible-logpoll.git
     dest: /srv/ansible-logpoll
     clone: yes
-    version: 0.8
+    version: 0.8.1
   tags: logpoll
 
 - name: symlink ansible_logpoll.py
