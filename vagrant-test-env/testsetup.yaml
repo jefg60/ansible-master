@@ -60,9 +60,9 @@
       tags: logpoll
       register: ansiblescreen
 
-    - name: wait 20 secs for ansible-logpoll to start up
+    - name: wait 10 secs for ansible-logpoll to start up
       pause:
-        seconds: 20
+        seconds: 10
       when: ansiblescreen is changed
       tags: logpoll
 
@@ -85,6 +85,6 @@
         creates: /home/vagrant/testdata/.git
       become: no
 
-    - name: wait 30 secs for git to push and ansible to be run
+    - name: wait 20 secs for git to push and ansible to be run
       pause:
-        seconds: 30
+        seconds: 20
