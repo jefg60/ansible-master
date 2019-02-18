@@ -1,6 +1,10 @@
-inventories = {{ ansible_logpoll_inventories }}
-playbooks = {{ ansible_logpoll_playbooks }}
+inventories = [{% for inv in ansible_logpoll_inventories %}{{ inv }}, {% endfor %}]
+playbooks = [{% for play in ansible_logpoll_playbooks %}{{ play }}, {% endfor %}]
 venv = {{ ara_override.install.pip.virtualenv_path }}
 dir_to_watch = {{ git_log_dir }}
-{{ ('syntax_check_dir =' + syntax_check_dir) if syntax_check_dir is defined else '' }}
-{{ ('pre_run_playbooks =' + ansible_logpoll_prerun) if ansible_logpoll_prerun is defined else '' }}
+{% if syntax_check_dir is defined %}
+syntax_check_dir = {{ syntax_check_dir }}
+{% endif %}
+{% if pre_run_playbooks is defined %}
+pre_run_playbooks = [{% for play in pre_run_playbooks %}{{ play }}, {% endfor %}]
+{% endif %}
