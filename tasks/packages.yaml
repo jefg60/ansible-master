@@ -45,6 +45,7 @@
       - dnspython
       - ssh-agent-setup
       - watchdog3
+      - configargparse
     virtualenv: "{{ ara_override.install.pip.virtualenv_path }}"
     virtualenv_python: python3
     virtualenv_site_packages: true
