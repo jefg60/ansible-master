@@ -6,5 +6,5 @@ dir_to_watch = {{ git_log_dir }}
 syntax_check_dir = {{ syntax_check_dir }}
 {% endif %}
 {% if pre_run_playbooks is defined %}
-pre_run_playbooks = [{% for play in pre_run_playbooks %}{{ play }}, {% endfor %}]
+pre_run_playbooks = [{% for play in ansible_logpoll_pre_run %}{{ play }}, {% endfor %}]
 {% endif %}
