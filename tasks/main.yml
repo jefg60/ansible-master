@@ -50,6 +50,24 @@
     group: root
   tags: logpoll
 
+- name: create logpoll conf dir
+  file:
+    path: /etc/ansible-logpoll/conf.d/
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  tags: logpoll
+
+- name: deploy ansible-logpoll config file
+  template:
+    src: ansible-logpoll-conf.j2
+    dest: /etc/ansible-logpoll/conf.d/main.conf
+    mode: 0755
+    owner: root
+    group: root
+  tags: logpoll
+
 - name: symlink /etc/ara/ara.cfg as /etc/ansible/ansible.cfg
   file:
     src: /etc/ara/ara.cfg
