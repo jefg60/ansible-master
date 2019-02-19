@@ -1,8 +1,8 @@
 #!/usr/bin/env bats
 #
-@test "logpoll version 0.9.2" {
+@test "logpoll version 0.9.3" {
     run ansible-logpoll.py --version
-    [[ "$output" = "0.9.2" ]]
+    [[ "$output" = "0.9.3" ]]
 }
 
 @test "logpoll screen can start up" {
