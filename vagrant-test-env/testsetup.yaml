@@ -82,10 +82,7 @@
         chdir: /home/vagrant/testdata
         creates: /home/vagrant/testdata/.git
       become: no
-
-    - name: wait 20 secs for git to push and ansible to be run
-      pause:
-        seconds: 20
+      tags: git-test
 
     - name: git retest commands to enable re-provisioning
       shell: "echo {{ 99999 |random }} > testfile &&
@@ -94,5 +91,6 @@
               git fetch &&
               git push"
       args:
-        chdir: /home/vagrant/git/configmanagement/
+        chdir: /home/vagrant/testdata
       become: no
+      tags: git-test

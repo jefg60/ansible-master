@@ -6,8 +6,8 @@ git_repo_name=configmanagement
     [ -f /srv/$git_repo_name/testfile ]
 }
 
-@test "The testfile contains the success string" {
-    grep -qx "git test success" /srv/$git_repo_name/testfile
+@test "The testfile contains a 1 to 5 digit number" {
+    grep -qx "[0-9]\{1,5\}" /srv/$git_repo_name/testfile
     [ $? -eq 0 ]
 }
 
