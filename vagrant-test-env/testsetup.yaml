@@ -69,7 +69,7 @@
               git config user.email 'vagrant@example.com' &&
               git config user.name 'Vagrant User' &&
               git add . &&
-              git commit -m 'test commit' &&
+              git commit -m 'initial commit' &&
               git remote add origin ssh://git@localhost:/srv/git/configmanagement &&
               echo StrictHostKeyChecking no >>~/.ssh/config &&
               git fetch &&
@@ -86,3 +86,13 @@
     - name: wait 20 secs for git to push and ansible to be run
       pause:
         seconds: 20
+
+    - name: git retest commands to enable re-provisioning
+      shell: "echo {{ 99999 |random }} > testfile &&
+              git add . &&
+              git commit -m 'random commit {{ 99999 |random }}' &&
+              git fetch &&
+              git push"
+      args:
+        chdir: /home/vagrant/git/configmanagement/
+      become: no
