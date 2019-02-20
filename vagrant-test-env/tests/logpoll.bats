@@ -3,14 +3,8 @@
 version=0.9.4
 
 @test "logpoll version $version" {
-    run ansible-logpoll.py --version
+    run /opt/ansible-master/bin/python3 /srv/ansible-logpoll/ansible_logpoll.py --version
     [[ "$output" = "$version" ]]
-}
-
-@test "logpoll screen can start up" {
-    ansible-logpoll-screen.sh
-    run screen -ls ansible-logpoll
-    [ "$status" -eq 0 ]
 }
 
 @test "logpoll has its own log file" {

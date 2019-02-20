@@ -66,7 +66,15 @@ Vagrant.configure(2) do |config|
             ansible_ssh_user: 'vagrant',
             link_ansible_cfg: true,
             ansible_python_interpreter: '/usr/bin/python3',
-            master_ansible_user_ssh_phrase: '1234567890abc321'
+            master_ansible_user_ssh_phrase: '1234567890abc321',
+            master_ansible_user_vaultfile: '/srv/ansible-logpoll/testvault',
+            ansible_logpoll_inventories: ['/vagrant/inventory-internal'],
+            ansible_logpoll_playbooks: [
+              '/srv/configmanagement/ansible/deploy.yaml',
+              '/srv/configmanagement/ansible/deploy2.yaml'],
+            ansible_logpoll_prerun: [
+              '/srv/configmanagement/ansible/deploy.yaml'],
+            syntax_check_dir: '/srv/configmanagement/ansible'
           }
         end # machine.vm.provision ansible run
 

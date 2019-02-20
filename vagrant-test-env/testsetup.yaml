@@ -50,21 +50,19 @@
         key: "{{ vagrant_user.ssh_public_key }}"
       become: yes
 
-    - name: start ansible-logpoll in screen using venv
-      shell: screen -S ansible-logpoll -d -m /opt/ansible-master/bin/python3 /usr/local/bin/ansible-logpoll.py --inventories /vagrant/inventory-internal --playbooks /srv/configmanagement/ansible/deploy.yaml /srv/configmanagement/ansible/deploy2.yaml --vault_password_file /vagrant/.vaultpw --syntax_check_dir /srv/configmanagement/ansible --pre_run_playbooks /srv/configmanagement/ansible/deploy.yaml --venv /opt/ansible-master
-      args:
-        chdir: /var/lib/ara
-        creates: /run/screen/S-ansible/*.ansible-logpoll
+    - name: symlink vaultpw
+      file:
+        src: /srv/ansible-logpoll/vaultpassword
+        dest: /var/lib/ara/.vaultpw
+        state: link
+        force: true
       become: yes
-      become_user: ansible
-      tags: logpoll
-      register: ansiblescreen
 
-    - name: wait 10 secs for ansible-logpoll to start up
-      pause:
-        seconds: 10
-      when: ansiblescreen is changed
-      tags: logpoll
+    - name: restart ansible-logpoll
+      service:
+        name: ansible-logpoll
+        state: restarted
+      become: yes
 
     - name: git test commands
       shell: "git init &&

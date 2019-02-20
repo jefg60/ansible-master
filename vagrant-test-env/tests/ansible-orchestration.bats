@@ -42,9 +42,3 @@
     run diff /home/vagrant/testdata/ansible/deploy.yaml /srv/configmanagement/ansible/deploy.yaml
     [[ "$status" -eq 0 ]]
 }
-
-@test "ansible user is running a screen" {
-    run sudo su -c "screen -ls" ansible
-    [[ "$status" -eq 0 ]]
-}
-
