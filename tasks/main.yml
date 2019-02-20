@@ -75,6 +75,9 @@
     mode: 0644
     owner: root
     group: root
+  tags: logpoll
+  notify:
+    - restart rsyslog
 
 - name: symlink /etc/ara/ara.cfg as /etc/ansible/ansible.cfg
   file:
