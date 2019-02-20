@@ -8,3 +8,6 @@ syntax_check_dir = {{ syntax_check_dir }}
 {% if ansible_logpoll_prerun is defined %}
 pre_run_playbooks = [{% for play in ansible_logpoll_prerun %}{{ play }}, {% endfor %}]
 {% endif %}
+{% if master_ansible_user_vaultfile is defined %}
+ssh_askpass = /usr/bin/ssh-askpass
+{% endif %}
