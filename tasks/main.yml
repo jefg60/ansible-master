@@ -68,6 +68,14 @@
     group: root
   tags: logpoll
 
+- name: deploy ansible-logpoll rsyslog conf
+  copy:
+    src: 60-ansible-logpoll.conf
+    dest: /etc/rsyslog.d/
+    mode: 0644
+    owner: root
+    group: root
+
 - name: symlink /etc/ara/ara.cfg as /etc/ansible/ansible.cfg
   file:
     src: /etc/ara/ara.cfg

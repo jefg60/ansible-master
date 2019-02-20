@@ -10,3 +10,7 @@
     run screen -ls ansible-logpoll
     [ "$status" -eq 0 ]
 }
+
+@test "logpoll has its own log file" {
+    sudo grep INFO /var/log/ansible-logpoll
+}
