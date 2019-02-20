@@ -28,26 +28,7 @@
     repo: https://github.com/jefg60/ansible-logpoll.git
     dest: /srv/ansible-logpoll
     clone: yes
-    version: 0.9.3
-  tags: logpoll
-
-- name: symlink ansible_logpoll.py
-  file:
-    src: /srv/ansible-logpoll/ansible_logpoll.py
-    dest: /usr/local/bin/ansible-logpoll.py
-    force: yes
-    owner: root
-    group: root
-    state: link
-  tags: logpoll
-
-- name: deploy ansible-logpoll-screen.sh
-  template:
-    src: ansible-logpoll-screen.sh.j2
-    dest: /usr/local/bin/ansible-logpoll-screen.sh
-    mode: 0755
-    owner: root
-    group: root
+    version: dev
   tags: logpoll
 
 - name: create logpoll conf dir
@@ -67,6 +48,8 @@
     owner: root
     group: root
   tags: logpoll
+  notify:
+    - restart ansible-logpoll
 
 - name: deploy ansible-logpoll rsyslog conf
   copy:
@@ -79,6 +62,18 @@
   notify:
     - restart rsyslog
 
+- name: deploy ansible-logpoll.service
+  copy:
+    src: ansible-logpoll.service
+    dest: /etc/systemd/system/
+    mode: 0644
+    owner: root
+    group: root
+  tags: logpoll
+  notify:
+    - systemctl daemon-reload
+    - restart ansible-logpoll
+
 - name: symlink /etc/ara/ara.cfg as /etc/ansible/ansible.cfg
   file:
     src: /etc/ara/ara.cfg
@@ -86,22 +81,6 @@
     state: link
     force: true
   when: link_ansible_cfg
-
-- name: check for existing screens
-  command: screen -ls ansible-logpoll
-  register: runningscreens
-  tags: logpoll
-  become: true
-  become_user: "{{ ansible_orchestration_user }}"
-  ignore_errors: yes
-  changed_when: false
-
-- name: start a new ansible-logpoll screen
-  command: /usr/local/bin/ansible-logpoll-screen.sh
-  when: runningscreens.failed and start_ansible_logpoll_in_screen
-  become: true
-  become_user: "{{ ansible_orchestration_user }}"
-  tags: logpoll
 
 - name: flush handlers before doing tests
   meta: flush_handlers

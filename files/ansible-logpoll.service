@@ -1,0 +1,15 @@
+[Unit]
+Description=Poll git log and run ansible on changes
+After=syslog.target
+
+[Service]
+Type=simple
+User=ansible
+Group=ansible
+WorkingDirectory=/opt/ansible-master/
+ExecStart=/opt/ansible-master/bin/python3 /srv/ansible-logpoll/ansible_logpoll.py
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target

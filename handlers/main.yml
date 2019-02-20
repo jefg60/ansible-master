@@ -4,3 +4,12 @@
   service:
     name: rsyslog
     state: restarted
+
+- name: restart ansible-logpoll
+  service:
+    name: ansible-logpoll
+    state: restarted
+
+- name: systemctl daemon-reload
+  systemd:
+    daemon_reload: yes
