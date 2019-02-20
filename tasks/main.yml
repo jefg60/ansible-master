@@ -28,7 +28,7 @@
     repo: https://github.com/jefg60/ansible-logpoll.git
     dest: /srv/ansible-logpoll
     clone: yes
-    version: dev
+    version: 0.9.4
   tags: logpoll
 
 - name: deploy ssh-askpass script
