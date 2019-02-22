@@ -1,0 +1,62 @@
+---
+
+- name: git checkout ansible-logpoll
+  git:
+    repo: https://github.com/jefg60/ansible-logpoll.git
+    dest: /srv/ansible-logpoll
+    clone: yes
+    version: 0.9.4
+  tags: logpoll
+
+- name: deploy ssh-askpass script
+  template:
+    src: ssh-askpass.j2
+    dest: /usr/bin/ssh-askpass
+    owner: root
+    group: root
+    mode: 0755
+  when: master_ansible_user_vaultfile is defined
+  tags: logpoll
+
+- name: create logpoll conf dir
+  file:
+    path: /etc/ansible-logpoll/conf.d/
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  tags: logpoll
+
+- name: deploy ansible-logpoll config file
+  template:
+    src: ansible-logpoll-conf.j2
+    dest: /etc/ansible-logpoll/conf.d/main.conf
+    mode: 0755
+    owner: root
+    group: root
+  tags: logpoll
+  notify:
+    - restart ansible-logpoll
+
+- name: deploy ansible-logpoll rsyslog conf
+  copy:
+    src: 60-ansible-logpoll.conf
+    dest: /etc/rsyslog.d/
+    mode: 0644
+    owner: root
+    group: root
+  tags: logpoll
+  notify:
+    - restart rsyslog
+
+- name: deploy ansible-logpoll.service
+  copy:
+    src: ansible-logpoll.service
+    dest: /etc/systemd/system/
+    mode: 0644
+    owner: root
+    group: root
+  tags: logpoll
+  notify:
+    - systemctl daemon-reload
+    - restart ansible-logpoll
