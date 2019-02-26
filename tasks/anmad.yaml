@@ -1,0 +1,71 @@
+---
+
+- name: git checkout anmad
+  git:
+    repo: https://github.com/jefg60/anmad.git
+    dest: /srv/anmad
+    clone: yes
+    version: dev
+  tags: anmad
+
+- name: deploy ssh-askpass script
+  template:
+    src: ssh-askpass.j2
+    dest: /usr/bin/ssh-askpass
+    owner: root
+    group: root
+    mode: 0755
+  when: master_ansible_user_vaultfile is defined
+  tags: anmad
+
+- name: create anmad conf dir
+  file:
+    path: /etc/anmad/conf.d/
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  tags: anmad
+
+- name: deploy anmad config files
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/anmad/conf.d/{{ item }}.py"
+    mode: 0755
+    owner: root
+    group: root
+  loop:
+    - anmad_dirpoll
+    - anmad_buttons
+  tags: anmad
+  notify:
+    - restart anmad
+
+- name: deploy anmad rsyslog conf
+  copy:
+    src: "{{ item }}-rsyslog.conf"
+    dest: /etc/rsyslog.d/
+    mode: 0644
+    owner: root
+    group: root
+  loop:
+    - anmad_dirpoll
+    - anmad_buttons
+  tags: anmad
+  notify:
+    - restart rsyslog
+
+- name: deploy anmad .service files
+  copy:
+    src: "{{ item }}.service"
+    dest: /etc/systemd/system/
+    mode: 0644
+    owner: root
+    group: root
+  loop:
+    - anmad_dirpoll
+    - anmad_buttons
+  tags: anmad
+  notify:
+    - systemctl daemon-reload
+    - restart anmad
