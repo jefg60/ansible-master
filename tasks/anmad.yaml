@@ -29,7 +29,7 @@
 
 - name: deploy anmad config files
   template:
-    src: "{{ item }}.j2"
+    src: anmad.conf.j2
     dest: "/etc/anmad/conf.d/{{ item }}.py"
     mode: 0755
     owner: root
