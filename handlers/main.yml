@@ -5,9 +5,14 @@
     name: rsyslog
     state: restarted
 
-- name: restart ansible-logpoll
+- name: restart anmad_dirpoll
   service:
-    name: ansible-logpoll
+    name: anmad_dirpoll
+    state: restarted
+
+- name: restart anmad_buttons
+  service:
+    name: anmad_buttons
     state: restarted
 
 - name: systemctl daemon-reload
