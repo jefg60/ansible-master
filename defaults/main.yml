@@ -14,16 +14,16 @@ ansible_orchestration_user: "ansible"
 ansible_orchestration_group: "ansible"
 ansible_install_version: "2.5.1+dfsg-1"
 
-ansible_logpoll_inventories:
+anmad_inventories:
   - "{{ git_repo_target }}/{{git_branch}}-inventory"
-ansible_logpoll_root: "{{ git_repo_target }}/ansible"
-ansible_logpoll_playbooks:
-  - "{{ ansible_logpoll_root }}/deploy.yaml"
-ansible_logpoll_prerun:
-  - "{{ ansible_logpoll_root }}/ansible-galaxy.yaml"
-  - "{{ ansible_logpoll_root }}/ansible-master.yaml"
-ansible_logpoll_vaultpw_file: "~/.vaultpw"
-start_ansible_logpoll_in_screen: false
+anmad_root: "{{ git_repo_target }}/ansible"
+anmad_playbooks:
+  - "{{ anmad_root }}/deploy.yaml"
+anmad_prerun:
+  - "{{ anmad_root }}/ansible-galaxy.yaml"
+  - "{{ anmad_root }}/ansible-master.yaml"
+anmad_vaultpw_file: "~/.vaultpw"
+start_anmad_daemon: false
 
 ara_override:
   config:
