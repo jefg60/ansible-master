@@ -19,3 +19,11 @@ version=0.10.1
 @test "anmad_buttons has its own log file" {
     sudo grep INFO /var/log/anmad_buttons
 }
+
+@test "anmad_buttons control page has a deploy2.yaml button" {
+    curl http://127.0.0.1:9999/control/ | grep 'deploy2.yaml'
+}
+
+@test "anmad_dirpoll service is running" {
+    sudo service anmad_dirpoll status
+}
