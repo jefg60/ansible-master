@@ -1,0 +1,15 @@
+[Unit]
+Description=Buttons to run playbooks
+After=syslog.target
+
+[Service]
+Type=simple
+User=ansible
+Group=ansible
+WorkingDirectory=/opt/ansible-master/
+ExecStart=/opt/ansible-master/bin/python3 /srv/anmad/anmad_buttons.py
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target
