@@ -52,15 +52,15 @@
 
     - name: symlink vaultpw
       file:
-        src: /srv/ansible-logpoll/vaultpassword
+        src: /srv/anmad/vaultpassword
         dest: /var/lib/ara/.vaultpw
         state: link
         force: true
       become: yes
 
-    - name: restart ansible-logpoll
+    - name: restart anmad_dirpoll
       service:
-        name: ansible-logpoll
+        name: anmad_dirpoll
         state: restarted
       become: yes
 
