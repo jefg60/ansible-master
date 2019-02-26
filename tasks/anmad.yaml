@@ -71,3 +71,13 @@
   notify:
     - systemctl daemon-reload
     - restart anmad
+
+- name: ensure anmad systemd services are running
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+    masked: false
+  loop:
+    - anmad_dirpoll
+    - anmad_buttons
