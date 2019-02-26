@@ -5,7 +5,7 @@
     - packages.yaml
     - ansible-user.yaml
     - git.yaml
-    - logpoll.yaml
+    - anmad.yaml
   loop_control:
     loop_var: include_item
 
