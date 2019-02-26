@@ -7,6 +7,8 @@
     clone: yes
     version: dev
   tags: anmad
+  notify:
+    - restart anmad
 
 - name: deploy ssh-askpass script
   template:
