@@ -94,7 +94,3 @@
         chdir: /home/vagrant/testdata
       become: no
       tags: git-test
-
-    - name: pause 20 sec
-      pause:
-        seconds: 20
