@@ -58,10 +58,10 @@
         force: true
       become: yes
 
-    - name: restart anmad_run
+    - name: ensure anmad_run is running
       service:
         name: anmad_run
-        state: restarted
+        state: started
       become: yes
 
     - name: git test commands
