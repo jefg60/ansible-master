@@ -12,6 +12,9 @@ pre_run_playbooks = [{% for play in anmad_prerun %}{{ play }}, {% endfor %}]
 {% if master_ansible_user_vaultfile is defined %}
 ssh_askpass = /usr/bin/ssh-askpass
 {% endif %}
+{% if anmad_interval is defined %}
+interval = {{ anmad_interval }}
+{% endif %}
 {% if anmad_ara_url is defined %}
 ara_url = {{ anmad_ara_url }}
 {% endif %}
