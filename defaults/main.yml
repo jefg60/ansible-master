@@ -18,10 +18,10 @@ anmad_inventories:
   - "{{ git_repo_target }}/{{git_branch}}-inventory"
 anmad_root: "{{ git_repo_target }}/ansible"
 anmad_playbooks:
-  - "{{ anmad_root }}/deploy.yaml"
+  - "deploy.yaml"
 anmad_prerun:
-  - "{{ anmad_root }}/ansible-galaxy.yaml"
-  - "{{ anmad_root }}/ansible-master.yaml"
+  - "ansible-galaxy.yaml"
+  - "ansible-master.yaml"
 anmad_vaultpw_file: "~/.vaultpw"
 start_anmad_daemon: false
 

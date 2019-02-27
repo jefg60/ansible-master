@@ -1,4 +1,5 @@
 inventories = [{% for inv in anmad_inventories %}{{ inv }}, {% endfor %}]
+playbook_root_dir = {{ anmad_root }}
 playbooks = [{% for play in anmad_playbooks %}{{ play }}, {% endfor %}]
 venv = {{ ara_override.install.pip.virtualenv_path }}
 dir_to_watch = {{ git_log_dir }}
