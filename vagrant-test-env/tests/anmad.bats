@@ -27,3 +27,7 @@ version=0.10.1
 @test "anmad_dirpoll service is running" {
     sudo service anmad_dirpoll status
 }
+
+@test "anmad_run service is running" {
+    sudo service anmad_run status
+}
