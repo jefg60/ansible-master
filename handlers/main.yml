@@ -22,6 +22,7 @@
   loop:
     - anmad_dirpoll
     - anmad_buttons
+    - anmad_run
 
 - name: systemctl daemon-reload
   systemd:

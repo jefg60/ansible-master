@@ -39,6 +39,7 @@
   loop:
     - anmad_dirpoll
     - anmad_buttons
+    - anmad_run
   tags: anmad
   notify:
     - restart anmad
@@ -53,6 +54,7 @@
   loop:
     - anmad_dirpoll
     - anmad_buttons
+    - anmad_run
   tags: anmad
   notify:
     - restart rsyslog
@@ -67,6 +69,7 @@
   loop:
     - anmad_dirpoll
     - anmad_buttons
+    - anmad_run
   tags: anmad
   notify:
     - systemctl daemon-reload
@@ -81,3 +84,5 @@
   loop:
     - anmad_dirpoll
     - anmad_buttons
+    - anmad_run
+    - redis
