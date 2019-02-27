@@ -87,7 +87,6 @@
     - name: git retest commands to enable re-provisioning
       shell: "echo {{ 99999 |random }} > testfile &&
               git add testfile &&
-              git rm ansible/deploy3.yaml &&
               git commit -m 'random commit {{ 99999 |random }}' &&
               git fetch &&
               git push"
