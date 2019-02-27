@@ -71,10 +71,10 @@ Vagrant.configure(2) do |config|
             master_ansible_user_vaultfile: '/srv/anmad/testvault',
             anmad_inventories: ['/vagrant/inventory-internal'],
             anmad_playbooks: [
-              '/srv/configmanagement/ansible/deploy.yaml',
-              '/srv/configmanagement/ansible/deploy2.yaml'],
+              'deploy.yaml',
+              'deploy2.yaml'],
             anmad_prerun: [
-              '/srv/configmanagement/ansible/deploy.yaml'],
+              'deploy.yaml'],
             anmad_ara_url: 'http://ansible-master-vagrant:9191/',
             anmad_debug: 'True',
             syntax_check_dir: '/srv/configmanagement/ansible'
