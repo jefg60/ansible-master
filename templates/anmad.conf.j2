@@ -14,3 +14,6 @@ ssh_askpass = /usr/bin/ssh-askpass
 {% if anmad_ara_url is defined %}
 ara_url = {{ anmad_ara_url }}
 {% endif %}
+{% if anmad_debug is defined %}
+debug = True
+{% endif %}
