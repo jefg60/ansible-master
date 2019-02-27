@@ -58,9 +58,9 @@
         force: true
       become: yes
 
-    - name: restart anmad_dirpoll
+    - name: restart anmad_run
       service:
-        name: anmad_dirpoll
+        name: anmad_run
         state: restarted
       become: yes
 
