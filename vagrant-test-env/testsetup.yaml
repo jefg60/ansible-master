@@ -95,6 +95,6 @@
       become: no
       tags: git-test
 
-    - name: pause 5 sec
+    - name: pause 20 sec
       pause:
-        seconds: 5
+        seconds: 20
