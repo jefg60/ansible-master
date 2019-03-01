@@ -5,6 +5,7 @@
     - packages.yaml
     - ansible-user.yaml
     - git.yaml
+    - ssl.yaml
     - anmad.yaml
   loop_control:
     loop_var: include_item
