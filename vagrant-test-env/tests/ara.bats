@@ -2,9 +2,9 @@
 #
 
 @test "ara homepage responds" {
-    curl http://127.0.0.1:9191/about/ | grep 'ARA Records Ansible'
+    curl http://ansible-master-ara/about/ | grep 'ARA Records Ansible'
 }
 
 @test "ara has reports" {
-    curl http://127.0.0.1:9191/reports/ | grep 'deploy.yaml'
+    curl http://ansible-master-ara/reports/ | grep 'deploy.yaml'
 }

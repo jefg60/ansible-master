@@ -72,4 +72,4 @@
     url: "http://{{ anmad_host }}/"
     return_content: yes
   register: anmad_page
-  failed_when: "'run ALL playbooks' not in anmad_page.content"
+  failed_when: "'run ALL listed playbooks' not in anmad_page.content"
