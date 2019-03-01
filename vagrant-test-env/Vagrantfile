@@ -47,7 +47,8 @@ Vagrant.configure(2) do |config|
         machine.vm.provider "virtualbox" do |vbox|
           vbox.cpus = 2
         end #config.vm.define
-        machine.vm.network "forwarded_port", guest: 80, host: 8080, id: "apache"
+        machine.vm.network "forwarded_port", guest: 80, host: 8080, id: "apache80"
+        machine.vm.network "forwarded_port", guest: 443, host: 8443, id: "apache443"
         # ensure that ./roles/ansible-orchestration-linux is there
         galaxy_cmd = "ansible-galaxy install -p ./roles/ \
                       git+https://github.com/jefg60/ansible-orchestration-linux.git \

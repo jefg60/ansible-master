@@ -68,11 +68,12 @@
     var: ara_aboutpage
     verbosity: 1
 
-- name: TEST anmad homepage is up - external http server
+- name: TEST anmad homepage is up - external https server
   uri:
-    url: "http://{{ anmad_host }}/"
+    url: "https://{{ anmad_host }}/"
     user: "{{ anmad_control_username }}"
     password: "{{ anmad_control_password }}"
+    validate_certs: false
     return_content: yes
   register: anmad_page
   failed_when: "'run ALL listed playbooks' not in anmad_page.content"
