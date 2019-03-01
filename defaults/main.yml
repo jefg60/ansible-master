@@ -25,6 +25,8 @@ anmad_prerun:
 anmad_vaultpw_file: "~/.vaultpw"
 anmad_host: ansible-master-control
 anmad_ara_url: "http://{{ ara_override.config.host }}:8080/"
+anmad_control_username: admin
+anmad_control_password: password
 start_anmad_daemon: false
 
 ara_override:

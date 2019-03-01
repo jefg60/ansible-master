@@ -70,6 +70,8 @@
 - name: TEST anmad homepage is up - external http server
   uri:
     url: "http://{{ anmad_host }}/"
+    user: "{{ anmad_control_username }}"
+    password: "{{ anmad_control_password }}"
     return_content: yes
   register: anmad_page
   failed_when: "'run ALL listed playbooks' not in anmad_page.content"

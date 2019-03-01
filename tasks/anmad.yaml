@@ -104,3 +104,12 @@
     state: link
   notify:
     - reload apache
+
+- name: Create admin user for control page
+  htpasswd:
+    path: /etc/htpasswd/.htpasswd
+    name: "{{ anmad_control_username }}"
+    password: "{{ anmad_control_password }}"
+    owner: root
+    group: www-data
+    mode: 0640
