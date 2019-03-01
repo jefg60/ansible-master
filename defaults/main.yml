@@ -23,6 +23,7 @@ anmad_prerun:
   - "ansible-galaxy.yaml"
   - "ansible-master.yaml"
 anmad_vaultpw_file: "~/.vaultpw"
+anmad_host: anmad-control
 start_anmad_daemon: false
 
 ara_override:
