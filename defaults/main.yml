@@ -24,6 +24,7 @@ anmad_prerun:
   - "ansible-master.yaml"
 anmad_vaultpw_file: "~/.vaultpw"
 anmad_host: ansible-master-control
+anmad_ara_url: "{{ ara_override.config.host }}"
 start_anmad_daemon: false
 
 ara_override:
