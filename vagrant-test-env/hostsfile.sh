@@ -7,5 +7,7 @@ grep -q $1 /etc/hosts && exit 0
 # build the hosts file
 echo "$1"12 vagrant0 >>/etc/hosts 
 echo "$1"13 ansible-master-vagrant >>/etc/hosts
+echo "$1"13 ansible-master-ara >>/etc/hosts
+echo "$1"13 ansible-master-control >>/etc/hosts
 
 grep $1 /etc/hosts && exit 0

@@ -24,7 +24,7 @@ anmad_prerun:
   - "ansible-master.yaml"
 anmad_vaultpw_file: "~/.vaultpw"
 anmad_host: ansible-master-control
-anmad_ara_url: "{{ ara_override.config.host }}"
+anmad_ara_url: "http://{{ ara_override.config.host }}:8080/"
 start_anmad_daemon: false
 
 ara_override:
@@ -36,7 +36,6 @@ ara_override:
     user: "{{ ansible_orchestration_user }}"
     shell: /bin/bash
     group: "{{ ansible_orchestration_group }}"
-    host: "0.0.0.0"
   install:
     pip:
       virtualenv_path: /opt/ansible-master
