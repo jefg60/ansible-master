@@ -23,7 +23,7 @@ anmad_prerun:
   - "ansible-galaxy.yaml"
   - "ansible-master.yaml"
 anmad_vaultpw_file: "~/.vaultpw"
-anmad_host: anmad-control
+anmad_host: ansible-master-control
 start_anmad_daemon: false
 
 ara_override:
@@ -31,6 +31,7 @@ ara_override:
     server: apache
     type: mod_wsgi
   config:
+    host: ansible-master-ara
     user: "{{ ansible_orchestration_user }}"
     shell: /bin/bash
     group: "{{ ansible_orchestration_group }}"
