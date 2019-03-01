@@ -68,7 +68,6 @@
     group: root
   loop:
     - anmad_dirpoll
-    - anmad_buttons
     - anmad_run
   tags: anmad
   notify:
@@ -83,6 +82,25 @@
     masked: false
   loop:
     - anmad_dirpoll
-    - anmad_buttons
     - anmad_run
     - redis
+
+- name: deploy anmad-buttons apache configfile
+  template:
+    src: anmad-buttons-wsgi.conf
+    dest: /etc/apache2/sites-available
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload apache
+
+- name: symlink anmad-buttons apache config to sites-enabled
+  file:
+    src: /etc/apache2/sites-available/anmad-buttons-wsgi.conf
+    dest: /etc/apache2/sites-enabled/anmad-buttons-wsgi.conf
+    owner: root
+    group: root
+    state: link
+  notify:
+    - reload apache
