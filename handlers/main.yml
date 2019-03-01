@@ -10,18 +10,12 @@
     name: anmad_dirpoll
     state: restarted
 
-- name: restart anmad_buttons
-  service:
-    name: anmad_buttons
-    state: restarted
-
 - name: restart anmad
   service:
     name: "{{ item }}"
     state: restarted
   loop:
     - anmad_dirpoll
-    - anmad_buttons
     - anmad_run
 
 - name: systemctl daemon-reload
