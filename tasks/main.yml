@@ -66,3 +66,10 @@
   debug:
     var: ara_aboutpage
     verbosity: 1
+
+- name: TEST anmad homepage is up - external http server
+  uri:
+    url: "http://{{ anmad_host }}/"
+    return_content: yes
+  register: anmad_page
+  failed_when: "'run ALL playbooks' not in anmad_page.content"
