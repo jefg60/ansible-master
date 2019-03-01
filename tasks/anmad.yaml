@@ -85,6 +85,11 @@
     - anmad_run
     - redis
 
+- name: enable apache2 ssl module
+  apache2_module:
+    state: present
+    name: ssl
+
 - name: deploy anmad-buttons apache configfile
   template:
     src: anmad-buttons-wsgi.conf
