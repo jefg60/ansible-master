@@ -27,6 +27,9 @@ anmad_host: anmad-control
 start_anmad_daemon: false
 
 ara_override:
+  deployment:
+    server: apache
+    type: mod_wsgi
   config:
     user: "{{ ansible_orchestration_user }}"
     shell: /bin/bash
