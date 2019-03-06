@@ -33,6 +33,26 @@
     force: true
   when: link_ansible_cfg
 
+- name: deploy ara ssl apache configfile
+  template:
+    src: ara-wsgi-ssl.conf
+    dest: /etc/apache2/sites-available
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload apache
+
+- name: symlink ara-wsgi-ssl apache config to sites-enabled
+  file:
+    src: /etc/apache2/sites-available/ara-wsgi-ssl.conf
+    dest: /etc/apache2/sites-enabled/ara-wsgi-ssl.conf
+    owner: root
+    group: root
+    state: link
+  notify:
+    - reload apache
+
 - name: flush handlers before doing tests
   meta: flush_handlers
 
