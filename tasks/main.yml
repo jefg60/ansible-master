@@ -43,6 +43,13 @@
   notify:
     - reload apache
 
+- name: disable ara http conf
+  file:
+    path: /etc/apache2/sites-enabled/ara.conf
+    state: absent
+  notify:
+    - reload apache
+
 - name: symlink ara-wsgi-ssl apache config to sites-enabled
   file:
     src: /etc/apache2/sites-available/ara-wsgi-ssl.conf
@@ -62,10 +69,11 @@
     host: "{{ ara.config.host }}"
   when: ara.deployment.server == 'embedded'
 
-- name: TEST ara homepage is up - external http server
+- name: TEST ara homepage is up - external https server
   uri:
-    url: "http://{{ ara.config.host }}/about/"
+    url: "https://{{ ara.config.host }}/about/"
     return_content: yes
+    validate_certs: false
   register: ara_aboutpage
   when: ara.deployment.server != 'embedded'
   failed_when: "'ARA Records Ansible' not in ara_aboutpage.content"
