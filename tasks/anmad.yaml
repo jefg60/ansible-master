@@ -5,7 +5,7 @@
     repo: https://github.com/jefg60/anmad.git
     dest: /srv/anmad
     clone: yes
-    version: dev
+    version: 0.10.1
   tags: anmad
   notify:
     - restart anmad
