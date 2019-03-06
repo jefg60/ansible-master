@@ -33,6 +33,8 @@ ara_override:
   deployment:
     server: apache
     type: mod_wsgi
+    apache:
+      ssl: true
   config:
     host: ansible-master-ara
     user: "{{ ansible_orchestration_user }}"
