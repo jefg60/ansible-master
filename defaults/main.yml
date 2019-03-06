@@ -12,7 +12,6 @@ git_ansible_hook: "echo This command does nothing by default"
 master_ansible_user_ssh_phrase: ""
 ansible_orchestration_user: "ansible"
 ansible_orchestration_group: "ansible"
-ansible_install_version: "2.5.1+dfsg-1"
 
 anmad_inventories:
   - "{{ git_repo_target }}/{{git_branch}}-inventory"
@@ -27,6 +26,7 @@ anmad_host: ansible-master-control
 anmad_ara_url: "https://{{ ara_override.config.host }}/"
 anmad_control_username: admin
 anmad_control_password: password
+anmad_buttons_enable: true
 start_anmad_daemon: false
 
 ara_override:
