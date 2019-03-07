@@ -21,7 +21,7 @@ version=0.10.1
 }
 
 @test "anmad_buttons control page has a deploy2.yaml button" {
-    curl -k -u admin:password https://ansible-master-control/ | grep 'deploy2.yaml'
+    curl -k -u admin:password https://ansible-master-control:8443/ | grep 'deploy2.yaml'
 }
 
 @test "anmad_dirpoll service is running" {

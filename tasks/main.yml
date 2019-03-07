@@ -44,7 +44,7 @@
 
 - name: TEST ara homepage is up - external https server
   uri:
-    url: "https://{{ ara.config.host }}:{{ ara.config.port }}/about/"
+    url: "https://{{ ara.config.host }}:{{ ara.config.port_ssl }}/about/"
     return_content: yes
     validate_certs: false
   register: ara_aboutpage
