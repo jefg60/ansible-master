@@ -38,7 +38,7 @@ ara_override:
       ssl: true
   config:
     host: ansible-master-ara
-    port: 8443
+    port_ssl: 8443
     user: "{{ ansible_orchestration_user }}"
     shell: /bin/bash
     group: "{{ ansible_orchestration_group }}"
