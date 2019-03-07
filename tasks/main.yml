@@ -44,7 +44,7 @@
 
 - name: TEST ara homepage is up - external https server
   uri:
-    url: "https://{{ ara.config.host }}/about/"
+    url: "https://{{ ara.config.host }}:{{ ara.config.port }}/about/"
     return_content: yes
     validate_certs: false
   register: ara_aboutpage
@@ -71,7 +71,7 @@
 
 - name: TEST anmad homepage is up - external https server
   uri:
-    url: "https://{{ anmad_host }}/"
+    url: "https://{{ anmad_host }}:{{ anmad_port }}/"
     user: "{{ anmad_control_username }}"
     password: "{{ anmad_control_password }}"
     validate_certs: false

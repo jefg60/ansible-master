@@ -23,6 +23,7 @@ anmad_prerun:
   - "ansible-master.yaml"
 anmad_vaultpw_file: "~/.vaultpw"
 anmad_host: ansible-master-control
+anmad_port: 443
 anmad_ara_url: "https://{{ ara_override.config.host }}/"
 anmad_control_username: admin
 anmad_control_password: password
@@ -37,6 +38,7 @@ ara_override:
       ssl: true
   config:
     host: ansible-master-ara
+    port: 443
     user: "{{ ansible_orchestration_user }}"
     shell: /bin/bash
     group: "{{ ansible_orchestration_group }}"
