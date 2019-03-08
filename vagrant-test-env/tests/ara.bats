@@ -9,7 +9,7 @@
     curl -k -u admin:password https://ansible-master-ara:8443/reports/ | grep 'deploy.yaml'
 }
 
-@test "ara page reuires a password" {
+@test "ara page requires a password" {
     run curl -k https://ansible-master-ara:8443/
     [[ "$output" = *"401 Unauthorized"* ]]
 }
