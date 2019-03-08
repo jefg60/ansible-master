@@ -33,6 +33,13 @@
     force: true
   when: link_ansible_cfg
 
+- name: Ensure Apache server is started
+  become: true
+  systemd:
+    state: started
+    name: apache2
+    enabled: true
+
 - name: flush handlers before doing tests
   meta: flush_handlers
 
