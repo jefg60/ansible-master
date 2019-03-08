@@ -33,6 +33,13 @@
     force: true
   when: link_ansible_cfg
 
+- name: Ensure Apache server is started
+  become: true
+  systemd:
+    state: started
+    name: apache2
+    enabled: true
+
 - name: flush handlers before doing tests
   meta: flush_handlers
 
@@ -45,8 +52,10 @@
 - name: TEST ara homepage is up - external https server
   uri:
     url: "https://{{ ara.config.host }}:{{ ara.config.port_ssl }}/about/"
-    return_content: yes
+    user: "{{ anmad_control_username }}"
+    password: "{{ anmad_control_password }}"
     validate_certs: false
+    return_content: yes
   register: ara_aboutpage
   when: ara.deployment.server != 'embedded'
   failed_when: "'ARA Records Ansible' not in ara_aboutpage.content"

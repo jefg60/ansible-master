@@ -112,13 +112,19 @@
       notify:
         - reload apache
 
-    - name: Create admin user for control page
-      htpasswd:
-        path: /etc/htpasswd/.htpasswd
-        name: "{{ anmad_control_username }}"
-        password: "{{ anmad_control_password }}"
+    - name: create /etc/htpasswd folder
+      file:
+        path: /etc/htpasswd
+        state: directory
         owner: root
-        group: www-data
-        mode: 0640
+        group: root
+        mode: 0755
+
+    # command is used here because htpasswd module doesnt work with bcrypt
+    - name: Create admin user in htpasswd file with bcrypt
+      command: "htpasswd -b -c -B -C 11 /etc/htpasswd/.htpasswd \
+        {{ anmad_control_username }} {{ anmad_control_password }}"
+      changed_when: false
+
   # when is against the block 'Enable anmad buttons interface'
   when: anmad_buttons_enable

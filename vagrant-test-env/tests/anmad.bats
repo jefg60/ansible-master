@@ -16,12 +16,17 @@ version=0.10.1
     [[ "$output" = "$version" ]]
 }
 
+@test "anmad_buttons control page has a deploy2.yaml button" {
+    curl -k -u admin:password https://ansible-master-control:8443/ | grep 'deploy2.yaml'
+}
+
 @test "anmad_buttons has its own log file" {
     sudo grep INFO /var/log/anmad_buttons
 }
 
-@test "anmad_buttons control page has a deploy2.yaml button" {
-    curl -k -u admin:password https://ansible-master-control:8443/ | grep 'deploy2.yaml'
+@test "anmad buttons control page requires authentication" {
+    run curl -k https://ansible-master-control:8443/
+    [[ "$output" = *"401 Unauthorized"* ]]
 }
 
 @test "anmad_dirpoll service is running" {
