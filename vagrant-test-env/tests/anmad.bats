@@ -24,6 +24,11 @@ version=0.10.1
     curl -k -u admin:password https://ansible-master-control:8443/ | grep 'deploy2.yaml'
 }
 
+@test "anmad buttons control page requires authentication" {
+    run curl -k https://ansible-master-control:8443/
+    [[ "$output" = *"401 Unauthorized"* ]]
+}
+
 @test "anmad_dirpoll service is running" {
     sudo service anmad_dirpoll status
 }
