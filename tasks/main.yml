@@ -45,11 +45,10 @@
 - name: TEST ara homepage is up - external https server
   uri:
     url: "https://{{ ara.config.host }}:{{ ara.config.port_ssl }}/about/"
-    return_content: yes
-    validate_certs: false
     user: "{{ anmad_control_username }}"
     password: "{{ anmad_control_password }}"
     validate_certs: false
+    return_content: yes
   register: ara_aboutpage
   when: ara.deployment.server != 'embedded'
   failed_when: "'ARA Records Ansible' not in ara_aboutpage.content"
