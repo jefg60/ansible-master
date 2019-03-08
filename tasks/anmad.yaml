@@ -112,9 +112,17 @@
       notify:
         - reload apache
 
+    - name: create /etc/htpasswd folder
+      file:
+        path: /etc/htpasswd
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
     # command is used here because htpasswd module doesnt work with bcrypt
     - name: Create admin user in htpasswd file with bcrypt
-      command: "htpasswd -b -B -C 13 /etc/htpasswd/.htpasswd \
+      command: "htpasswd -b -c -B -C 13 /etc/htpasswd/.htpasswd \
         {{ anmad_control_username }} {{ anmad_control_password }}"
       changed_when: false
 
