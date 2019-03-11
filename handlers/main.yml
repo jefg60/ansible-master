@@ -17,6 +17,7 @@
   loop:
     - anmad_dirpoll
     - anmad_run
+    - apache2
 
 - name: systemctl daemon-reload
   systemd:
