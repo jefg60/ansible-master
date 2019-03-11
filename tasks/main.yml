@@ -42,6 +42,15 @@
     - "{{ anmad_host }}"
     - "{{ ara.config.host }}"
 
+- name: add ansible logging opt to ansible/ara.cfg
+  ini_file:
+    dest: /etc/ara/ara.cfg
+    section: defaults
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { option: log_path, value: /var/log/ansible/ansible.log }
+
 - name: Ensure Apache server is started
   become: true
   systemd:
