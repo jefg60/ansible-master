@@ -33,6 +33,15 @@
     force: true
   when: link_ansible_cfg
 
+- name: put apache virtualhosts into hosts file
+  lineinfile:
+    path: /etc/hosts
+    regexp: "^127.0.0.1 {{ item }}"
+    line: "127.0.0.1 {{ item }}"
+  loop:
+    - "{{ anmad_host }}"
+    - "{{ ara.config.host }}"
+
 - name: Ensure Apache server is started
   become: true
   systemd:
