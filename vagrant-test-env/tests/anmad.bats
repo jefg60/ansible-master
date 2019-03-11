@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 #
-version=0.10.1
+version=0.10.3
 
 @test "anmad_dirpoll version $version" {
     run /opt/ansible-master/bin/python3 /srv/anmad/anmad_dirpoll.py --version
