@@ -76,7 +76,6 @@ Vagrant.configure(2) do |config|
             anmad_prerun: [
               'deploy.yaml'],
             anmad_debug: 'True',
-            anmad_interval: '1',
             anmad_ara_url: 'https://ansible-master-ara:8443/',
             syntax_check_dir: '/srv/configmanagement/ansible'
           }
