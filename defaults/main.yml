@@ -27,8 +27,6 @@ anmad_port: 8443
 anmad_ara_url: "https://{{ ara_override.config.host }}:{{ ara_override.config.port_ssl }}/"
 anmad_control_username: admin
 anmad_control_password: password
-anmad_buttons_enable: true
-start_anmad_daemon: false
 
 ara_override:
   deployment:
