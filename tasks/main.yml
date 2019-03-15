@@ -1,5 +1,5 @@
 ---
-- name: install packages, set up git
+- name: install packages, set up git and anmad
   include: "{{ include_item }}"
   with_items:
     - packages.yaml

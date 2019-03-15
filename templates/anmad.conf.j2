@@ -2,7 +2,6 @@ inventories = [{% for inv in anmad_inventories %}{{ inv }}, {% endfor %}]
 playbook_root_dir = {{ anmad_root }}
 playbooks = [{% for play in anmad_playbooks %}{{ play }}, {% endfor %}]
 venv = {{ ara_override.install.pip.virtualenv_path }}
-dir_to_watch = {{ git_log_dir }}
 {% if syntax_check_dir is defined %}
 syntax_check_dir = {{ syntax_check_dir }}
 {% endif %}
@@ -11,9 +10,6 @@ pre_run_playbooks = [{% for play in anmad_prerun %}{{ play }}, {% endfor %}]
 {% endif %}
 {% if master_ansible_user_vaultfile is defined %}
 ssh_askpass = /usr/bin/ssh-askpass
-{% endif %}
-{% if anmad_interval is defined %}
-interval = {{ anmad_interval }}
 {% endif %}
 {% if anmad_ara_url is defined %}
 ara_url = {{ anmad_ara_url }}
