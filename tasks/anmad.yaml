@@ -81,47 +81,42 @@
     - anmad_run
     - redis
 
-- name: Enable anmad buttons interface
-  block:
-    - name: enable apache2 ssl module
-      apache2_module:
-        state: present
-        name: ssl
+- name: enable apache2 ssl module
+  apache2_module:
+    state: present
+    name: ssl
 
-    - name: deploy anmad-buttons apache configfile
-      template:
-        src: anmad-buttons-wsgi.conf
-        dest: /etc/apache2/sites-available
-        owner: root
-        group: root
-        mode: 0644
-      notify:
-        - reload apache
+- name: deploy anmad-buttons apache configfile
+  template:
+    src: anmad-buttons-wsgi.conf
+    dest: /etc/apache2/sites-available
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload apache
 
-    - name: symlink anmad-buttons apache config to sites-enabled
-      file:
-        src: /etc/apache2/sites-available/anmad-buttons-wsgi.conf
-        dest: /etc/apache2/sites-enabled/anmad-buttons-wsgi.conf
-        owner: root
-        group: root
-        state: link
-      notify:
-        - reload apache
+- name: symlink anmad-buttons apache config to sites-enabled
+  file:
+    src: /etc/apache2/sites-available/anmad-buttons-wsgi.conf
+    dest: /etc/apache2/sites-enabled/anmad-buttons-wsgi.conf
+    owner: root
+    group: root
+    state: link
+  notify:
+    - reload apache
 
-    - name: create /etc/htpasswd folder
-      file:
-        path: /etc/htpasswd
-        state: directory
-        owner: root
-        group: root
-        mode: 0755
+- name: create /etc/htpasswd folder
+  file:
+    path: /etc/htpasswd
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
 
-    # command is used here because htpasswd module doesnt work with bcrypt
-    - name: Create admin user in htpasswd file with bcrypt
-      command: "htpasswd -b -c -B -C 11 /etc/htpasswd/.htpasswd \
-        {{ anmad_control_username }} {{ anmad_control_password }}"
-      changed_when: false
-      no_log: true
-
-  # when is against the block 'Enable anmad buttons interface'
-  when: anmad_buttons_enable
+# command is used here because htpasswd module doesnt work with bcrypt
+- name: Create admin user in htpasswd file with bcrypt
+  command: "htpasswd -b -c -B -C 11 /etc/htpasswd/.htpasswd \
+    {{ anmad_control_username }} {{ anmad_control_password }}"
+  changed_when: false
+  no_log: true
