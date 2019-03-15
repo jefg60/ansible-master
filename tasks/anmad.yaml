@@ -5,7 +5,7 @@
     repo: https://github.com/jefg60/anmad.git
     dest: /srv/anmad
     clone: yes
-    version: 0.10.3
+    version: 0.11.0
   tags: anmad
   notify:
     - restart anmad
@@ -37,7 +37,6 @@
     owner: root
     group: root
   loop:
-    - anmad_dirpoll
     - anmad_buttons
     - anmad_run
   tags: anmad
@@ -52,7 +51,6 @@
     owner: root
     group: root
   loop:
-    - anmad_dirpoll
     - anmad_buttons
     - anmad_run
   tags: anmad
@@ -67,7 +65,6 @@
     owner: root
     group: root
   loop:
-    - anmad_dirpoll
     - anmad_run
   tags: anmad
   notify:
@@ -81,7 +78,6 @@
     enabled: true
     masked: false
   loop:
-    - anmad_dirpoll
     - anmad_run
     - redis
 

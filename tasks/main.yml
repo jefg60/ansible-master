@@ -104,4 +104,4 @@
     validate_certs: false
     return_content: yes
   register: anmad_page
-  failed_when: "'run ALL listed playbooks' not in anmad_page.content"
+  failed_when: "'run all (green) playbooks' not in anmad_page.content"
