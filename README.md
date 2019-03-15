@@ -1,18 +1,15 @@
 Ansible Master
 =========
 
-Sets up an ansible master server (should be the only server in a group called ansible-master), creates a git repo for your code on it. Adds git post-update hooks so that this repo is checked out in a "run directory" for running ansible playbooks from. Also provides a browser interface with buttons to run your playbooks from the server, if desired / enabled.
+Sets up an ansible master server (should be the only server in a group called ansible-master), creates a git repo for your code on it. Adds git post-update hooks so that this repo is checked out in a "run directory" for running ansible playbooks from. Also provides a browser interface with buttons to run your playbooks from the server.
 
 In my workflow I use one of these per environment (dev/prod/staging etc) with a separate inventory for each. I then push the staging branch of my config management repo to the staging server, and the prod branch to the prod server, etc.
 
 The end result should be that when you push changes to a branch of your configmanagement git repo, they are synced to the run directory on this master and can be deployed automatically each time the repo is pushed. Alternatively buttons on the browser interface can be created to run all conifgured playbooks, or individually run one at a time.
 
-A daemon is included that can poll the git log directory for any changes. When the git repo is updated, a line will be added to the log, and the anmad.py daemon will detect this and trigger an ansible run, for the playbooks and secrets etc it is configured to use. See https://github.com/jefg60/anmad for more info.
-
-Example vars for this:
+Example vars:
 
 ```
-start_anmad_daemon: true
 anmad_playbooks:
   - deploy.yaml
   - deploy2.yaml
@@ -21,7 +18,7 @@ anmad_prerun:
   - ansible-master.yaml
 ```
 
-Using the above configuration, an ansible-galaxy.yaml play is run to fetch roles from ansible-galaxy as defined in a requirements file, then this role is (re)deployed, and if those two both succeed, other playbooks run, potentially in paralell to speed up testing.
+Using the above configuration, an ansible-galaxy.yaml play is run to fetch roles from ansible-galaxy as defined in a requirements file, then this role is (re)deployed, and if those two both succeed, other playbooks run, potentially in paralell to speed up testing (default concurrency is number of cpus reported by the OS).
 
 The end result is that all ansible playbooks are run from a centrally controlled server whenever changes are pushed to the relevant branch, enabling automated tests of the playbooks when changes are made.
 
@@ -44,7 +41,7 @@ syntax_check_dir: directory to scan for .yml or .yaml files on each run and synt
 
 master_ansible_user_ssh_phrase: use to set a passphrase on the master ansible user's ssh private key. To ensure that the anmad daemons which run playbooks are able to start, you'll need to ensure that the vault password file is set and that you have included a vault which contains master_ansible_user_ssh_phrase in the anmad config variable master_ansible_user_vaultfile.
 
-Hopefully the role defaults file will explain the default vars. Of note is ara_override which is used to configure the ARA role. To override any of these, you'll need to populate all of ara_override in your own vars files.
+Hopefully the role defaults file will explain the default vars. Of note is ara_override which is used to configure the ARA role. To override of these, you'll need to populate all of ara_override in your own vars files.
 
 Dependencies
 ------------
