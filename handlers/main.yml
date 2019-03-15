@@ -5,17 +5,11 @@
     name: rsyslog
     state: restarted
 
-- name: restart anmad_dirpoll
-  service:
-    name: anmad_dirpoll
-    state: restarted
-
 - name: restart anmad
   service:
     name: "{{ item }}"
     state: restarted
   loop:
-    - anmad_dirpoll
     - anmad_run
 
 - name: systemctl daemon-reload

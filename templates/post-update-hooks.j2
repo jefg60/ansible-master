@@ -6,3 +6,4 @@ git merge origin/{{ git_branch }} || exit
 git checkout {{ git_branch }} || exit
 cd {{ git_log_dir }} || exit
 echo "$(date) {{ git_repo_name }} has been pushed to {{ git_branch }}" >> {{ git_log_dir }}/{{ git_repo_name }}.log
+curl -k -u {{ anmad_control_username }}:{{ anmad_control_password }} https://{{ anmad_host }}:{{ anmad_port }}/runall

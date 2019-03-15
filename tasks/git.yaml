@@ -59,7 +59,8 @@
   template:
     src: "post-update-hooks.j2"
     dest: "{{ git_homedir }}/{{ git_repo_name }}.post-update-hooks.sh"
-    mode: 0755
+    group: git
+    mode: 0750
 
 - name: post-update git hook config
   template:

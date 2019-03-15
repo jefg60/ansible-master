@@ -1,15 +1,6 @@
 #!/usr/bin/env bats
 #
-version=0.10.3
-
-@test "anmad_dirpoll version $version" {
-    run /opt/ansible-master/bin/python3 /srv/anmad/anmad_dirpoll.py --version
-    [[ "$output" = "$version" ]]
-}
-
-@test "anmad_dirpoll has its own log file" {
-    sudo grep INFO /var/log/anmad_dirpoll
-}
+version=0.11.0
 
 @test "anmad_buttons version $version" {
     run /opt/ansible-master/bin/python3 /srv/anmad/anmad_buttons.py --version
@@ -27,10 +18,6 @@ version=0.10.3
 @test "anmad buttons control page requires authentication" {
     run curl -k https://ansible-master-control:8443/
     [[ "$output" = *"401 Unauthorized"* ]]
-}
-
-@test "anmad_dirpoll service is running" {
-    sudo service anmad_dirpoll status
 }
 
 @test "anmad_run service is running" {
