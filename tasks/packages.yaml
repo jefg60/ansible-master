@@ -47,7 +47,6 @@
       - pywinrm
       - dnspython
       - ssh-agent-setup
-      - watchdog3
       - configargparse
       - flask
       - hotqueue
