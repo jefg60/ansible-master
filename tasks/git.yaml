@@ -60,6 +60,7 @@
     dest: "{{ git_homedir }}/{{ git_repo_name }}.post-update-hooks.sh"
     group: git
     mode: 0750
+  no_log: true
 
 - name: post-update git hook config
   template:
