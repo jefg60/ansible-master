@@ -1,11 +1,22 @@
+{% if anmad_inventories is string %}
+inventories = [{{ anmad_inventories }}]
+{% else %}
 inventories = [{% for inv in anmad_inventories %}{{ inv }}, {% endfor %}]
+{% endif %}
 playbook_root_dir = {{ anmad_root }}
+{% if anmad_playbooks is string %}
+playbooks = [{{ anmad_playbooks }}]
+{% else %}
 playbooks = [{% for play in anmad_playbooks %}{{ play }}, {% endfor %}]
+{% endif %}
 venv = {{ ara_override.install.pip.virtualenv_path }}
 {% if syntax_check_dir is defined %}
 syntax_check_dir = {{ syntax_check_dir }}
 {% endif %}
-{% if anmad_prerun is defined %}
+{% if anmad_prerun is defined and anmad_prerun is string %}
+pre_run_playbooks = [{{ anmad_prerun }}]
+{% endif %}
+{% if anmad_prerun is defined and anmad_prerun is not string %}
 pre_run_playbooks = [{% for play in anmad_prerun %}{{ play }}, {% endfor %}]
 {% endif %}
 {% if master_ansible_user_vaultfile is defined %}
