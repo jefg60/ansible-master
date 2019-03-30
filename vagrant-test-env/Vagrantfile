@@ -68,13 +68,11 @@ Vagrant.configure(2) do |config|
             ansible_python_interpreter: '/usr/bin/python3',
             master_ansible_user_ssh_phrase: '1234567890abc321',
             master_ansible_user_vaultfile: '/srv/anmad/testvault',
-            anmad_inventories: ['/vagrant/inventory-internal',
-                                '/vagrant/inventory-internal'],
+            anmad_inventories: '/vagrant/inventory-internal',
             anmad_playbooks: [
               'deploy.yaml',
               'deploy2.yaml'],
-            anmad_prerun: [
-              'deploy.yaml'],
+            anmad_prerun: 'deploy.yaml',
             anmad_debug: 'True',
             anmad_ara_url: 'https://ansible-master-ara:8443/',
             syntax_check_dir: '/srv/configmanagement/ansible'
