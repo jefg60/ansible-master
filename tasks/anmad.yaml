@@ -29,6 +29,14 @@
     group: root
   tags: anmad
 
+- name: symlink anmad_run config to anmad_restart
+  file:
+    src: /etc/anmad/conf.d/anmad_run.py
+    dest: /etc/anmad/conf.d/anmad_restart.py
+    owner: root
+    group: root
+    state: link
+
 - name: deploy anmad config files
   template:
     src: anmad.conf.j2
@@ -41,7 +49,7 @@
     - anmad_run
   tags: anmad
   notify:
-    - restart anmad
+    - reload anmad
 
 - name: deploy anmad rsyslog conf
   copy:
