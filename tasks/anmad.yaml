@@ -5,10 +5,10 @@
     repo: https://github.com/jefg60/anmad.git
     dest: /srv/anmad
     clone: yes
-    version: 0.12.2
+    version: 0.13.0
   tags: anmad
   notify:
-    - restart anmad
+    - reload anmad
 
 - name: deploy ssh-askpass script
   template:
