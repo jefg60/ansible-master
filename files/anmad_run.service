@@ -8,6 +8,7 @@ User=ansible
 Group=ansible
 WorkingDirectory=/opt/ansible-master/
 ExecStart=/opt/ansible-master/bin/python3 /srv/anmad/anmad_run.py
+ExecReload=/opt/ansible-master/bin/python3 /srv/anmad/anmad_restart.py
 StandardOutput=syslog
 StandardError=syslog
 
