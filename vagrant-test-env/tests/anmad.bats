@@ -1,10 +1,14 @@
 #!/usr/bin/env bats
 #
-version=0.13.1
+version=0.13.2
 
 @test "anmad_buttons version $version" {
     run /opt/ansible-master/bin/python3 /srv/anmad/anmad_buttons.py --version
     [[ "$output" = "$version" ]]
+}
+
+@test "anmad_buttons control page has correct version $version" {
+    curl -k -u admin:password https://ansible-master-control:8443/ | grep $version
 }
 
 @test "anmad_buttons control page has a deploy2.yaml button" {

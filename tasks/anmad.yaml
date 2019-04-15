@@ -5,7 +5,7 @@
     repo: https://github.com/jefg60/anmad.git
     dest: /srv/anmad
     clone: yes
-    version: 0.13.1
+    version: 0.13.2
   tags: anmad
   notify:
     - reload anmad
@@ -36,6 +36,8 @@
     owner: root
     group: root
     state: link
+    force: true
+    follow: false
 
 - name: deploy anmad config files
   template:
