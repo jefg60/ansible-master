@@ -5,6 +5,10 @@
     name: rsyslog
     state: restarted
 
+- name: systemctl daemon-reload
+  systemd:
+    daemon_reload: yes
+
 - name: restart anmad
   service:
     name: "{{ item }}"
@@ -20,10 +24,6 @@
   loop:
     - anmad_run
     - apache2
-
-- name: systemctl daemon-reload
-  systemd:
-    daemon_reload: yes
 
 - name: reload apache
   service:
