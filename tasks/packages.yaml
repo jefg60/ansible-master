@@ -35,7 +35,7 @@
       - redis
       - apache2-dev
       - python3-passlib
-    state: present
+    state: latest
     update_cache: yes
 
 - name: install pip packages to virtualenv
@@ -55,3 +55,4 @@
     virtualenv: "{{ ara_override.install.pip.virtualenv_path }}"
     virtualenv_python: python3
     virtualenv_site_packages: true
+    state: latest
