@@ -17,6 +17,7 @@
     ssh_key_comment: "ansible orchestration user"
     ssh_key_passphrase: "{{ master_ansible_user_ssh_phrase }}"
     update_password: always
+    password: "*"
   register: master_ansible_user
 
 - debug:
