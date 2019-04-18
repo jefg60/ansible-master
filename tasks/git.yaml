@@ -4,6 +4,7 @@
     name: "{{ git_username }}"
     shell: /usr/bin/git-shell
     home: "{{ git_homedir }}"
+    password: "*"
 
 - name: create git-shell-commands
   file:
