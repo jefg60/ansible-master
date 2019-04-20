@@ -15,8 +15,8 @@
     src: ssh-askpass.j2
     dest: /usr/bin/ssh-askpass
     owner: root
-    group: root
-    mode: 0755
+    group: "{{ ansible_orchestration_group }}"
+    mode: 0750
   when: master_ansible_user_vaultfile is defined
   tags: anmad
 
