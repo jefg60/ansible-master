@@ -24,6 +24,7 @@
   loop:
     - anmad_run
     - apache2
+  ignore_errors: true
 
 - name: reload apache
   service:
