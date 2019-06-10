@@ -26,7 +26,7 @@
 
 # deploy3.yaml breaks things on purpose before it is removed
 @test "deploy3.yaml causes a failure that is logged" {
-    run sudo grep "failed playbook: /srv/configmanagement/ansible/deploy3.yaml" /var/log/syslog
+    run sudo grep "/srv/configmanagement/ansible/deploy3.yaml failed syntax check" /var/log/syslog
     [[ "$status" -eq 0 ]]
 }
 
