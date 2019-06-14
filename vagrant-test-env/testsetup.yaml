@@ -52,7 +52,7 @@
 
     - name: symlink vaultpw
       file:
-        src: /srv/anmad/vaultpassword
+        src: /srv/anmad/test/vaultpassword
         dest: /var/lib/ara/.vaultpw
         state: link
         force: true
