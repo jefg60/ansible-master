@@ -1,11 +1,11 @@
 Ansible Master
 =========
 
-Sets up an ansible master server (should be the only server in a group called ansible-master), creates a git repo for your code on it. Adds git post-update hooks so that this repo is checked out in a "run directory" for running ansible playbooks from. Also provides a browser interface with buttons to run your playbooks from the server.
+Sets up an ansible master server (should be the only server in a group called ansible-master), creates a git repo for your code on it. Adds git post-update hooks so that this repo is checked out in a "run directory" for running ansible playbooks from. Also provides a browser interface with buttons to run your playbooks from the server. See https://github.com/jefg60/anmad for more info on that.
 
 In my workflow I use one of these per environment (dev/prod/staging etc) with a separate inventory for each. I then push the staging branch of my config management repo to the staging server, and the prod branch to the prod server, etc.
 
-The end result should be that when you push changes to a branch of your configmanagement git repo, they are synced to the run directory on this master and can be deployed automatically each time the repo is pushed. Alternatively buttons on the browser interface can be created to run all conifgured playbooks, or individually run one at a time.
+The end result should be that when you push changes to a branch of your configmanagement git repo, they are synced to the run directory on this master and can be deployed automatically each time the repo is pushed. Buttons on the browser interface are created to run all configured playbooks, or individually run one at a time.
 
 Example vars:
 
