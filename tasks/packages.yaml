@@ -51,6 +51,7 @@
       - hotqueue
       - redis
       - cryptography
+      - psutil
     virtualenv: "{{ ara_override.install.pip.virtualenv_path }}"
     virtualenv_python: python3.7
     virtualenv_site_packages: true
