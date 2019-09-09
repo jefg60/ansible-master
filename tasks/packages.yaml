@@ -56,3 +56,11 @@
     virtualenv_python: python3.7
     virtualenv_site_packages: true
     state: latest
+
+- name: deploy ansible-playbook-wrapper script (log per playbook)
+  template:
+    src: ansible-playbook-wrapper.j2
+    dest: "{{ ara_override.install.pip.virtualenv_path }}/bin/ansible-playbook-wrapper"
+    owner: ansible
+    group: users
+    mode: 0770
