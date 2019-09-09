@@ -42,12 +42,14 @@
     - "{{ anmad_host }}"
     - "{{ ara.config.host }}"
 
-- name: add ansible logging opt to ansible/ara.cfg
+- name: remove ansible logging opt from ansible/ara.cfg
+  # (its now done by ansible-playbook-wrapper shell script as an env var)
   ini_file:
     dest: /etc/ara/ara.cfg
     section: defaults
     option: "{{ item.option }}"
     value: "{{ item.value }}"
+    state: absent
   with_items:
     - { option: log_path, value: /var/log/ansible/ansible.log }
 
