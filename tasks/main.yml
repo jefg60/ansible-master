@@ -43,7 +43,7 @@
     - "{{ ara.config.host }}"
 
 - name: remove ansible logging opt from ansible/ara.cfg
-  # (its now done by ansible-playbook-wrapper shell script as an env var)
+  # (its now done by an env var in the subprocess called by anmad)
   ini_file:
     dest: /etc/ara/ara.cfg
     section: defaults
