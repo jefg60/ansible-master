@@ -1,9 +1,0 @@
-#!/bin/bash
-# If there is more than one parameter, set log location to
-# /var/log/ansible/<last param>.log (using basename to remove amy path)
-if [ -n "$1" ]
-then
-  playname=$(basename "${@: -1}")
-  export ANSIBLE_LOG_PATH=/var/log/ansible/"$playname".log
-fi
-{{ ara_override.install.pip.virtualenv_path }}/bin/ansible-playbook $@
