@@ -27,3 +27,7 @@ version=0.16.6
 @test "anmad_run service is running" {
     sudo service anmad_run status
 }
+
+@test "deploy2.yaml.log exists" {
+  [[ -s /var/log/ansible/playbook/deploy2.yaml.log ]]
+}
