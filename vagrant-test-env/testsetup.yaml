@@ -1,5 +1,5 @@
 ---
-- hosts: ansible-master
+- hosts: ansible_master
   tasks:
     - name: clone bats from github
       git:

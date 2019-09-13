@@ -1,4 +1,4 @@
-[ansible-master]
+[ansible_master]
 ansible-master-vagrant ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 [linux]
 ansible-master-vagrant ansible_ssh_common_args='-o StrictHostKeyChecking=no'
