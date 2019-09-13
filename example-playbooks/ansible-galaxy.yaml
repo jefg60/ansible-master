@@ -1,7 +1,7 @@
 ---
 # First, basic stuff so that we fetch the required roles, including ansible-master role,
 # before trying to run any roles.
-- hosts: ansible-master
+- hosts: ansible_master
   tasks:
 
   - name: create ansible user

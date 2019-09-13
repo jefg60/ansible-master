@@ -1,5 +1,5 @@
 ---
-- hosts: ansible-master
+- hosts: ansible_master
   roles:
     - ansible-master
   become: yes
