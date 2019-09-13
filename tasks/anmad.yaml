@@ -29,14 +29,6 @@
     group: root
   tags: anmad
 
-- name: create anmad log dir
-  file:
-    path: /var/log/anmad/playbook
-    state: directory
-    mode: 0755
-    owner: "{{ ansible_orchestration_user }}"
-    group: "{{ ansible_orchestration_group }}"
-
 - name: symlink anmad_run config to anmad_restart
   file:
     src: /etc/anmad/conf.d/anmad_run.py

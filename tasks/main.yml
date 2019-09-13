@@ -25,6 +25,14 @@
     state: directory
     mode: 0755
 
+- name: create ansible playbook log dir
+  file:
+    path: /var/log/ansible/playbook
+    state: directory
+    mode: 0755
+    owner: "{{ ansible_orchestration_user }}"
+    group: "{{ ansible_orchestration_group }}"
+
 - name: symlink /etc/ara/ara.cfg as /etc/ansible/ansible.cfg
   file:
     src: /etc/ara/ara.cfg
