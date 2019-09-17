@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 #
-version=0.16.6
+version=0.16.7
 
 @test "anmad_buttons version $version" {
     run /opt/ansible-master/bin/python3 /srv/anmad/anmad_buttons.py --version
