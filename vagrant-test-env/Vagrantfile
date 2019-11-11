@@ -84,11 +84,18 @@ Vagrant.configure(2) do |config|
           ansible.limit = "all"
           ansible.playbook = "ansible-master-test.yaml"
           ansible.raw_arguments = ['-v']
-          ansible.inventory_path = "./inventory"
+          ansible.groups = {
+            "ansible-master" => ["ansible-master-vagrant-server"],
+            "linux" => [
+              "ansible-master-vagrant-server",
+              "ansible-master-vagrant-client",
+            ],
+            "all_groups:children" => ["ansible-master", "linux"],
+          }
+
           # change ansible.tags for faster testing
           ansible.tags = 'all'
           ansible.extra_vars = {
-            ansible_ssh_user: 'vagrant',
             link_ansible_cfg: true,
             ansible_python_interpreter: '/usr/bin/python3',
             master_ansible_user_ssh_phrase: '1234567890abc321',
