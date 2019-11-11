@@ -10,8 +10,6 @@ Vagrant.configure(2) do |config|
   NETWORK ||= "192.168.52."
   NETMASK ||= "255.255.255.0"
 
-  RAM ||= 512   # Default memory size in MB
-
   HOST12 ||= 'ansible-master-vagrant-client'
   HOST13 ||= 'ansible-master-vagrant-server'
 
@@ -19,7 +17,7 @@ Vagrant.configure(2) do |config|
   BOX ||= "ubuntu/bionic64"
 
   HOSTS ||= {
-     "#{HOST12}" => [RAM, BOX, 12 ],
+     "#{HOST12}" => [512, BOX, 12 ],
      "#{HOST13}" => [768, BOX, 13 ]
   }
 
