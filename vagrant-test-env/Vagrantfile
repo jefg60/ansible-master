@@ -31,12 +31,8 @@ Vagrant.configure(2) do |config|
 
     config.vm.define name do |machine|
       machine.vm.box = box
-      machine.vm.provider "virtualbox" do |vbox, override|
+      machine.vm.provider "virtualbox" do |vbox|
         vbox.memory = ram
-        # generate hosts file
-        override.vm.provision :shell, :path => "hostsfile_vbox.sh", :args => NETWORK
-        # apt-cache
-        override.vm.provision :shell, :inline => "cp /vagrant/proxy /etc/apt/apt.conf.d/proxy"
       end #Virtualbox specific options
 
       machine.vm.provider "google" do |google, override|
