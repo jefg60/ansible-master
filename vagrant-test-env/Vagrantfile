@@ -85,7 +85,7 @@ Vagrant.configure(2) do |config|
           ansible.playbook = "ansible-master-test.yaml"
           ansible.raw_arguments = ['-v']
           ansible.groups = {
-            "ansible-master" => ["ansible-master-vagrant-server"],
+            "ansible_master" => ["ansible-master-vagrant-server"],
             "linux" => [
               "ansible-master-vagrant-server",
               "ansible-master-vagrant-client",
