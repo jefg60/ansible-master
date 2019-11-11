@@ -33,7 +33,7 @@ Vagrant.configure(2) do |config|
       machine.vm.box = box
       machine.vm.provider "virtualbox" do |vbox|
         vbox.memory = ram
-      end #config.vm.define
+      end #machine.vm.provider
 
       machine.vm.hostname = name 
       machine.vm.network "forwarded_port",
