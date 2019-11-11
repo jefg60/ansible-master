@@ -9,8 +9,8 @@ NETMASK ||= "255.255.255.0"
 
 RAM ||= 512   # Default memory size in MB
 
-HOST12 ||= 'vagrant0'
-HOST13 ||= 'ansible-master-vagrant'
+HOST12 ||= 'ansible-master-vagrant-client'
+HOST13 ||= 'ansible-master-vagrant-server'
 
 # Default Virtualbox .box
 BOX ||= "ubuntu/bionic64"

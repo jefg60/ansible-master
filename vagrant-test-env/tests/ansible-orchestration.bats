@@ -6,7 +6,7 @@
 }
 
 @test "Test that we CANNOT ssh as ansible without the key" {
-    run ssh ansible@vagrant0 exit
+    run ssh ansible@ansible-master-vagrant-client exit
     [[ "$status" -eq 255 ]]
 }
 
