@@ -33,7 +33,23 @@ Vagrant.configure(2) do |config|
       machine.vm.box = box
       machine.vm.provider "virtualbox" do |vbox|
         vbox.memory = ram
-      end #machine.vm.provider
+      end #Virtualbox specific options
+
+      machine.vm.provider "google" do |google, override|
+        google.google_project_id = "seismic-sentry-128516"
+        google.google_json_key_location = "~/.seismic-sentry-128516-1edc267169b0.json"
+        google.image_family = 'ubuntu-1804-lts'
+        google.zone = 'us-east1-b'
+        google.use_private_ip = false
+        google.zone_config 'us-east1-b' do |zone1b|
+          zone1b.name = name
+          zone1b.machine_type = 'f1-micro'
+          zone1b.zone = 'us-east1-b'
+        end
+        override.ssh.username = "ci_api"
+        override.ssh.private_key_path = "~/.ssh/id_rsa"
+        override.vm.box = "google/gce"
+      end #Google specific options
 
       machine.vm.hostname = name 
       machine.vm.network "forwarded_port",
