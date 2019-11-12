@@ -25,6 +25,9 @@ Vagrant.configure(2) do |config|
                 git+https://github.com/jefg60/ansible-orchestration-linux.git \
                 git+https://github.com/jefg60/ansible-role-ara.git,master"
   system( GALAXY_CMD )
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_guest = true
+  config.hostmanager.include_offline = true
 
   HOSTS.each do | (name, cfg) |
     ram, box, number, ipaddr = cfg
@@ -60,7 +63,7 @@ Vagrant.configure(2) do |config|
             "-z"]
       end #Google specific options
 
-      machine.vm.hostname = name 
+      machine.vm.hostname = name
       machine.vm.network "forwarded_port",
         guest: 22, host: "223#{number}", id: "ssh"
       machine.vm.network "private_network",
