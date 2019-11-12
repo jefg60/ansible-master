@@ -34,8 +34,12 @@ Vagrant.configure(2) do |config|
 
     config.vm.define name do |machine|
       machine.vm.box = box
-      machine.vm.provider "virtualbox" do |vbox|
+      machine.vm.provider "virtualbox" do |vbox, override|
         vbox.memory = ram
+        override.vm.network "forwarded_port",
+          guest: 22, host: "223#{number}", id: "ssh"
+        override.vm.network "private_network",
+          ip: NETWORK+"#{number}"
       end #Virtualbox specific options
 
       machine.vm.provider "google" do |google, override|
@@ -64,10 +68,6 @@ Vagrant.configure(2) do |config|
       end #Google specific options
 
       machine.vm.hostname = name
-      machine.vm.network "forwarded_port",
-        guest: 22, host: "223#{number}", id: "ssh"
-      machine.vm.network "private_network",
-        ip: NETWORK+"#{number}"
       machine.ssh.port = "223#{number}"
       machine.ssh.insert_key = false
 
