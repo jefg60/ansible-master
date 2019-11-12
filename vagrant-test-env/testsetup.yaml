@@ -4,12 +4,12 @@
     - name: clone bats from github
       git:
         repo: https://github.com/sstephenson/bats.git
-        dest: /home/vagrant/bats
+        dest: /tmp/bats
 
     - name: install bats
       shell: "./install.sh /usr/local"
       args:
-        chdir: /home/vagrant/bats
+        chdir: /tmp/bats
         creates: /usr/local/bin/bats
       become: yes
 
@@ -19,19 +19,19 @@
         state: directory
       become: no
       with_items:
-        - /home/vagrant/testdata
+        - /tmp/testdata
         - /vagrant/tests/results
 
     - name: create testdata file
       copy:
         content: "git test success"
-        dest: /home/vagrant/testdata/testfile
+        dest: /tmp/testdata/testfile
       become: no
 
     - name: copy deploy*.yaml to testdata dir
       copy:
         src: "{{ item }}"
-        dest: /home/vagrant/testdata/ansible/
+        dest: /tmp/testdata/ansible/
         mode: 0664
       with_fileglob:
         - deploy*.yaml
@@ -79,8 +79,8 @@
               sleep 10 &&
               git push"
       args:
-        chdir: /home/vagrant/testdata
-        creates: /home/vagrant/testdata/.git
+        chdir: /tmp/testdata
+        creates: /tmp/testdata/.git
       become: no
       tags: git-test
 
@@ -91,7 +91,7 @@
               git fetch &&
               git push"
       args:
-        chdir: /home/vagrant/testdata
+        chdir: /tmp/testdata
       become: no
       tags: git-test
 
