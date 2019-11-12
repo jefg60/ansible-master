@@ -38,7 +38,7 @@
 
     - name: generate a private key for vagrant user
       user:
-        name: vagrant
+        name: "{{ ansible_user }}"
         generate_ssh_key: yes
         append: yes
       register: vagrant_user
