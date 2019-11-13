@@ -73,6 +73,7 @@
               git remote add origin ssh://git@localhost:/srv/git/configmanagement &&
               echo StrictHostKeyChecking no >>~/.ssh/config &&
               git fetch &&
+              sleep 10 &&
               git push --set-upstream origin master &&
               git rm ansible/deploy3.yaml &&
               git commit -m 'removed failing playbook deploy3.yaml' &&
