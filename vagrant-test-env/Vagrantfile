@@ -47,7 +47,7 @@ Vagrant.configure(2) do |config|
         google.google_json_key_location = "~/.seismic-sentry-128516-1edc267169b0.json"
         google.image_family = 'ubuntu-1804-lts'
         google.zone = 'us-east1-b'
-        google.use_private_ip = true
+        google.use_private_ip = false
         google.zone_config 'us-east1-b' do |zone1b|
           zone1b.name = name
           zone1b.machine_type = 'f1-micro'
