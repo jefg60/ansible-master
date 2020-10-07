@@ -42,7 +42,7 @@
     name:
       - ansible-lint
       - ansible-vault
-      - ansible
+      - ansible==2.9.14
       - pywinrm
       - dnspython
       - ssh-agent-setup
