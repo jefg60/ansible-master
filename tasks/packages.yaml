@@ -43,6 +43,7 @@
       - ansible-lint
       - ansible-vault
       - ansible==2.9.14
+      - ansible-base==2.9.14
       - pywinrm
       - dnspython
       - ssh-agent-setup
