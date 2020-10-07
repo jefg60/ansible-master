@@ -43,6 +43,5 @@ ara_override:
   install:
     pip:
       virtualenv_path: /opt/ansible-master
-      version: "0.16.5"
 
 link_ansible_cfg: false
