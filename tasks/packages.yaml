@@ -1,16 +1,4 @@
 ---
-- name: add ansible repo key
-  apt_key:
-    keyserver: hkp://keyserver.ubuntu.com:80
-    id: 93C4A3FD7BB9C367
-    state: present
-
-- name: add ansible repo
-  apt_repository:
-    repo: deb http://ppa.launchpad.net/ansible/ansible/ubuntu focal main
-    state: present
-    update_cache: no
-
 - name: install OS packages
   apt:
     name:
