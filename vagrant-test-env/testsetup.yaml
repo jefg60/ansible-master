@@ -53,7 +53,7 @@
     - name: symlink vaultpw
       file:
         src: /srv/anmad/test/vaultpassword
-        dest: /var/lib/ara/.vaultpw
+        dest: /home/ansible/.vaultpw
         state: link
         force: true
       become: yes
