@@ -13,8 +13,3 @@ galaxy_info:
      - 18.04
 
   galaxy_tags: []
-
-dependencies:
-  - src: git+https://github.com/jefg60/ansible-role-ara
-    version: master
-    name: ansible-role-ara
