@@ -33,14 +33,6 @@
     owner: "{{ ansible_orchestration_user }}"
     group: "{{ ansible_orchestration_group }}"
 
-- name: symlink /etc/ara/ara.cfg as /etc/ansible/ansible.cfg
-  file:
-    src: /etc/ara/ara.cfg
-    dest: /etc/ansible/ansible.cfg
-    state: link
-    force: true
-  when: link_ansible_cfg
-
 - name: put apache virtualhosts into hosts file
   lineinfile:
     path: /etc/hosts
@@ -48,18 +40,6 @@
     line: "127.0.0.1 {{ item }}"
   loop:
     - "{{ anmad_host }}"
-    - "{{ ara.config.host }}"
-
-- name: remove ansible logging opt from ansible/ara.cfg
-  # (its now done by an env var in the subprocess called by anmad)
-  ini_file:
-    dest: /etc/ara/ara.cfg
-    section: defaults
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
-    state: absent
-  with_items:
-    - { option: log_path, value: /var/log/ansible/ansible.log }
 
 - name: Ensure Apache server is started
   become: true
