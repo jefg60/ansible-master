@@ -71,41 +71,6 @@
 - name: flush handlers before doing tests
   meta: flush_handlers
 
-- name: wait for ara service port
-  wait_for:
-    port: "{{ ara.config.port }}"
-    host: "{{ ara.config.host }}"
-  when: ara.deployment.server == 'embedded'
-
-- name: TEST ara homepage is up - external https server
-  uri:
-    url: "https://{{ ara.config.host }}:{{ ara.config.port_ssl }}/about/"
-    user: "{{ anmad_control_username }}"
-    password: "{{ anmad_control_password }}"
-    validate_certs: false
-    return_content: yes
-  register: ara_aboutpage
-  when: ara.deployment.server != 'embedded'
-  failed_when: "'ARA Records Ansible' not in ara_aboutpage.content"
-
-- name: debug ara_aboutpage var
-  debug:
-    var: ara_aboutpage
-    verbosity: 1
-
-- name: TEST ara homepage is up - embdedded server
-  uri:
-    url: "http://{{ ara.config.host }}:{{ ara.config.port }}/about/"
-    return_content: yes
-  register: ara_aboutpage
-  when: ara.deployment.server == 'embedded'
-  failed_when: "'ARA Records Ansible' not in ara_aboutpage.content"
-
-- name: debug ara_aboutpage var
-  debug:
-    var: ara_aboutpage
-    verbosity: 1
-
 - name: TEST anmad homepage is up - external https server
   uri:
     url: "https://{{ anmad_host }}:{{ anmad_port }}/"

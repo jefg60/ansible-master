@@ -91,10 +91,19 @@
     - anmad_run
     - redis
 
-- name: enable apache2 ssl module
+- name: create mod_wsgi.load file in apache mods-available
+  become: true
+  shell: "{{ virtualenv_path }}/bin/mod_wsgi-express module-config > /etc/apache2/mods-available/wsgi.load"
+  args:
+    creates: /etc/apache2/mods-available/wsgi.load
+
+- name: enable apache2 modules
   apache2_module:
     state: present
-    name: ssl
+    name: "{{ item }}"
+  loop:
+    - ssl
+    - wsgi
 
 - name: deploy anmad-buttons apache configfile
   template:

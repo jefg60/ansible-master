@@ -28,20 +28,15 @@ anmad_ara_url: "https://{{ ara_override.config.host }}:{{ ara_override.config.po
 anmad_control_username: admin
 anmad_control_password: password
 
-ara_override:
-  deployment:
-    server: apache
-    type: mod_wsgi
-    apache:
-      ssl: true
+virtualenv_path: /opt/ansible-master
+apache_log_path: /var/log/apache2
+
+ara:
   config:
     host: ansible-master-ara
     port_ssl: 8443
     user: "{{ ansible_orchestration_user }}"
     shell: /bin/bash
     group: "{{ ansible_orchestration_group }}"
-  install:
-    pip:
-      virtualenv_path: /opt/ansible-master
 
 link_ansible_cfg: false

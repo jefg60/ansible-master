@@ -9,7 +9,7 @@ playbooks = [{{ anmad_playbooks }}]
 {% else %}
 playbooks = [{% for play in anmad_playbooks %}{{ play }}, {% endfor %}]
 {% endif %}
-venv = {{ ara_override.install.pip.virtualenv_path }}
+venv = {{ virtualenv_path }}
 {% if syntax_check_dir is defined %}
 syntax_check_dir = {{ syntax_check_dir }}
 {% endif %}
