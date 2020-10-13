@@ -5,10 +5,18 @@
     repo: https://github.com/jefg60/anmad.git
     dest: /srv/anmad
     clone: yes
-    version: ansible-2.10
+    version: 0.18.1
   tags: anmad
   notify:
     - reload anmad
+
+- name: install anmad module with pip
+  pip:
+    name:
+      - /srv/anmad/anmad
+    virtualenv: "{{ virtualenv_path }}"
+    virtualenv_site_packages: true
+    state: present
 
 - name: deploy ssh-askpass script
   template:
@@ -29,26 +37,13 @@
     group: root
   tags: anmad
 
-- name: symlink anmad_run config to anmad_restart
-  file:
-    src: /etc/anmad/conf.d/anmad_run.py
-    dest: /etc/anmad/conf.d/anmad_restart.py
-    owner: root
-    group: root
-    state: link
-    force: true
-    follow: false
-
-- name: deploy anmad config files
+- name: deploy anmad config file
   template:
     src: anmad.conf.j2
-    dest: "/etc/anmad/conf.d/{{ item }}.py"
+    dest: "/etc/anmad.conf"
     mode: 0644
     owner: root
     group: root
-  loop:
-    - anmad_buttons
-    - anmad_run
   tags: anmad
   notify:
     - reload anmad
@@ -90,40 +85,6 @@
   loop:
     - anmad_run
     - redis
-
-- name: create mod_wsgi.load file in apache mods-available
-  become: true
-  shell: "{{ virtualenv_path }}/bin/mod_wsgi-express module-config > /etc/apache2/mods-available/wsgi.load"
-  args:
-    creates: /etc/apache2/mods-available/wsgi.load
-
-- name: enable apache2 modules
-  apache2_module:
-    state: present
-    name: "{{ item }}"
-  loop:
-    - ssl
-    - wsgi
-
-- name: deploy anmad-buttons apache configfile
-  template:
-    src: anmad-buttons-wsgi.conf
-    dest: /etc/apache2/sites-available
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - reload apache
-
-- name: symlink anmad-buttons apache config to sites-enabled
-  file:
-    src: /etc/apache2/sites-available/anmad-buttons-wsgi.conf
-    dest: /etc/apache2/sites-enabled/anmad-buttons-wsgi.conf
-    owner: root
-    group: root
-    state: link
-  notify:
-    - reload apache
 
 - name: create /etc/htpasswd folder
   file:

@@ -9,8 +9,8 @@
       - redis
       - python3-passlib
       - python3-virtualenv
-      - apache2
-      - apache2-dev
+      - apache2-utils
+      - nginx
     state: latest
     update_cache: yes
 
@@ -29,7 +29,7 @@
       - redis
       - cryptography>=3.1.1
       - psutil
-      - mod_wsgi
+      - gunicorn
     virtualenv: "{{ virtualenv_path }}"
     virtualenv_site_packages: true
     state: present

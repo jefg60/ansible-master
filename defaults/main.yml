@@ -29,7 +29,6 @@ anmad_control_username: admin
 anmad_control_password: password
 
 virtualenv_path: /opt/ansible-master
-apache_log_path: /var/log/apache2
 
 ara:
   config:

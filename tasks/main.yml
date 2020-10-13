@@ -33,7 +33,7 @@
     owner: "{{ ansible_orchestration_user }}"
     group: "{{ ansible_orchestration_group }}"
 
-- name: put apache virtualhosts into hosts file
+- name: put virtualhosts into hosts file
   lineinfile:
     path: /etc/hosts
     regexp: "^127.0.0.1 {{ item }}"
@@ -41,11 +41,11 @@
   loop:
     - "{{ anmad_host }}"
 
-- name: Ensure Apache server is started
+- name: Ensure Nginx server is started
   become: true
   systemd:
     state: started
-    name: apache2
+    name: nginx
     enabled: true
 
 - name: flush handlers before doing tests
