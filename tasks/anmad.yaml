@@ -57,13 +57,11 @@
 
 - name: deploy anmad .service files
   copy:
-    src: "{{ item }}.service"
+    src: "anmad.service"
     dest: /etc/systemd/system/
     mode: 0644
     owner: root
     group: root
-  loop:
-    - anmad
   tags: anmad
   notify:
     - systemctl daemon-reload
