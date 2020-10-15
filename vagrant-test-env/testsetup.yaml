@@ -58,9 +58,9 @@
         force: true
       become: yes
 
-    - name: ensure anmad_run is running
+    - name: ensure anmad is running
       service:
-        name: anmad_run
+        name: anmad
         state: started
       become: yes
 

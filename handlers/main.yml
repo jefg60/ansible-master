@@ -14,14 +14,14 @@
     name: "{{ item }}"
     state: restarted
   loop:
-    - anmad_run
+    - anmad
 
 - name: reload anmad
   service:
     name: "{{ item }}"
     state: reloaded
   loop:
-    - anmad_run
+    - anmad
   ignore_errors: true
 
 - name: reload nginx
