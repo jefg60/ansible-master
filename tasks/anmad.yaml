@@ -5,7 +5,7 @@
     repo: https://github.com/jefg60/anmad.git
     dest: /srv/anmad
     clone: yes
-    version: 0.18.1
+    version: dev
   tags: anmad
   notify:
     - reload anmad
@@ -13,7 +13,9 @@
 - name: install anmad module with pip
   pip:
     name:
-      - /srv/anmad/anmad
+      # forked ansible-vault to apply patches for ansible 2.10
+      - git+https://github.com/jefg60/ansible-vault.git
+      - /srv/anmad
     virtualenv: "{{ virtualenv_path }}"
     virtualenv_site_packages: true
     state: present
@@ -26,15 +28,6 @@
     group: "{{ ansible_orchestration_group }}"
     mode: 0750
   when: master_ansible_user_vaultfile is defined
-  tags: anmad
-
-- name: create anmad conf dir
-  file:
-    path: /etc/anmad/conf.d/
-    state: directory
-    mode: 0755
-    owner: root
-    group: root
   tags: anmad
 
 - name: deploy anmad config file
@@ -56,8 +49,8 @@
     owner: root
     group: root
   loop:
-    - anmad_buttons
-    - anmad_run
+    - anmad_interface
+    - anmad_daemon
   tags: anmad
   notify:
     - restart rsyslog
@@ -70,7 +63,7 @@
     owner: root
     group: root
   loop:
-    - anmad_run
+    - anmad
   tags: anmad
   notify:
     - systemctl daemon-reload
@@ -83,7 +76,7 @@
     enabled: true
     masked: false
   loop:
-    - anmad_run
+    - anmad
     - redis
 
 - name: create /etc/htpasswd folder

@@ -18,17 +18,8 @@
   pip:
     name:
       - ansible-lint
-      #- ansible-vault # this is bundled with anmad in the ansible-2.10 branch
-      - ansible
       - pywinrm
       - dnspython
-      - ssh-agent-setup
-      - configargparse
-      - flask
-      - hotqueue
-      - redis
-      - cryptography>=3.1.1
-      - psutil
       - gunicorn
     virtualenv: "{{ virtualenv_path }}"
     virtualenv_site_packages: true
