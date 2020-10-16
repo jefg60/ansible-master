@@ -1,0 +1,16 @@
+---
+- name: deploy anmad gunicorn service to systemd
+  template:
+    src: anmad-gunicorn.service
+    dest: /etc/systemd/system/
+
+- name: deploy anmad gunicorn socket service to systemd
+  copy:
+    src: anmad-gunicorn.socket
+    dest: /etc/systemd/system/
+  notify: systemctl daemon-reload
+
+- name: ensure gunicorn socket service is running
+  systemd:
+    state: started
+    name: anmad-gunicorn.socket

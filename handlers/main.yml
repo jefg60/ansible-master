@@ -28,3 +28,8 @@
   service:
     name: nginx
     state: reloaded
+
+- name: reload gunicorn
+  service:
+    name: gunicorn.socket
+    state: reloaded

@@ -1,0 +1,6 @@
+---
+- name: deploy anmad nginx conf
+  template:
+    src: anmad-nginx.conf
+    dest: /etc/nginx/sites-available/anmad.conf
+  notify: reload nginx
