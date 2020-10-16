@@ -13,4 +13,5 @@
 - name: ensure gunicorn socket service is running
   systemd:
     state: started
+    enabled: yes
     name: anmad-gunicorn.socket
