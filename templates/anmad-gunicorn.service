@@ -1,6 +1,6 @@
 [Unit]
 Description=anmad gunicorn daemon
-Requires=gunicorn.socket
+Requires=anmad-gunicorn.socket
 After=network.target
 
 [Service]
