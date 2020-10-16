@@ -4,3 +4,16 @@
     src: anmad-nginx.conf
     dest: /etc/nginx/sites-available/anmad.conf
   notify: reload nginx
+
+- name: remove nginx default symlink
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: reload nginx
+
+- name: symlink anmad site conf to sites-enabled
+  file:
+    src: /etc/nginx/sites-available/anmad.conf
+    dest: /etc/nginx/sites-enabled/anmad.conf
+    state: link
+  notify: reload nginx
