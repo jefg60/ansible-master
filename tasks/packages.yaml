@@ -21,6 +21,6 @@
       - pywinrm
       - dnspython
       - gunicorn
-    virtualenv: "{{ virtualenv_path }}"
+    virtualenv: "{{ ansible_master.venv }}"
     virtualenv_site_packages: true
     state: present

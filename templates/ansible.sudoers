@@ -1,1 +1,1 @@
-{{ansible_orchestration_user}} ALL=(ALL) NOPASSWD:ALL
+{{ansible_master.user}} ALL=(ALL) NOPASSWD:ALL

@@ -1,9 +1,9 @@
 #!/bin/bash
-cd {{ git_repo_target }} || exit
+cd {{ ansible_master.git.repo_target }} || exit
 unset GIT_DIR || exit
 git fetch || exit
-git merge origin/{{ git_branch }} || exit
-git checkout {{ git_branch }} || exit
-cd {{ git_log_dir }} || exit
-echo "$(date) {{ git_repo_name }} has been pushed to {{ git_branch }}" >> {{ git_log_dir }}/{{ git_repo_name }}.log
-curl -k -u {{ anmad_control_username }}:{{ anmad_control_password }} https://{{ anmad_host }}:{{ anmad_port }}/runall
+git merge origin/{{ ansible_master.git.branch }} || exit
+git checkout {{ ansible_master.git.branch }} || exit
+cd {{ ansible_master.git.log_dir }} || exit
+echo "$(date) {{ ansible_master.git.repo_name }} has been pushed to {{ ansible_master.git.branch }}" >> {{ ansible_master.git.log_dir }}/{{ ansible_master.git.repo_name }}.log
+curl -k -u {{ anmad.interface.username }}:{{ anmad.interface.password }} https://{{ anmad.host }}:{{ anmad.port }}/runall

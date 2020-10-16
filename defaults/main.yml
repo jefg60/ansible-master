@@ -3,21 +3,21 @@
 ansible_master:
   git:
     username: "git"
-    homedir: "/srv/{{ git_username }}"
+    homedir: "/srv/git"
     repo_name: "configmanagement"
-    log_dir: "{{ git_homedir }}/log"
-    repo_target: "/srv/{{ git_repo_name }}"
+    log_dir: "/srv/git/log"
+    repo_target: "/srv/configmanagement"
     branch: "master"
     ansible_hook: "echo This command does nothing by default"
   ssh_phrase: ""
   user: "ansible"
   group: "ansible"
-  virtualenv_path: /opt/ansible-master
+  venv: /opt/ansible-master
 
 anmad:
   inventories:
-    - "{{ git_repo_target }}/{{git_branch}}-inventory"
-  root: "{{ git_repo_target }}/ansible"
+    - "{{ ansible_master.git.repo_target }}/{{ansible_master.git.branch}}-inventory"
+  root: "{{ ansible_master.git.repo_target }}/ansible"
   playbooks:
     - "deploy.yaml"
   prerun:
@@ -27,8 +27,9 @@ anmad:
   host: ansible-master-anmad
   port: 8443
   ara_url: "https://{{ ara.config.host }}:{{ ara.config.port_ssl }}/"
-  control_username: admin
-  control_password: password
+  interface:
+    username: admin
+    password: password
   install_dir: /srv/anmad
 
 ara:

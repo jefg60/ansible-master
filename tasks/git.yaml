@@ -1,64 +1,64 @@
 ---
 - name: create git user
   user:
-    name: "{{ git_username }}"
+    name: "{{ ansible_master.git.username }}"
     shell: /usr/bin/git-shell
-    home: "{{ git_homedir }}"
+    home: "{{ ansible_master.git.homedir }}"
     password: "*"
 
 - name: create git-shell-commands
   file:
-    path: "{{ git_homedir }}/git-shell-commands"
+    path: "{{ ansible_master.git.homedir }}/git-shell-commands"
     state: directory
-    owner: "{{ git_username }}"
+    owner: "{{ ansible_master.git.username }}"
     group: git
     mode: 0700
 
 - name: create git-shell no-interactive-login
   copy:
     src: "no-interactive-login"
-    dest: "{{ git_homedir }}/git-shell-commands/no-interactive-login"
-    owner: "{{ git_username }}"
+    dest: "{{ ansible_master.git.homedir }}/git-shell-commands/no-interactive-login"
+    owner: "{{ ansible_master.git.username }}"
     group: git
     mode: 0700
 
 - name: deploy github key to git user if github_username is defined
   authorized_key:
-    user: "{{ git_username }}"
+    user: "{{ ansible_master.git.username }}"
     state: present
     key: "https://github.com/{{ github_username }}.keys"
   when: github_username is defined
 
 - name: create git repo
-  command: "git init --bare {{ git_homedir }}/{{ git_repo_name }}.git"
+  command: "git init --bare {{ ansible_master.git.homedir }}/{{ ansible_master.git.repo_name }}.git"
   args:
-    creates: "{{ git_homedir }}/{{ git_repo_name }}.git/HEAD"
+    creates: "{{ ansible_master.git.homedir }}/{{ ansible_master.git.repo_name }}.git/HEAD"
   become: yes
-  become_user: "{{ git_username }}"
+  become_user: "{{ ansible_master.git.username }}"
 
 - name: create run dir
   file:
-    path: "{{ git_repo_target }}"
+    path: "{{ ansible_master.git.repo_target }}"
     state: directory
-    owner: "{{ git_username }}"
-    group: "{{ ansible_orchestration_group }}"
+    owner: "{{ ansible_master.git.username }}"
+    group: "{{ ansible_master.group }}"
     mode: u=rwX,g=rwX,o=rX
     recurse: no
 
 # ignore_errors required because git errors when repo is empty
 - name: clone git repo to run dir
   git:
-    repo: "{{ git_homedir }}/{{ git_repo_name }}.git"
-    dest: "{{ git_repo_target }}"
+    repo: "{{ ansible_master.git.homedir }}/{{ ansible_master.git.repo_name }}.git"
+    dest: "{{ ansible_master.git.repo_target }}"
     update: no
   ignore_errors: true
   become: yes
-  become_user: "{{ git_username }}"
+  become_user: "{{ ansible_master.git.username }}"
 
 - name: deploy post-update-hooks script
   template:
     src: "post-update-hooks.j2"
-    dest: "{{ git_homedir }}/{{ git_repo_name }}.post-update-hooks.sh"
+    dest: "{{ ansible_master.git.homedir }}/{{ ansible_master.git.repo_name }}.post-update-hooks.sh"
     group: git
     mode: 0750
   no_log: true
@@ -66,13 +66,13 @@
 - name: post-update git hook config
   template:
     src: "post-update.j2"
-    dest: "{{ git_homedir }}/{{ git_repo_name }}.git/hooks/post-update"
+    dest: "{{ ansible_master.git.homedir }}/{{ ansible_master.git.repo_name }}.git/hooks/post-update"
     mode: 0755
 
-- name: git_log_dir creation
+- name: ansible_master.git.log_dir creation
   file:
-    path: "{{ git_log_dir }}"
+    path: "{{ ansible_master.git.log_dir }}"
     state: directory
-    owner: "{{ git_username }}"
+    owner: "{{ ansible_master.git.username }}"
     mode: u=rwX,g=rwX,o=rX
     recurse: yes

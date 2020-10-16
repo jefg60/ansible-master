@@ -1,30 +1,30 @@
-{% if anmad_inventories is string %}
-inventories = [{{ anmad_inventories }}]
+{% if anmad.inventories is string %}
+inventories = [{{ anmad.inventories }}]
 {% else %}
-inventories = [{% for inv in anmad_inventories %}{{ inv }}, {% endfor %}]
+inventories = [{% for inv in anmad.inventories %}{{ inv }}, {% endfor %}]
 {% endif %}
-playbook_root_dir = {{ anmad_root }}
-{% if anmad_playbooks is string %}
-playbooks = [{{ anmad_playbooks }}]
+playbook_root_dir = {{ anmad.root }}
+{% if anmad.playbooks is string %}
+playbooks = [{{ anmad.playbooks }}]
 {% else %}
-playbooks = [{% for play in anmad_playbooks %}{{ play }}, {% endfor %}]
+playbooks = [{% for play in anmad.playbooks %}{{ play }}, {% endfor %}]
 {% endif %}
-venv = {{ virtualenv_path }}
+venv = {{ ansible_master.venv }}
 {% if syntax_check_dir is defined %}
 syntax_check_dir = {{ syntax_check_dir }}
 {% endif %}
-{% if anmad_prerun is defined and anmad_prerun is string %}
-pre_run_playbooks = [{{ anmad_prerun }}]
+{% if anmad.prerun is defined and anmad.prerun is string %}
+pre_run_playbooks = [{{ anmad.prerun }}]
 {% endif %}
-{% if anmad_prerun is defined and anmad_prerun is not string %}
-pre_run_playbooks = [{% for play in anmad_prerun %}{{ play }}, {% endfor %}]
+{% if anmad.prerun is defined and anmad.prerun is not string %}
+pre_run_playbooks = [{% for play in anmad.prerun %}{{ play }}, {% endfor %}]
 {% endif %}
 {% if master_ansible_user_vaultfile is defined %}
 ssh_askpass = /usr/bin/ssh-askpass
 {% endif %}
-{% if anmad_ara_url is defined %}
-ara_url = {{ anmad_ara_url }}
+{% if anmad.ara_url is defined %}
+ara_url = {{ anmad.ara_url }}
 {% endif %}
-{% if anmad_debug is defined %}
+{% if anmad.debug is defined %}
 debug = True
 {% endif %}

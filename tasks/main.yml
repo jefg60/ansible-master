@@ -14,14 +14,14 @@
   file:
     path: /var/log/ansible
     state: directory
-    owner: "{{ ansible_orchestration_user }}"
+    owner: "{{ ansible_master.user }}"
     group: git
     mode: 0755
 
 - name: create roles dir
   file:
     name: /etc/ansible/roles
-    owner: "{{ ansible_orchestration_user }}"
+    owner: "{{ ansible_master.user }}"
     state: directory
     mode: 0755
 
@@ -30,8 +30,8 @@
     path: /var/log/ansible/playbook
     state: directory
     mode: 0755
-    owner: "{{ ansible_orchestration_user }}"
-    group: "{{ ansible_orchestration_group }}"
+    owner: "{{ ansible_master.user }}"
+    group: "{{ ansible_master.group }}"
 
 - name: put virtualhosts into hosts file
   lineinfile:
@@ -39,7 +39,7 @@
     regexp: "^127.0.0.1 {{ item }}"
     line: "127.0.0.1 {{ item }}"
   loop:
-    - "{{ anmad_host }}"
+    - "{{ anmad.host }}"
 
 - name: Ensure Nginx server is started
   become: true
@@ -53,9 +53,9 @@
 
 - name: TEST anmad homepage is up - external https server
   uri:
-    url: "https://{{ anmad_host }}:{{ anmad_port }}/"
-    user: "{{ anmad_control_username }}"
-    password: "{{ anmad_control_password }}"
+    url: "https://{{ anmad.host }}:{{ anmad.port }}/"
+    user: "{{ anmad.interface.username }}"
+    password: "{{ anmad.interface.password }}"
     validate_certs: false
     return_content: yes
   register: anmad_page
