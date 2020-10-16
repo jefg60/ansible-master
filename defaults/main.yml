@@ -1,34 +1,35 @@
 ---
 # defaults file for ansible-master
-git_username: "git"
-git_homedir: "/srv/{{ git_username }}"
-git_repo_name: "configmanagement"
-git_log_dir: "{{ git_homedir }}/log"
+ansible_master:
+  git:
+    username: "git"
+    homedir: "/srv/{{ git_username }}"
+    repo_name: "configmanagement"
+    log_dir: "{{ git_homedir }}/log"
+    repo_target: "/srv/{{ git_repo_name }}"
+    branch: "master"
+    ansible_hook: "echo This command does nothing by default"
+  ssh_phrase: ""
+  user: "ansible"
+  group: "ansible"
+  virtualenv_path: /opt/ansible-master
 
-git_repo_target: "/srv/{{ git_repo_name }}"
-git_branch: "master"
-git_ansible_hook: "echo This command does nothing by default"
-
-master_ansible_user_ssh_phrase: ""
-ansible_orchestration_user: "ansible"
-ansible_orchestration_group: "ansible"
-
-anmad_inventories:
-  - "{{ git_repo_target }}/{{git_branch}}-inventory"
-anmad_root: "{{ git_repo_target }}/ansible"
-anmad_playbooks:
-  - "deploy.yaml"
-anmad_prerun:
-  - "ansible-galaxy.yaml"
-  - "ansible-master.yaml"
-anmad_vaultpw_file: "~/.vaultpw"
-anmad_host: ansible-master-control
-anmad_port: 8443
-anmad_ara_url: "https://{{ ara.config.host }}:{{ ara.config.port_ssl }}/"
-anmad_control_username: admin
-anmad_control_password: password
-
-virtualenv_path: /opt/ansible-master
+anmad:
+  inventories:
+    - "{{ git_repo_target }}/{{git_branch}}-inventory"
+  root: "{{ git_repo_target }}/ansible"
+  playbooks:
+    - "deploy.yaml"
+  prerun:
+    - "ansible-galaxy.yaml"
+    - "ansible-master.yaml"
+  vaultpw_file: "~/.vaultpw"
+  host: ansible-master-anmad
+  port: 8443
+  ara_url: "https://{{ ara.config.host }}:{{ ara.config.port_ssl }}/"
+  control_username: admin
+  control_password: password
+  install_dir: /srv/anmad
 
 ara:
   config:
