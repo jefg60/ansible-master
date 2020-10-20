@@ -23,7 +23,6 @@ anmad:
   prerun:
     - "ansible-galaxy.yaml"
     - "ansible-master.yaml"
-  vaultpw_file: "~/.vaultpw"
   host: ansible-master-anmad
   port: 8443
   ara_url: "https://{{ ara.config.host }}:{{ ara.config.port_ssl }}/"
