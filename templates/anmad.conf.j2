@@ -10,8 +10,8 @@ playbooks = [{{ anmad.playbooks }}]
 playbooks = [{% for play in anmad.playbooks %}{{ play }}, {% endfor %}]
 {% endif %}
 venv = {{ ansible_master.venv }}
-{% if syntax_check_dir is defined %}
-syntax_check_dir = {{ syntax_check_dir }}
+{% if anmad.syntax_check_dir is defined %}
+syntax_check_dir = {{ anmad.syntax_check_dir }}
 {% endif %}
 {% if anmad.prerun is defined and anmad.prerun is string %}
 pre_run_playbooks = [{{ anmad.prerun }}]
