@@ -2,14 +2,14 @@
 #
 
 @test "ara homepage responds" {
-    curl -k -u admin:password https://ansible-master-ara:8443/about/ | grep 'ARA Records Ansible'
+    curl -k -u admin:password https://ansible-master-anmad:8443/ara/about/ | grep 'ARA Records Ansible'
 }
 
 @test "ara has reports" {
-    curl -k -u admin:password https://ansible-master-ara:8443/reports/ | grep 'deploy.yaml'
+    curl -k -u admin:password https://ansible-master-anmad:8443/ara/reports/ | grep 'deploy.yaml'
 }
 
 @test "ara page requires a password" {
-    run curl -k https://ansible-master-ara:8443/
+    run curl -kv https://ansible-master-anmad:8443/ara/
     [[ "$output" = *"401 Unauthorized"* ]]
 }
