@@ -25,13 +25,8 @@ anmad:
     - "ansible-master.yaml"
   host: ansible-master-anmad
   port: 8443
-  ara_url: "https://{{ ara.config.host }}:{{ ara.config.port_ssl }}/"
+  ara_url: "/ara"
   interface:
     username: admin
     password: password
   install_dir: /srv/anmad
-
-ara:
-  config:
-    host: ansible-master-ara
-    port_ssl: 8443
