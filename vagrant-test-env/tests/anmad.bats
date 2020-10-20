@@ -20,7 +20,7 @@ version=0.18.2
 }
 
 @test "anmad interface page requires authentication" {
-    run curl -k https://ansible-master-anmad:8443/
+    run curl -kv https://ansible-master-anmad:8443/
     [[ "$output" = *"401 Unauthorized"* ]]
 }
 
