@@ -102,15 +102,20 @@ Vagrant.configure(2) do |config|
             master_ansible_user_ssh_phrase: '1234567890abc321',
             master_ansible_user_vaultfile: '/srv/anmad/test/testvault',
             anmad: {
-              inventories: ['/vagrant/inventory-internal'],
-              playbooks: [
-                'deploy.yaml',
-                'deploy2.yaml'
-              ],
+              inventories: '/vagrant/inventory-internal',
+              playbooks: ['deploy.yaml','deploy2.yaml'],
               prerun: 'deploy.yaml',
               debug: 'True',
               ara_url: 'https://ansible-master-ara:8443/',
-              syntax_check_dir: '/srv/configmanagement/ansible'
+              syntax_check_dir: '/srv/configmanagement/ansible',
+              interface: {
+                username: 'admin',
+                password: 'password',
+              },
+              host: 'ansible-master-anmad',
+              port: '8443',
+              install_dir: '/srv/anmad',
+              root: '/srv/configmanagement/ansible'
             }
           }
         end # machine.vm.provision ansible run
