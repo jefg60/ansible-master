@@ -27,13 +27,21 @@
     state: directory
     mode: 0755
 
-- name: create ansible playbook log dir
+- name: create sensitive log dirs
   file:
-    path: /var/log/ansible/playbook
+    path: "/var/log/{{ item }}"
     state: directory
     mode: 0755
     owner: "{{ ansible_master.user }}"
     group: "{{ ansible_master.group }}"
+  loop:
+    - 'ansible/playbook'
+    - 'anmad'
+
+- name: deploy rsyslog.conf #https://askubuntu.com/questions/1066997/every-few-minutes-rsyslog-outputs-rsyslogd-action-action-3-resumed-module)
+  copy:
+    src: rsyslog.conf
+    dest: /etc/
 
 - name: put virtualhosts into hosts file
   lineinfile:
