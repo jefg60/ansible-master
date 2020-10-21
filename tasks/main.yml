@@ -72,15 +72,3 @@
   failed_when: "'run all (green) playbooks' not in anmad_page.content"
   tags:
     - tests
-
-- name: start ara container
-  community.general.docker_container:
-    name: ara
-    image: recordsansible/ara-api:latest
-    state: started
-    detatch: true
-    tty: true
-    volumes:
-      - ~/.ara/server:/opt/ara:z
-    ports:
-     - "8000:8000"

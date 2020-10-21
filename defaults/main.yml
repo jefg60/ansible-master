@@ -25,7 +25,6 @@ anmad:
     - "ansible-master.yaml"
   host: ansible-master-anmad
   port: 8443
-  ara_url: "/ara"
   interface:
     username: admin
     password: password
