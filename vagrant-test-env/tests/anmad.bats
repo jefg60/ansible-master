@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 #
-version=0.18.2
+version=0.18.4
 
 @test "anmad version $version" {
     run /opt/ansible-master/bin/python3 -m anmad.interface --version
