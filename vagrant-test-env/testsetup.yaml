@@ -80,8 +80,8 @@
               sleep 60 &&
               git push"
       args:
-        chdir: /tmp/testdata
-        creates: /tmp/testdata/.git
+        chdir: /home/vagrant/testdata
+        creates: /home/vagrant/testdata/.git
       become: no
       tags: git-test
 
@@ -92,7 +92,7 @@
               git fetch &&
               git push"
       args:
-        chdir: /tmp/testdata
+        chdir: /home/vagrant/testdata
       become: no
       tags: git-test
 
