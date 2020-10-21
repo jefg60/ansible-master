@@ -96,6 +96,6 @@
       become: no
       tags: git-test
 
-    - name: pause 30 sec to allow test plays to finish
+    - name: pause 150 sec to allow test plays to finish
       pause:
-        seconds: 30
+        seconds: 150
