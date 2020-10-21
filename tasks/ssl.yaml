@@ -1,22 +1,30 @@
 ---
 - name: Ensure directory exists for local self-signed TLS certs.
   file:
-    path: "/etc/letsencrypt/live/{{ anmad.host }}"
+    path: "/etc/letsencrypt/live/{{ item }}"
     state: directory
+  loop:
+    - "{{ anmad.host }}"
 
 - name: Generate an OpenSSL private key.
   openssl_privatekey:
-    path: "/etc/letsencrypt/live/{{ anmad.host }}/privkey.pem"
+    path: "/etc/letsencrypt/live/{{ item }}/privkey.pem"
+  loop:
+    - "{{ anmad.host }}"
 
 - name: Generate an OpenSSL CSR.
   openssl_csr:
-    path: "/etc/ssl/private/{{ anmad.host }}.csr"
-    privatekey_path: "/etc/letsencrypt/live/{{ anmad.host }}/privkey.pem"
-    common_name: "{{ anmad.host }}"
+    path: "/etc/ssl/private/{{ item }}.csr"
+    privatekey_path: "/etc/letsencrypt/live/{{ item }}/privkey.pem"
+    common_name: "{{ item }}"
+  loop:
+    - "{{ anmad.host }}"
 
 - name: Generate a Self Signed OpenSSL certificate.
   openssl_certificate:
-    path: "/etc/letsencrypt/live/{{ anmad.host }}/fullchain.pem"
-    privatekey_path: "/etc/letsencrypt/live/{{ anmad.host }}/privkey.pem"
-    csr_path: "/etc/ssl/private/{{ anmad.host }}.csr"
+    path: "/etc/letsencrypt/live/{{ item }}/fullchain.pem"
+    privatekey_path: "/etc/letsencrypt/live/{{ item }}/privkey.pem"
+    csr_path: "/etc/ssl/private/{{ item }}.csr"
     provider: selfsigned
+  loop:
+    - "{{ anmad.host }}"
