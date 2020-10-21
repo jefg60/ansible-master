@@ -19,19 +19,19 @@
         state: directory
       become: no
       with_items:
-        - /tmp/testdata
+        - /home/vagrant/testdata
         - /vagrant/tests/results
 
     - name: create testdata file
       copy:
         content: "git test success"
-        dest: /tmp/testdata/testfile
+        dest: /home/vagrant/testdata/testfile
       become: no
 
     - name: copy deploy*.yaml to testdata dir
       copy:
         src: "{{ item }}"
-        dest: /tmp/testdata/ansible/
+        dest: /home/vagrant/testdata/ansible/
         mode: 0664
       with_fileglob:
         - deploy*.yaml
