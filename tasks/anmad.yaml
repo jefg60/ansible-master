@@ -43,14 +43,11 @@
 
 - name: deploy anmad rsyslog conf
   copy:
-    src: "{{ item }}-rsyslog.conf"
+    src: anmad-rsyslog.conf
     dest: /etc/rsyslog.d/
     mode: 0644
     owner: root
     group: root
-  loop:
-    - anmad_interface
-    - anmad_daemon
   tags: anmad
   notify:
     - restart rsyslog

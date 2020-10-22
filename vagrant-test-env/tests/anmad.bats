@@ -19,6 +19,10 @@ version=0.18.4
     sudo grep INFO /var/log/anmad/interface.log
 }
 
+@test "anmad daemon has its own log file" {
+    sudo grep INFO /var/log/anmad/daemon.log
+}
+
 @test "anmad interface page requires authentication" {
     run curl -kv https://ansible-master-anmad:8443/
     [[ "$output" = *"401 Unauthorized"* ]]
