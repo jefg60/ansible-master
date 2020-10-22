@@ -39,6 +39,6 @@
 }
 
 @test "deploy.yaml gets pushed correctly to /srv/configmanagement" {
-    run diff /tmp/testdata/ansible/deploy.yaml /srv/configmanagement/ansible/deploy.yaml
+    run diff /home/vagrant/testdata/ansible/deploy.yaml /srv/configmanagement/ansible/deploy.yaml
     [[ "$status" -eq 0 ]]
 }
