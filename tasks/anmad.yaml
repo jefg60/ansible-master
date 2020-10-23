@@ -15,7 +15,7 @@
     name:
       # forked ansible-vault to apply patches for ansible 2.10
       - git+https://github.com/jefg60/ansible-vault.git
-      - /srv/anmad
+      - "{{ anmad.install_dir }}"
     virtualenv: "{{ ansible_master.venv }}"
     virtualenv_site_packages: true
     state: present

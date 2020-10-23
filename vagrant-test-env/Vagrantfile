@@ -97,10 +97,8 @@ Vagrant.configure(2) do |config|
           #ansible.tags = 'all'
           ansible.skip_tags = 'tests'
           ansible.extra_vars = {
-            link_ansible_cfg: true,
-            ansible_python_interpreter: '/usr/bin/python3',
             master_ansible_user_ssh_phrase: '1234567890abc321',
-            master_ansible_user_vaultfile: '/srv/anmad/test/testvault',
+            master_ansible_user_vaultfile: '/srv/anmad-test/test/testvault',
             anmad: {
               inventories: '/vagrant/inventory-internal',
               playbooks: ['deploy.yaml','deploy2.yaml'],
@@ -113,7 +111,7 @@ Vagrant.configure(2) do |config|
               },
               host: 'ansible-master-anmad',
               port: '8443',
-              install_dir: '/srv/anmad',
+              install_dir: '/srv/anmad-test',
               root: '/srv/configmanagement/ansible'
             }
           }

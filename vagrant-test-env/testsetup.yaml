@@ -52,7 +52,7 @@
 
     - name: symlink vaultpw
       file:
-        src: /srv/anmad/test/vaultpassword
+        src: "{{ anmad.install_dir }}/test/vaultpassword"
         dest: /home/ansible/.vaultpw
         state: link
         force: true
