@@ -15,6 +15,7 @@
     state: restarted
   loop:
     - anmad
+    - anmad-gunicorn
 
 - name: reload anmad
   service:
@@ -22,6 +23,7 @@
     state: reloaded
   loop:
     - anmad
+    - anmad-gunicorn
   ignore_errors: true
 
 - name: reload nginx

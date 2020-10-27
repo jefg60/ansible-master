@@ -8,7 +8,7 @@
     version: dev
   tags: anmad
   notify:
-    - reload anmad
+    - restart anmad
 
 - name: install anmad module with pip
   pip:
