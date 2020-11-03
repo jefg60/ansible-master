@@ -11,6 +11,7 @@
       - python3-virtualenv
       - apache2-utils
       - nginx
+      - acl
     state: latest
     update_cache: yes
 
