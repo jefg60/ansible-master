@@ -6,7 +6,7 @@
     home: "{{ ansible_master.git.homedir }}"
     password: "*"
 
-- name: create git-shell-commands
+- name: create git-shell-commands directory
   file:
     path: "{{ ansible_master.git.homedir }}/git-shell-commands"
     state: directory
