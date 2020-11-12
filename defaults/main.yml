@@ -9,7 +9,6 @@ ansible_master:
     repo_target: "/srv/configmanagement"
     branch: "master"
     ansible_hook: "echo This command does nothing by default"
-  ssh_phrase: ""
   user: "ansible"
   group: "ansible"
   venv: /opt/ansible-master
