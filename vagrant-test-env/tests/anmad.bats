@@ -33,5 +33,6 @@ version=0.19.1
 }
 
 @test "deploy2.yaml.log exists" {
-  [[ -s /var/log/ansible/playbook/deploy2.yaml.log ]]
+  run compgen -G /var/log/ansible/playbook/deploy2.yaml/*/deploy2.yaml.*.log
+  [ "$status" -eq 0 ]
 }
