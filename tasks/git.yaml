@@ -61,7 +61,8 @@
     repo: "{{ ansible_master.git.remote_repo }}"
     dest: "{{ ansible_master.git.repo_target }}"
     key_file: "{{ ansible_master.git.remote_deploykey }}"
-    update: no
+    update: False
+    accept_hostkey: True
   become: yes
   become_user: "{{ ansible_master.user}}"
   when: ansible_master.git.remote_repo
