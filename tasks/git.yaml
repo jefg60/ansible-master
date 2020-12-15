@@ -46,7 +46,7 @@
     recurse: no
 
 # ignore_errors required because git errors when repo is empty
-- name: clone git repo to run dir
+- name: clone local git repo to run dir
   git:
     repo: "{{ ansible_master.git.homedir }}/{{ ansible_master.git.repo_name }}.git"
     dest: "{{ ansible_master.git.repo_target }}"
@@ -54,6 +54,16 @@
   ignore_errors: true
   become: yes
   become_user: "{{ ansible_master.git.username }}"
+  when: not ansible_master.git.remote_repo
+
+- name: clone remote git repo to run dir
+  git:
+    repo: "{{ ansible_master.git.remote_repo }}"
+    dest: "{{ ansible_master.git.repo_target }}"
+    update: no
+  become: yes
+  become_user: "{{ ansible_master.git.username }}"
+  when: ansible_master.git.remote_repo
 
 - name: deploy post-update-hooks script
   template:

@@ -5,9 +5,10 @@ ansible_master:
     username: "git"
     homedir: "/srv/git"
     repo_name: "configmanagement"
-    log_dir: "/srv/git/log"
     repo_target: "/srv/configmanagement"
+    remote_repo: False
     branch: "master"
+    log_dir: "/srv/git/log"
     ansible_hook: "echo This command does nothing by default"
   user: "ansible"
   group: "ansible"
