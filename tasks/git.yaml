@@ -63,7 +63,7 @@
     key_file: "{{ ansible_master.git.remote_deploykey }}"
     update: no
   become: yes
-  become_user: "{{ ansible_master.git.username }}"
+  become_user: "{{ ansible_master.user}}"
   when: ansible_master.git.remote_repo
 
 - name: deploy post-update-hooks script
