@@ -28,3 +28,6 @@ ara_url = {{ anmad.ara_url }}
 {% if anmad.debug is defined %}
 debug = True
 {% endif %}
+{% if anmad.deploykey is defined %}
+repo_deploykey = {{ anmad.deploykey }}
+{% endif %}
