@@ -14,6 +14,7 @@ ansible_master:
   user: "ansible"
   group: "ansible"
   venv: /opt/ansible-master
+  ssl_cert_dir: /etc/letsencrypt/selfsigned
 
 anmad:
   inventories:
