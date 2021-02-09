@@ -64,8 +64,8 @@
 - name: TEST anmad homepage is up - external https server
   uri:
     url: "https://{{ anmad.host }}:{{ anmad.port }}/"
-    user: "{{ anmad.interface.username }}"
-    password: "{{ anmad.interface.password }}"
+    user: "{{ anmad_credentials.username }}"
+    password: "{{ anmad_credentials.password }}"
     validate_certs: false
     return_content: yes
   register: anmad_page

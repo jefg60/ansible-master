@@ -85,6 +85,6 @@
 # command is used here because htpasswd module doesnt work with bcrypt
 - name: Create admin user in htpasswd file with bcrypt
   command: "htpasswd -b -c -B -C 11 /etc/htpasswd/.htpasswd \
-    {{ anmad.interface.username }} {{ anmad.interface.password }}"
+    {{ anmad_credentials.username }} {{ anmad_credentials.password }}"
   changed_when: false
   no_log: true

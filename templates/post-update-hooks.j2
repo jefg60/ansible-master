@@ -6,4 +6,4 @@ git merge origin/{{ ansible_master.git.branch }} || exit
 git checkout {{ ansible_master.git.branch }} || exit
 cd {{ ansible_master.git.log_dir }} || exit
 echo "$(date) {{ ansible_master.git.repo_name }} has been pushed to {{ ansible_master.git.branch }}" >> {{ ansible_master.git.log_dir }}/{{ ansible_master.git.repo_name }}.log
-curl -k -u {{ anmad.interface.username }}:{{ anmad.interface.password }} https://{{ anmad.host }}:{{ anmad.port }}/runall
+curl -k -u {{ anmad_credentials.username }}:{{ anmad_credentials.password }} https://{{ anmad.host }}:{{ anmad.port }}/runall

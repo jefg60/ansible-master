@@ -27,7 +27,8 @@ anmad:
     - "ansible-master.yaml"
   host: ansible-master-anmad
   port: 8443
-  interface:
-    username: admin
-    password: password
   install_dir: /srv/anmad
+
+anmad_credentials:
+  username: admin
+  password: password
