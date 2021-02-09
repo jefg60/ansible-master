@@ -5,7 +5,7 @@
     repo: https://github.com/jefg60/anmad.git
     dest: "{{ anmad.install_dir }}"
     clone: yes
-    version: 0.21.1
+    version: 0.21.2
   tags: anmad
   notify:
     - restart anmad
