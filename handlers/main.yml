@@ -14,16 +14,16 @@
     name: "{{ item }}"
     state: restarted
   loop:
-    - anmad
-    - anmad-gunicorn
+    - "anmad-{{ anmad.host }}"
+    - "anmad-{{ anmad.host }}-gunicorn"
 
 - name: reload anmad
   service:
     name: "{{ item }}"
     state: reloaded
   loop:
-    - anmad
-    - anmad-gunicorn
+    - "anmad-{{ anmad.host }}"
+    - "anmad-{{ anmad.host }}-gunicorn"
   ignore_errors: true
 
 - name: reload nginx
@@ -33,5 +33,5 @@
 
 - name: reload gunicorn
   service:
-    name: gunicorn.socket
+    name: "anmad-{{ anmad.host }}-gunicorn.socket"
     state: reloaded
