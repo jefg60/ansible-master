@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 #
-version=0.21.2
+version=0.21.3
 
 @test "anmad version $version" {
     run /opt/ansible-master/bin/python3 -m anmad.interface --version
@@ -29,7 +29,7 @@ version=0.21.2
 }
 
 @test "anmad service is running" {
-    sudo service anmad status
+    sudo service anmad-ansible-master-anmad status
 }
 
 @test "deploy2.yaml.log exists" {
