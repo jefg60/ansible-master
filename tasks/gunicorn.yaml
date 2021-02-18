@@ -2,16 +2,16 @@
 - name: deploy anmad gunicorn service to systemd
   template:
     src: anmad-gunicorn.service
-    dest: /etc/systemd/system/
+    dest: "/etc/systemd/system/anmad-{{ anmad.host }}-gunicorn.service"
 
 - name: deploy anmad gunicorn socket service to systemd
-  copy:
-    src: anmad-gunicorn.socket
-    dest: /etc/systemd/system/
+  template:
+    src: anmad-gunicorn.socket.j2
+    dest: "/etc/systemd/system/anmad-{{ anmad.host }}-gunicorn.socket"
   notify: systemctl daemon-reload
 
 - name: ensure gunicorn socket service is running
   systemd:
     state: started
     enabled: yes
-    name: anmad-gunicorn.socket
+    name: "anmad-{{ anmad.host }}-gunicorn.socket"

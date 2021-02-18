@@ -2,7 +2,7 @@
 - name: deploy anmad nginx conf
   template:
     src: anmad-nginx.conf
-    dest: /etc/nginx/sites-available/anmad.conf
+    dest: "/etc/nginx/sites-available/{{ anmad.host }}.conf"
   notify: reload nginx
 
 # If using geerlingguy.certbot role, you need a site on port 80.
@@ -15,7 +15,14 @@
 
 - name: symlink anmad site conf to sites-enabled
   file:
-    src: /etc/nginx/sites-available/anmad.conf
-    dest: /etc/nginx/sites-enabled/anmad.conf
+    src: "/etc/nginx/sites-available/{{ anmad.host }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ anmad.host }}.conf"
     state: link
   notify: reload nginx
+
+# command is used here because htpasswd module doesnt work with bcrypt
+- name: Create admin user in htpasswd file with bcrypt
+  command: "htpasswd -b -c -B -C 11 /etc/htpasswd/.htpasswd-{{ anmad.host }} \
+    {{ anmad_credentials.username }} {{ anmad_credentials.password }}"
+  changed_when: false
+  no_log: true

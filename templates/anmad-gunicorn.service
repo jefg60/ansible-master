@@ -1,6 +1,6 @@
 [Unit]
-Description=anmad gunicorn daemon
-Requires=anmad-gunicorn.socket
+Description=anmad {{ anmad.host }} gunicorn daemon
+Requires=anmad-{{ anmad.host }}-gunicorn.socket
 After=network.target
 
 [Service]
@@ -13,7 +13,7 @@ Group={{ ansible_master.group }}
 # see http://0pointer.net/blog/dynamic-users-with-systemd.html
 RuntimeDirectory=gunicorn
 WorkingDirectory={{ anmad.install_dir }}/anmad/interface/
-ExecStart={{ ansible_master.venv }}/bin/gunicorn anmad.interface
+ExecStart={{ ansible_master.venv }}/bin/gunicorn anmad.interface --configfile /etc/anmad/{{ anmad.host }}.conf
 ExecReload=/bin/kill -s HUP $MAINPID
 KillMode=mixed
 TimeoutStopSec=5

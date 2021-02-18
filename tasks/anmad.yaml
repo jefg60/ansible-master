@@ -13,8 +13,6 @@
 - name: install anmad module with pip
   pip:
     name:
-      # forked ansible-vault to apply patches for ansible 2.10
-      - git+https://github.com/jefg60/ansible-vault.git
       - "{{ anmad.install_dir }}"
     virtualenv: "{{ ansible_master.venv }}"
     virtualenv_site_packages: true
@@ -33,7 +31,7 @@
 - name: deploy anmad config file
   template:
     src: anmad.conf.j2
-    dest: "/etc/anmad.conf"
+    dest: "/etc/anmad/{{ anmad.host }}.conf"
     mode: 0644
     owner: root
     group: root
@@ -53,9 +51,9 @@
     - restart rsyslog
 
 - name: deploy anmad .service files
-  copy:
-    src: "anmad.service"
-    dest: /etc/systemd/system/
+  template:
+    src: "anmad.service.j2"
+    dest: "/etc/systemd/system/anmad-{{ anmad.host }}.service"
     mode: 0644
     owner: root
     group: root
@@ -71,7 +69,7 @@
     enabled: true
     masked: false
   loop:
-    - anmad
+    - "anmad-{{ anmad.host }}.service"
     - redis
 
 - name: create /etc/htpasswd folder
@@ -81,10 +79,3 @@
     owner: root
     group: root
     mode: 0755
-
-# command is used here because htpasswd module doesnt work with bcrypt
-- name: Create admin user in htpasswd file with bcrypt
-  command: "htpasswd -b -c -B -C 11 /etc/htpasswd/.htpasswd \
-    {{ anmad_credentials.username }} {{ anmad_credentials.password }}"
-  changed_when: false
-  no_log: true

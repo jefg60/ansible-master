@@ -1,0 +1,16 @@
+[Unit]
+Description=Daemon to run playbooks from anmad queues
+After=syslog.target
+
+[Service]
+Type=simple
+User=ansible
+Group=ansible
+WorkingDirectory={{ ansible_master.venv }}
+ExecStart={{ ansible_master.venv }}/bin/python3 -m anmad.daemon --configfile "/etc/anmad/{{ anmad.host }}.conf"
+ExecReload={{ ansible_master.venv }}/bin/python3 -m anmad.daemon.restart --configfile "/etc/anmad/{{ anmad.host }}.conf"
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target
