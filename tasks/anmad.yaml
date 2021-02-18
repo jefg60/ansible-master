@@ -28,6 +28,11 @@
   when: master_ansible_user_vaultfile is defined
   tags: anmad
 
+- name: create /etc/anmad dir
+  file:
+    path: /etc/anmad
+    state: directory
+
 - name: deploy anmad config file
   template:
     src: anmad.conf.j2
