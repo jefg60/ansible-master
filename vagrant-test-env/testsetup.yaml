@@ -60,7 +60,7 @@
 
     - name: ensure anmad is running
       service:
-        name: anmad
+        name: "anmad-{{ anmad.host }}"
         state: started
       become: yes
 
