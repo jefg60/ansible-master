@@ -13,7 +13,7 @@ Group={{ ansible_master.group }}
 # see http://0pointer.net/blog/dynamic-users-with-systemd.html
 RuntimeDirectory=gunicorn
 WorkingDirectory={{ anmad.install_dir }}/anmad/interface/
-ExecStart={{ ansible_master.venv }}/bin/gunicorn 'anmad.interface:application(configfile="/etc/anmad/{{ anmad.host }}.conf")'
+ExecStart={{ ansible_master.venv }}/bin/gunicorn 'anmad.interface:app(configfile="/etc/anmad/{{ anmad.host }}.conf")'
 ExecReload=/bin/kill -s HUP $MAINPID
 KillMode=mixed
 TimeoutStopSec=5
