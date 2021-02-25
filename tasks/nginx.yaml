@@ -5,13 +5,11 @@
     dest: "/etc/nginx/sites-available/{{ anmad.host }}.conf"
   notify: reload nginx
 
-# If using geerlingguy.certbot role, you need a site on port 80.
 - name: remove nginx default symlink
   file:
     path: /etc/nginx/sites-enabled/default
     state: absent
   notify: reload nginx
-  when: certbot_certs is not defined
 
 - name: symlink anmad site conf to sites-enabled
   file:
