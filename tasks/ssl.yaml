@@ -5,6 +5,7 @@
     state: directory
   loop:
     - "{{ anmad.host }}"
+  when: ansible_master.ssl_cert_dir == "/etc/letsencrypt/selfsigned"
 
 - name: Generate an OpenSSL private key.
   openssl_privatekey:
