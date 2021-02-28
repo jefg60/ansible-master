@@ -18,7 +18,6 @@
 - name: install pip packages to virtualenv
   pip:
     name:
-      - 'ansible<2.10'
       - ansible-lint
       - pywinrm
       - dnspython
